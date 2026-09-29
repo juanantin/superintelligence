@@ -55,10 +55,31 @@ const browser = await chromium.launch(
 const page = await browser.newPage({ viewport: { width: 1440, height: 2200 } });
 
 let text = '';
+let addrHits = [];
 try {
   await page.goto(URL, { waitUntil: 'networkidle', timeout: 90000 });
   await page.waitForTimeout(6000);
   text = await page.evaluate(() => document.body.innerText);
+
+  /* Every 0x address the panel links to or prints, with whatever text sits
+     nearest it. The six wrapper contracts cannot be read off a public RPC —
+     see the header — but the panel names them, and an address that is on the
+     page is a fact about the index rather than an inference. */
+  addrHits = await page.evaluate(() => {
+    const out = [];
+    document.querySelectorAll('a[href]').forEach((a) => {
+      const m = (a.getAttribute('href') || '').match(/0x[a-fA-F0-9]{40}/);
+      if (m) out.push({ addr: m[0], text: (a.innerText || '').trim().slice(0, 40),
+                        near: (a.closest('tr,li,div')?.innerText || '').trim().slice(0, 120) });
+    });
+    document.querySelectorAll('*').forEach((el) => {
+      if (el.children.length) return;
+      const m = (el.textContent || '').match(/0x[a-fA-F0-9]{40}/);
+      if (m) out.push({ addr: m[0], text: (el.textContent || '').trim().slice(0, 40),
+                        near: (el.parentElement?.innerText || '').trim().slice(0, 120) });
+    });
+    return out;
+  });
 } catch (err) {
   console.log('could not load the panel:', err.message);
   await browser.close();
@@ -135,6 +156,31 @@ const out = {
   whatItHolds: after('WHAT IT HOLDS'),
   holdings,
 };
+
+/* Attach a contract address to a name when the panel puts one next to that
+   name's ticker. Matched on the ticker appearing in the link's own text or
+   its immediate row — never on position, which would silently mis-assign
+   every address the moment the panel's layout shifted. */
+const KNOWN = new Set(['si', CFG.contractAddress?.toLowerCase(),
+                       CFG.contracts?.rewardsIndex?.toLowerCase()].filter(Boolean));
+for (const h of out.holdings) {
+  const tick = String(h.ticker).toUpperCase();
+  const bare = tick.replace(/C$/, '');
+  const hit = addrHits.find((a) => {
+    if (KNOWN.has(a.addr.toLowerCase())) return false;
+    const hay = (a.text + ' ' + a.near).toUpperCase();
+    return hay.includes(tick) || new RegExp('\\b' + bare + 'C?\\b').test(hay);
+  });
+  h.address = hit ? hit.addr : null;
+}
+const withAddr = out.holdings.filter((h) => h.address).length;
+console.log(`\naddresses on the panel: ${addrHits.length} seen, ${withAddr}/${out.holdings.length} matched to a name`);
+if (withAddr < out.holdings.length) {
+  console.log('  (unmatched names keep address null — the page did not name one)');
+}
+for (const a of addrHits.slice(0, 25)) {
+  console.log(`  ${a.addr}  ${a.text || '(no text)'}`);
+}
 
 /* Validate BEFORE writing. Writing first and exiting non-zero afterwards
    still leaves an empty file on disk, and the workflow's commit step runs on

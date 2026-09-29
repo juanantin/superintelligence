@@ -247,6 +247,17 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   background: linear-gradient(90deg, transparent, var(--blue) 30%, var(--red) 70%, transparent);
 }
 
+.hero__base {
+  margin: 14px 0 0;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-2);
+  text-shadow: 0 1px 3px rgba(1,13,41,1), 0 2px 14px rgba(1,13,41,.95);
+}
+.hero__baseon { color: var(--ink-3); }
+.hero__baselogo { width: 13px; height: 13px; color: #2f7dff; }
+.hero__basename { color: var(--ink); letter-spacing: .1em; }
+
 .hero__kicker {
   margin: 11px 0 0;
   font-size: clamp(10px, 1.1vw, 12px);
@@ -632,7 +643,10 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .eco {
   display: grid; gap: 0;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  /* Two lockups and the slogan. Base used to be a third column here and is
+     now at the foot of the hero, unlinked — only Stonks Exchange and Stockify
+     go anywhere a holder needs. */
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
   align-items: center;
 }
 /* Hairline dividers between the lockups rather than three boxes — the design
