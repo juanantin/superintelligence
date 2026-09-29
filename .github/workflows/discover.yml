@@ -42,3 +42,15 @@ jobs:
           # receives, or only sends, is not the thing holders are paid from.
           CANDIDATES: '0x4e2e072c38735bd0b9374f429cf0ae1c07412450'
         run: node scripts/discover-token.mjs
+
+      # Every ERC-20 that has actually moved in or out of the rewards index.
+      # This token's index does NOT pay in one token: its Stockify panel reads
+      # "6 names, fixed at creation" and lists payouts in NVDAc, AAPLc, GOOGLc,
+      # AMZNc, SPCXc and TSLAc, while fees arrive as ETH. So the template's
+      # one-reward-token assumption does not hold here, and the six payout
+      # tokens' contract addresses have to be read off the chain before any
+      # per-name figure can be indexed. This prints them with totals.
+      - name: What actually moves through the index
+        env:
+          RPC_URL: ${{ secrets.RPC_URL || 'https://mainnet.base.org' }}
+        run: node scripts/discover-flows.mjs

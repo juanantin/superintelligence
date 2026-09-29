@@ -22,7 +22,7 @@ window.SITE_CONFIG = {
      a browser actually has rather than guessing at a cache. Bump it together
      with the ?v= on the script tags in index.html whenever you deploy —
      `node scripts/stamp.mjs` moves all of them at once. */
-  version: '8',
+  version: '9',
 
   /* ---- Token ---------------------------------------------------------- */
 
@@ -70,14 +70,12 @@ window.SITE_CONFIG = {
   /* Holders' share of what leaves the rewards index — the rest is the
      protocol's cut, so the outflow is NOT the distributed figure on its own.
 
-     ⚠ NOT YET READ FOR THIS TOKEN, and deliberately null rather than 0.9.
-     0.9 is what all three siblings' panels read, but it is a PER-TOKEN setting
-     on the platform and it is the one multiplier standing between the measured
-     outflow and the figure on the tile. scripts/panel-probe.mjs reads this
-     token's own Stockify panel. On a sibling the panel and the indexer agreed
-     to five decimal places — that is the bar, and no payout figure gets
-     announced before it is met. */
-  holderShare: null,
+     ✓ READ FROM THIS TOKEN'S OWN STOCKIFY PANEL on 2026-09-29, not inherited:
+     "TO HOLDERS 90% — 10% protocol · 0% creator". The panel's own totals
+     corroborate it: FEES COLLECTED $724 against PAID TO HOLDERS $638, which
+     is 88% — 90% less the drift between buying the holdings and pricing them
+     now. Creator earnings read "—", "all of it goes to holders". */
+  holderShare: 0.9,
 
   /* Related contracts.
        pool         the trading pair — DexScreener is asked about THIS pool
