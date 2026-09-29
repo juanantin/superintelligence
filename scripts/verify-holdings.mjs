@@ -31,18 +31,29 @@ if (!Array.isArray(data.holdings) || !data.holdings.length) {
 }
 
 let id = 0;
-async function ethCall(to, selector) {
-  const res = await fetch(RPC, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      jsonrpc: '2.0', id: ++id, method: 'eth_call',
-      params: [{ to, data: selector }, 'latest'],
-    }),
-  });
-  const j = await res.json();
-  if (j.error) throw new Error(j.error.message);
-  return j.result;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/* The public Base endpoint throttles per IP and GitHub's runners share them,
+   so twelve calls fired back to back got "over rate limit" on the last four —
+   which then looked like four failed contracts rather than one busy node.
+   Spaced, and retried with backoff, so a throttle cannot be mistaken for a
+   reading. */
+async function ethCall(to, selector, tries = 4) {
+  for (let attempt = 1; ; attempt++) {
+    const res = await fetch(RPC, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0', id: ++id, method: 'eth_call',
+        params: [{ to, data: selector }, 'latest'],
+      }),
+    });
+    const j = await res.json().catch(() => ({ error: { message: 'bad JSON' } }));
+    if (!j.error) return j.result;
+    const throttled = /rate limit|too many|429/i.test(j.error.message || '');
+    if (!throttled || attempt >= tries) throw new Error(j.error.message);
+    await sleep(attempt * 1500);
+  }
 }
 
 /* A string return is ABI-encoded: offset, length, then the bytes. Some older
@@ -69,10 +80,18 @@ let verified = 0, dropped = 0;
 for (const h of data.holdings) {
   if (!h.address) { console.log(`${String(h.ticker).padEnd(7)} no address on the panel — skipped`); continue; }
 
-  let symbol = null, decimals = null, err = null;
+  let symbol = null, decimals = null, err = null, empty = false;
   try {
-    symbol = decodeString(await ethCall(h.address, SYMBOL));
+    const raw = await ethCall(h.address, SYMBOL);
+    await sleep(350);
+    /* An empty return is not a mismatch — it means the address has no
+       symbol() at all, so it is not a token contract. Almost certainly a
+       wallet or a transaction the panel linked next to that ticker. Worth
+       saying differently, because the fix is different. */
+    if (!raw || raw === '0x') empty = true;
+    symbol = decodeString(raw);
     const d = await ethCall(h.address, DECIMALS);
+    await sleep(350);
     decimals = d && d !== '0x' ? parseInt(d, 16) : null;
   } catch (e) { err = e.message; }
 
@@ -81,6 +100,13 @@ for (const h of data.holdings) {
     /* A failed read is not a disproof — the node may simply be busy — so the
        address stands and is marked unverified rather than thrown away. */
     h.verified = false;
+    continue;
+  }
+
+  if (empty) {
+    console.log(`${String(h.ticker).padEnd(7)} ${h.address}  has no symbol() — not a token contract, dropping`);
+    h.address = null; h.symbol = null; h.decimals = null; h.verified = false;
+    dropped++;
     continue;
   }
 

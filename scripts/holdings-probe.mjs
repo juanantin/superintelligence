@@ -166,10 +166,15 @@ const KNOWN = new Set(['si', CFG.contractAddress?.toLowerCase(),
 for (const h of out.holdings) {
   const tick = String(h.ticker).toUpperCase();
   const bare = tick.replace(/C$/, '');
+  /* The link's OWN text only — not the surrounding row. Matching the row
+     pulled in the activity feed, whose entries read "PAID OUT 0.0296 TSLAc to
+     90 holders" and link to a wallet or a transaction, not to the wrapper
+     contract. Two of those survived to verification and came back with no
+     symbol() at all, which is what proved the row match wrong. */
   const hit = addrHits.find((a) => {
     if (KNOWN.has(a.addr.toLowerCase())) return false;
-    const hay = (a.text + ' ' + a.near).toUpperCase();
-    return hay.includes(tick) || new RegExp('\\b' + bare + 'C?\\b').test(hay);
+    const hay = String(a.text || '').toUpperCase();
+    return hay.includes(tick) || new RegExp('\\b' + bare + 'C\\b').test(hay);
   });
   h.address = hit ? hit.addr : null;
 }
