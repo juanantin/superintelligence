@@ -1,30 +1,59 @@
 {
   "__doc": [
-    "Per-name holdings and payouts, read from this token's own Stockify index",
-    "panel by scripts/holdings-probe.mjs and refreshed twice an hour by",
-    ".github/workflows/holdings.yml. Every figure is printed on that page;",
-    "nothing here is computed or inferred, and a field the page does not show",
-    "is null, which the site renders as an em dash.",
+    "Per-name holdings and payouts for this token, read from its own Stockify",
+    "index panel by scripts/holdings-probe.mjs. Every figure here is printed on",
+    "that page; nothing is computed, inferred or carried over. A field the page",
+    "does not show is null, and the site renders null as an em dash.",
     "",
-    "This first entry is a real reading taken at the readAt timestamp below,",
-    "not a placeholder — but it IS a point-in-time reading, which is why it",
-    "carries that timestamp and why the schedule replaces it."
+    "This is a PANEL READING, not a chain scan — see the header of",
+    "scripts/holdings-probe.mjs for why the chain scan is not yet viable on a",
+    "public RPC, and what would make it so."
   ],
   "source": "https://www.stockify.finance/indices/0x4e2e072c38735bd0b9374f429cf0ae1c07412450",
-  "readAt": "2026-09-29T15:22:47Z",
+  "readAt": "2026-09-29T19:34:59.953Z",
   "paidToHoldersUsd": 638,
-  "feesCollectedUsd": 724,
+  "feesCollectedUsd": 722,
   "feesCollectedToken": "0.2682 ETH",
   "roundsPaid": 18,
   "walletPayments": 1644,
   "holderSharePct": 90,
   "whatItHolds": "6 names, fixed at creation.",
   "holdings": [
-    { "ticker": "NVDAc",  "name": "NVIDIA",   "weightPct": 17, "tokens": 0.4803 },
-    { "ticker": "AAPLc",  "name": "Apple",    "weightPct": 17, "tokens": 0.3208 },
-    { "ticker": "GOOGLc", "name": "Alphabet", "weightPct": 17, "tokens": 0.3154 },
-    { "ticker": "AMZNc",  "name": "Amazon",   "weightPct": 17, "tokens": 0.4337 },
-    { "ticker": "SPCXc",  "name": "SpaceX",   "weightPct": 17, "tokens": 0.7307 },
-    { "ticker": "TSLAc",  "name": "Tesla",    "weightPct": 17, "tokens": 0.2807 }
+    {
+      "ticker": "NVDAc",
+      "tokens": 0.4803,
+      "weightPct": 17,
+      "name": "NVIDIA"
+    },
+    {
+      "ticker": "AAPLc",
+      "tokens": 0.3208,
+      "weightPct": 17,
+      "name": "Apple"
+    },
+    {
+      "ticker": "GOOGLc",
+      "tokens": 0.3154,
+      "weightPct": 17,
+      "name": "Alphabet"
+    },
+    {
+      "ticker": "AMZNc",
+      "tokens": 0.4337,
+      "weightPct": 17,
+      "name": "Amazon"
+    },
+    {
+      "ticker": "SPCXc",
+      "tokens": 0.7307,
+      "weightPct": 17,
+      "name": "SpaceX"
+    },
+    {
+      "ticker": "TSLAc",
+      "tokens": 0.2807,
+      "weightPct": 17,
+      "name": "Tesla"
+    }
   ]
 }
