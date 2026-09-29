@@ -189,7 +189,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
      takes the picture's shape rather than a height in vh — a vh-based hero
      slides the crop around as the window changes, and this picture puts the
      Earth's limb at a fixed place in the frame. */
-  min-height: clamp(380px, 41vw, 680px);
+  min-height: clamp(360px, 39vw, 640px);
   padding: clamp(20px, 3vw, 44px) var(--gutter);
   overflow: hidden;
   background: var(--page);
@@ -199,7 +199,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .hero__bg {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover; object-position: center bottom;
+  object-fit: cover; object-position: center center;
   z-index: 0;
 }
 
@@ -607,9 +607,10 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .foot__band {
   position: relative;
-  /* 7.4:1 — the band's own ratio. A squarer box would keep the middle 60% and
-     throw BOTH flags away, which are at the extreme left and right edges. */
-  aspect-ratio: 1920 / 260;
+  /* The boardroom picture's own 2.5:1. It was 7.4:1 when this slot held a
+     thin skyline band; at that shape this image would keep a strip across
+     the table and lose the room, the windows and both flags. */
+  aspect-ratio: 2400 / 960;
 }
 .foot__bandimg { width: 100%; height: 100%; object-fit: cover; }
 .foot__band::after {

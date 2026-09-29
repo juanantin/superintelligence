@@ -53,4 +53,17 @@ jobs:
       - name: What actually moves through the index
         env:
           RPC_URL: ${{ secrets.RPC_URL || 'https://mainnet.base.org' }}
-        run: node scripts/discover-flows.mjs
+        # Scanning from the launch block meant 200,000 blocks of unfiltered
+        # getLogs, and the public node cut it off for rate limiting after 55
+        # calls and 11,000 blocks — it never reached a payout. The index pays a
+        # round every 15 minutes, so the last 20,000 blocks (~11 hours on Base)
+        # hold dozens of them and name every token it moves. Set an RPC_URL
+        # secret to widen this.
+        run: |
+          set -euo pipefail
+          HEAD=$(curl -sS -X POST -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}' \
+            "$RPC_URL" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(parseInt(JSON.parse(s).result,16)))")
+          export START_BLOCK=$(( HEAD - 20000 ))
+          echo "head $HEAD — scanning the last 20000 blocks from $START_BLOCK"
+          node scripts/discover-flows.mjs

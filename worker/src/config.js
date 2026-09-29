@@ -24,20 +24,30 @@ export const CHAIN_ID = 8453;                    // Base
 export const TOKENS = {
   // The token people buy. Supplied by the owner.
   STR: '0xD8690690E1E5e3c4AeE2832D30C666BfE49D5CA4',
-  /* The reward token holders are paid in — the quote side of the pair.
-     ⚠ Read it from the chain. It is a tokenized WRAPPER, not equity, and its
-     symbol() is not inferable from branding: a sibling's answers "AMZNc". */
-  KEX: null,
+  /* WETH — what FEES ARRIVE IN, read from the chain as the quote side of the
+     pool and corroborated by the Stockify panel ("FEES COLLECTED $724 /
+     0.2682 ETH"). symbol() "WETH", name() "Wrapped Ether", decimals() 18.
+
+     ⚠ NOT what holders receive. This index is not the one-reward-token shape
+     the template assumes: it collects ETH, buys six tokenized equities by
+     weight, and pays those out per name (NVDAc, AAPLc, GOOGLc, AMZNc, SPCXc,
+     TSLAc). So `feesIn` below is exact, and `paidOut` measures the ETH spent
+     buying on holders' behalf — which is the right magnitude for a USD
+     figure, but is NOT a count of stock tokens and must never be labelled as
+     one. Per-name token counts need the six wrapper addresses, which
+     discover-flows is still reading off chain. */
+  KEX: '0x4200000000000000000000000000000000000006',
 };
 
 export const CONTRACTS = {
-  // The trading pair. ⚠ From discovery — the deepest DexScreener pair on Base.
-  pool: null,
+  // The trading pair: SI/WETH on Uniswap v3, the deepest of this token's two
+  // pairs (the other is a v4 SI/USDC pool holding $2.28).
+  pool: '0x1fF0Ffe0c516d6146ff0d072FBe6FA3a98674c53',
   /* Where trading fees accrue. PLATFORM-WIDE — the identical address on every
      sibling, which is three builds' worth of proof — so NO STREAM MAY SUM IT:
      doing so reports the whole platform's fees as this token's. Recorded only
      so it can be excluded from the holder count. */
-  feeLocker: null,
+  feeLocker: '0x71D1D363176723f85d98B8B430DF33cde89f0A7f',
   /* The distributor holders are paid from, from /api/fee-routing. Per token —
      which is what makes summing it this token's flows rather than the
      platform's.
@@ -46,14 +56,14 @@ export const CONTRACTS = {
      0x4e2e072c38735bd0b9374f429cf0ae1c07412450. It is NOT written here yet:
      discover.yml carries it in CANDIDATES so the run reports whether the
      reward token really flows both in and out of it first. */
-  rewardsIndex: null,
+  rewardsIndex: '0x4E2e072C38735BD0b9374F429Cf0AE1c07412450',
 };
 
 /* The block $SI launched at. ⚠ From discovery, corroborated two ways: the
    platform's /api/coins block_number, and a timestamp search for the pool's
    own pairCreatedAt. Left at 0 or null the scan would start at genesis and
    never finish. */
-export const START_BLOCK = null;
+export const START_BLOCK = 51737858;
 
 /* Decimals, per token, TO BE READ FROM EACH CONTRACT rather than assumed. Two
    constants, never one, even when they agree: on a sibling they differed — its
@@ -61,18 +71,18 @@ export const START_BLOCK = null;
    sharing a constant there published 25.244695737 as 2.5244695737e-9, every
    digit right and the scale out by ten billion. A token that is "obviously 18"
    is exactly the one nobody checks. */
-export const STR_DECIMALS = null;
-export const KEX_DECIMALS = null;
+export const STR_DECIMALS = 18;   // $SI's own decimals(), read on chain
+export const KEX_DECIMALS = 18;   // WETH's own decimals(), read on chain
 
 /* Everything that has to be real before a scan means anything. index-rewards
    and the worker both refuse to run while this list is non-empty. */
 /* Share of the outflow that reaches holders — the rest is the protocol's cut.
 
-   ⚠ NULL, NOT 0.9. All three siblings' panels read 0.9, but it is a per-token
-   setting and the one multiplier between the measured outflow and the figure
-   on the tile. scripts/panel-probe.mjs prints this token's own Stockify panel
-   beside what this site publishes; on a sibling those agreed to five decimals,
-   which is the bar. Until then no distributed figure may be announced.
+   ✓ 0.9, READ FROM THIS TOKEN'S OWN STOCKIFY PANEL on 2026-09-29 — "TO
+   HOLDERS 90%, 10% protocol · 0% creator" — not inherited from a sibling. The
+   panel's own totals agree: FEES COLLECTED $724 against PAID TO HOLDERS $638,
+   which is 88%, the gap being drift between buying the holdings and pricing
+   them now.
 
    Better still, set PROTOCOL_ADDRESS if the protocol's address turns up — the
    cut is then subtracted exactly and survives the percentage changing.
@@ -80,7 +90,7 @@ export const KEX_DECIMALS = null;
    Declared HERE, above MISSING, rather than further down where the siblings
    keep it: MISSING reads it, and a `const` read before its initialiser is a
    TDZ ReferenceError, not a null. */
-export const HOLDER_SHARE = null;
+export const HOLDER_SHARE = 0.9;
 export const PROTOCOL_ADDRESS = null;
 
 /* HOLDER_SHARE is in this list, which the siblings' copies did not do. There it
