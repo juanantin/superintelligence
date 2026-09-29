@@ -76,21 +76,28 @@ export const KEX_DECIMALS = 18;   // WETH's own decimals(), read on chain
 
 /* Everything that has to be real before a scan means anything. index-rewards
    and the worker both refuse to run while this list is non-empty. */
-/* Share of the outflow that reaches holders — the rest is the protocol's cut.
+/* Share of the measured outflow that reaches holders.
 
-   ✓ 0.9, READ FROM THIS TOKEN'S OWN STOCKIFY PANEL on 2026-09-29 — "TO
-   HOLDERS 90%, 10% protocol · 0% creator" — not inherited from a sibling. The
-   panel's own totals agree: FEES COLLECTED $724 against PAID TO HOLDERS $638,
-   which is 88%, the gap being drift between buying the holdings and pricing
-   them now.
+   ⚠ 1, NOT 0.9 — and that is a MEASUREMENT, not a disagreement with the panel.
+   The panel does read "TO HOLDERS 90%", but this index's protocol cut never
+   leaves the index as WETH, so it is not in what this scan measures. The first
+   full backfill proved it:
 
-   Better still, set PROTOCOL_ADDRESS if the protocol's address turns up — the
-   cut is then subtracted exactly and survives the percentage changing.
+     feesIn   0.26819049 ETH
+     paidOut  0.24135144 ETH
+     ratio    0.899925
 
-   Declared HERE, above MISSING, rather than further down where the siblings
-   keep it: MISSING reads it, and a `const` read before its initialiser is a
-   TDZ ReferenceError, not a null. */
-export const HOLDER_SHARE = 0.9;
+   The outflow is ALREADY exactly 90% of the inflow. Multiplying it by 0.9
+   again applies the cut twice: it published $584.50 where the index's own
+   panel says $638 paid to holders — 8.4% low. Unmultiplied it is $649.45,
+   within 1.8% of the panel, the remainder being drift between what the
+   equities cost when bought and what they are worth now.
+
+   So the multiplier belongs where the outflow includes the protocol's cut.
+   Here it does not. If the platform ever routes that cut through the index in
+   the reward token, this must go back to 0.9 — check the ratio above against
+   a fresh backfill before changing it either way. */
+export const HOLDER_SHARE = 1;
 export const PROTOCOL_ADDRESS = null;
 
 /* HOLDER_SHARE is in this list, which the siblings' copies did not do. There it

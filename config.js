@@ -67,15 +67,16 @@ window.SITE_CONFIG = {
      larger put 7,205,199 on a tile whose true figure was a fraction of one. */
   rewardTokenSymbol: null,
 
-  /* Holders' share of what leaves the rewards index — the rest is the
-     protocol's cut, so the outflow is NOT the distributed figure on its own.
+  /* Holders' share of the measured outflow from the rewards index.
 
-     ✓ READ FROM THIS TOKEN'S OWN STOCKIFY PANEL on 2026-09-29, not inherited:
-     "TO HOLDERS 90% — 10% protocol · 0% creator". The panel's own totals
-     corroborate it: FEES COLLECTED $724 against PAID TO HOLDERS $638, which
-     is 88% — 90% less the drift between buying the holdings and pricing them
-     now. Creator earnings read "—", "all of it goes to holders". */
-  holderShare: 0.9,
+     ⚠ 1, NOT 0.9. app.js applies this to its own in-browser chain scan exactly
+     as the indexer does, so it has to agree with worker/src/config.js — see
+     the long note there. In short: this index's protocol cut never leaves the
+     index in the reward token, so the measured outflow is already net of it.
+     The first full backfill read feesIn 0.26819049 ETH against paidOut
+     0.24135144 — a ratio of 0.899925 — and multiplying that by 0.9 a second
+     time published $584.50 against the index panel's own $638. */
+  holderShare: 1,
 
   /* Related contracts.
        pool         the trading pair — DexScreener is asked about THIS pool
