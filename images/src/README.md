@@ -1,103 +1,112 @@
-# Artwork to supply — $SI
+# Originals — $SI
 
-**Drop your files in this folder** (`images/src/`) with **exactly the filenames
-in the first column.** Everything the page actually serves is derived from
-these by script, so you never have to produce a resized or reformatted copy
-yourself — supply the largest, cleanest original you have and the build cuts
-the rest.
+The artwork everything served is derived from. **Nothing in here is loaded by
+the page**; it is the source shelf, so any served file can be re-cut without
+going back to whoever made the original.
 
-Nothing in `images/src/` is loaded by the browser. It is the source shelf.
+| File | What it is | What comes from it |
+|---|---|---|
+| `si_logo.png` | The chrome **SI** monogram as supplied, 1774×887, RGBA with a transparent ground | `images/si_mark.png` (trimmed to its own alpha bounds), `images/si_mark.webp` (the served copy), and every icon: `images/favicon.png`, `icon-192`, `icon-512`, `apple-touch-icon`, `/favicon.ico` |
+| `si_header.png` | The supplied header, 1983×793. **Only its lower third is used** — see below | `images/hero_earth.webp`, and the ground colour `#010d29` sampled from its own night sky |
+| `si_footer.png` | The supplied footer, 1983×793. **Only its upper third is used** — see below | `images/footer_band.webp` |
 
----
+## Why only part of two of them is used
 
-## What is needed
+Both supplied images are photoreal composites of **real, identifiable people**
+in scenes that never happened: the header places Donald Trump and Xi Jinping
+either side of the Earth, and the footer seats six recognisable technology
+executives around a boardroom table. Published on a page selling a token, that
+reads as those people endorsing it. Neither ships, and that constraint was
+agreed before any of this was built.
 
-| Supply this file | What it is | Shape / size | Used for |
-|---|---|---|---|
-| `hero_scene.png` | The hero backdrop: the curve of the Earth at night, city lights along the limb, star field above. Dark, cinematic, no people. | **2400 × 1000** (2.4 : 1), **minimum 1920 wide** | The full-bleed hero band, and the social card derived from it |
-| `si_mark.png` | The chrome **SI** monogram on its own — the lettering only, **transparent background**, no ring, no card, no drop shadow baked in. | **Square, 1024 × 1024** or larger | The large hero mark, the top-bar monogram, the favicon, the 192/512 PWA icons and the iOS home-screen icon |
-| `pitch_texture.png` | *Optional.* An abstract or generic backdrop for the mid-page pitch strip — circuitry, a data lattice, a dark gradient field. No recognisable people. | **3 : 1**, e.g. 2400 × 800 | The band behind "BUY $SI. EARN THE TECH RACE." |
-| `section_wide.png` | The wide image that sits above the footer, where the mockup had the boardroom photograph. **A room, a skyline, a server hall, circuitry or an abstract field — no people.** See *What I cannot build* below. | **3 : 1**, e.g. 2400 × 800, **never squarer than 3 : 1** | The wide band above the footer |
-| `footer_art.png` | *Optional.* A dark band for behind the footer lockups. If you skip it the footer renders on flat colour, which is fine. | **3 : 1**, e.g. 2400 × 800 | The footer ground |
+What does ship is **the part of each picture that has no people in it**, which
+turned out to be the best part of both:
 
-### Ratios are not advice
+- **`hero_earth.webp`** — the bottom 38% of the header: the curve of the Earth
+  at night, city lights, and the blue and red network arcs sweeping across it.
+  The blue-left / red-right framing survives the crop, so the geopolitical
+  reading is still there without either likeness.
+- **`footer_band.webp`** — the top 34% of the footer: the night skyline, the
+  holographic globe, and **both flags** — the US flag at the left edge, the
+  Chinese flag at the right. Every face is below the crop line.
 
-Two of these are load-bearing and have bitten this template before:
+So the flags, the Earth, the circuitry and the two-power framing all remain.
+Only the fabricated people are gone.
 
-- **A wide image must never be cropped squarer than the ratio in the table.**
-  `object-fit: cover` crops silently: give a 3 : 1 picture a 2 : 1 box and the
-  browser keeps the middle 67% and throws the sides away — on a sibling site
-  that turned a footer into a blank band of sky, with the artwork perfectly
-  intact in the file.
-- **The social card is letterboxed, never cropped.** X crops a large-image
-  card to 2 : 1 and takes the **sides**. `hero_scene.png` is wider than that,
-  so it is padded onto 1200 × 630 rather than trimmed into it.
+The two source files stay here as provenance. They are not referenced by any
+page, but the repo root is what the host serves, so they remain publicly
+reachable at their URL — say the word and they come out of the repo entirely.
 
-### The mark, specifically
+## The commands
 
-`si_mark.png` is resized down to **16px** for a browser tab. Supply the
-monogram *alone* — if the file is a full scene with the SI lettering somewhere
-inside it, the favicon is a smudge. Transparent, so it sits on a light or a
-dark tab strip without carrying a white card around with it. (The iOS icon is
-the one exception and gets flattened onto a solid ground during the build,
-because iOS renders a transparent home-screen icon as pure black.)
+```bash
+# hero — the Earth limb, below where the two figures end (0.62 of the height).
+# Checked visually at 0.58/0.60/0.62/0.64: below 0.62 a sliver of shoulder and
+# of the US flag survives in the top corners.
+python3 - <<'EOF'
+from PIL import Image
+h = Image.open('images/src/si_header.png').convert('RGB')
+W, H = h.size
+hero = h.crop((0, int(H*0.62), W, H))
+hero = hero.resize((1920, round(hero.height * 1920 / hero.width)), Image.LANCZOS)
+hero.save('images/hero_earth.webp', 'WEBP', quality=88, method=6)
 
-### Formats
+# footer band — skyline, globe and both flags, above the seated figures.
+f = Image.open('images/src/si_footer.png').convert('RGB')
+W2, H2 = f.size
+band = f.crop((0, 0, W2, int(H2*0.34)))
+band = band.resize((1920, round(band.height * 1920 / band.width)), Image.LANCZOS)
+band.save('images/footer_band.webp', 'WEBP', quality=88, method=6)
 
-PNG or WebP for anything with transparency, PNG or high-quality JPEG for the
-photographic scenes. Do not pre-compress: the build produces the small
-served copies, and it cannot recover detail you have already thrown away.
+# the mark — trimmed to its own alpha bounds, then a served WebP at 1000px
+# (the hero shows it at ~440, so this covers a 2× display).
+m = Image.open('images/src/si_logo.png').convert('RGBA')
+mark = m.crop(m.getbbox())
+mark.save('images/si_mark.png', 'PNG', optimize=True)
+mark.resize((1000, round(mark.height*1000/mark.width)), Image.LANCZOS) \
+    .save('images/si_mark.webp', 'WEBP', quality=90, method=6)
+EOF
+```
 
-### If you have a hero clip instead of a still
+```bash
+# icons — the monogram centred on a square with a 6% margin, left TRANSPARENT
+# so it sits on a light or a dark tab strip without carrying a white card.
+# The apple-touch one is the exception and is flattened onto #010d29, because
+# iOS renders a transparent home-screen icon as pure black.
+#   favicon.png 512 · icon-192 · icon-512 · apple-touch-icon 180 · favicon.ico
+# favicon.ico sits at the REPO ROOT because browsers request /favicon.ico on
+# their own, whatever the <link> tags say. It carries 16–256px.
+```
 
-Supply it as `si_header.mp4` and say so — the template can run a looping,
-muted, audio-stripped clip in the hero instead of the still, and the poster
-frame is then cut from the clip's own **first** frame so the hand-off to
-playback does not jump.
+```bash
+# social card — 1200×630, which every platform documents and none of them cuts
+# into. The Earth band is LETTERBOXED across the bottom and its top edge
+# feathered 90px into the ground, with the mark above it.
+```
 
----
+**Letterbox the card, never crop it.** X crops a large-image card to 2:1 and
+takes the **sides** — on a 6.6:1 band that would leave a strip of ocean.
 
-## Logos I do *not* need from you
+**Never crop a wide band squarer than its own ratio.** `object-fit: cover`
+crops silently: on a sibling site a 3:1 footer given a 2:1 box kept the middle
+67% and rendered as a blank band of sky, with the artwork perfectly intact in
+the file. `footer_band.webp` is 7.4:1 and `hero_earth.webp` 6.6:1 — both want
+boxes at least that wide, and the stylesheet sets their ratios explicitly.
 
-- **Stonks Exchange** and **Stockify** — the footer lockups carry these
-  already.
-- **Base** — drawn as vector in the page, not loaded as a file.
-- **The tokenized-equity company logos** for the distribution row — hold off
-  on these until the discovery run reports what the Stockify index actually
-  holds. The mockup shows six names; the index may hold fewer, and the page
-  renders only what is really there. Once the run reports back I will tell you
-  exactly which logos are needed, if any.
+## Still useful, if you have it
 
----
+- **A hero clip.** Drop it in as `si_header.mp4` and say so: the hero can run a
+  muted, looping, audio-stripped clip instead of the still, with the poster cut
+  from the clip's own **first** frame so the hand-off does not jump. Same rule
+  applies — no fabricated likenesses in it.
+- **Anything with more vertical room.** Both supplied files are 2.5:1 and the
+  usable crops are much wider than that, which is why the hero composes the
+  Earth band against a deep field rather than filling the whole frame with
+  photography. A taller original would give the hero more picture.
 
-## What I cannot build, and why
+## Logos not needed from you
 
-Two things in the mockup are not going to ship as drawn, and you have already
-agreed to this — recording it here so it is not a surprise later:
-
-1. **No fabricated likenesses of real people.** That is the Trump and Xi
-   portraits flanking the hero, and the six-executive boardroom image. The
-   geopolitical framing stays — flags, the Earth, the SI mark, circuitry — but
-   built from imagery that does not place real individuals in scenes that did
-   not happen, and never in a way that reads as their endorsement of the
-   token. `section_wide.png` above is the slot the boardroom image occupied.
-   If you hold genuine licensed photographs and want them used editorially,
-   that is a conversation worth having — send them and we will look at it.
-2. **No invented posts, quotes or engagement counts.** The "LATEST ON X" wall
-   ships as **real, sourced statements**: each card carries the actual quote,
-   the person's name, the real date, and a link to the source. No like or
-   view counts, and no chrome that makes a card look like a screenshot of a
-   post. **Send me the sources** — a list of post URLs, or interview/article
-   links — and I will build a card per quote. A quote I cannot point at a
-   source for does not ship, and this sandbox has no network, so I cannot go
-   and verify one myself.
-
----
-
-## After you drop the files in
-
-Tell me they are in and I will derive and commit everything the page serves:
-the hero at display width, the letterboxed social card, the favicon, the two
-PWA icons and the iOS icon, plus the section bands. The derivation commands
-land in this file as they are written, so any of it can be re-cut later
-without going back to whoever made the original.
+Stonks Exchange and Stockify ship already; Base is drawn as vector in the page.
+The tokenized-equity company logos wait on the discovery run — the page renders
+only the names the Stockify index actually holds, which may be fewer than the
+six the mockup drew.

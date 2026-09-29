@@ -1,0 +1,664 @@
+/* ==========================================================================
+   SUPER INTELLIGENCE — $SI
+   --------------------------------------------------------------------------
+   DARK BY DESIGN. The template this came from was light throughout and
+   sampled its page colour from a bright banner; every colour below is new.
+
+   --page is sampled from the supplied header artwork's OWN night sky
+   (#010d29, averaged over the upper-middle of the frame, away from the glow).
+   That is what lets the Earth band meet the flat ground with no seam, and it
+   is why the value is not a round number. Resample it if the artwork changes.
+
+   The two accents are the artwork's own: --blue from the left-hand arcs,
+   --red from the right. They carry the two-power framing through the page
+   without a single likeness — blue leads, red answers.
+   ========================================================================== */
+
+:root {
+  --page:        #010d29;   /* sampled from the artwork's night sky */
+  --page-2:      #04112f;   /* one step up, for banded sections */
+  --card:        #0a1838;
+  --card-2:      #0d1d42;
+  --line:        #1b2d56;
+
+  --ink:         #eaf0ff;   /* primary type */
+  --ink-2:       #a8b8d8;   /* labels, secondary */
+  --ink-3:       #6f82a8;   /* fine print */
+
+  --blue:        #2f7dff;
+  --blue-soft:   rgba(47, 125, 255, .14);
+  --blue-glow:   rgba(47, 125, 255, .45);
+  --red:         #ff3b30;
+  --red-soft:    rgba(255, 59, 48, .12);
+
+  --ok:          #23c265;
+
+  --wrap:        1200px;
+  --gutter:      16px;
+
+  --r:           0px;       /* SQUARE CORNERS, carried over from the template */
+  --shadow:      0 1px 0 rgba(255,255,255,.04) inset, 0 18px 40px rgba(0,0,0,.45);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+               Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;           /* no horizontal scroll at any width */
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; }
+
+h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Tabular numerals everywhere a figure is read: a column of numbers that
+   shifts width as it counts up is the template's own rule, kept. */
+.stat__value, .stat__sub, .dist__tokens, .dist__usd, .btn__ca, .pill__age {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ==========================================================================
+   TOP BAR
+   ========================================================================== */
+
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(1, 13, 41, .82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar__in {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding: 10px var(--gutter);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+
+.lockup {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; min-width: 0;
+}
+.lockup__mark { width: 40px; height: auto; flex: none; }
+.lockup__name {
+  font-weight: 800; font-size: 13px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.actions--bar { flex-wrap: nowrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit; font-size: 13px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer;
+  transition: border-color .16s, background .16s, transform .16s, box-shadow .16s;
+  white-space: nowrap;
+}
+.btn:hover {
+  border-color: var(--blue);
+  background: var(--card-2);
+  box-shadow: 0 0 0 1px var(--blue-soft), 0 0 22px var(--blue-soft);
+  transform: translateY(-1px);
+}
+.btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+.btn__icon { width: 15px; height: 15px; flex: none; }
+.btn__icon--stroke {
+  fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.btn__text { display: inline; }
+
+.btn--ca { gap: 9px; }
+.btn__ca { letter-spacing: .02em; text-transform: none; font-weight: 600; }
+
+.ca-wrap { position: relative; display: inline-flex; }
+
+/* The copy confirmation, under the button it belongs to. */
+.toast {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 11px;
+  border: 1px solid var(--ok);
+  border-radius: var(--r);
+  background: #07301c; color: #b9f3d0;
+  font-size: 12px; font-weight: 600; white-space: nowrap;
+  opacity: 0; transform: translateY(-4px); pointer-events: none;
+  transition: opacity .18s, transform .18s;
+  z-index: 3;
+}
+.toast.is-on { opacity: 1; transform: translateY(0); }
+.toast.is-error { border-color: var(--red); background: #330d0b; color: #ffc9c5; }
+.toast__check { width: 14px; height: 14px; flex: none; }
+
+/* ==========================================================================
+   HERO
+   --------------------------------------------------------------------------
+   The Earth band sits at the BOTTOM and the type above it. The band is 6.6:1
+   and gets a box that wide — object-fit: cover crops silently, and a squarer
+   box here would eat the blue and red arcs at the two edges, which are the
+   whole reason this crop works.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  padding: clamp(48px, 9vw, 104px) var(--gutter) 0;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #0a1f4d 0%, rgba(10,31,77,0) 62%),
+    var(--page);
+}
+
+/* The star field is DRAWN, not shipped: three radial-gradient tiles, so it
+   stays crisp at any zoom and costs no request. */
+.hero__stars {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1.4px 1.4px at 18% 22%, rgba(255,255,255,.85) 50%, transparent 51%),
+    radial-gradient(1.1px 1.1px at 63% 12%, rgba(255,255,255,.65) 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 84% 34%, rgba(255,255,255,.75) 50%, transparent 51%),
+    radial-gradient(1px 1px at 38% 48%, rgba(255,255,255,.5) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 8% 62%, rgba(255,255,255,.55) 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 74% 66%, rgba(255,255,255,.6) 50%, transparent 51%);
+  background-size: 460px 320px, 380px 300px, 520px 360px, 300px 240px, 420px 340px, 350px 280px;
+  opacity: .5;
+  pointer-events: none;
+}
+
+.hero__copy { position: relative; z-index: 1; }
+
+.hero__mark {
+  width: clamp(230px, 34vw, 440px);
+  height: auto;
+  margin-inline: auto;
+  filter: drop-shadow(0 0 34px rgba(47,125,255,.42))
+          drop-shadow(0 0 60px rgba(255,59,48,.18));
+}
+
+.hero__title {
+  margin-top: 18px;
+  font-size: clamp(24px, 4.4vw, 46px);
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  /* Chrome type, to echo the mark rather than compete with it. */
+  background: linear-gradient(180deg, #ffffff 0%, #cfe0ff 44%, #7f9ed6 62%, #ffffff 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero__rule {
+  width: 132px; height: 2px; margin: 22px auto 0;
+  background: linear-gradient(90deg, transparent, var(--blue) 30%, var(--red) 70%, transparent);
+}
+
+.hero__kicker {
+  margin: 18px 0 0;
+  font-size: clamp(11px, 1.5vw, 13px);
+  font-weight: 600; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.hero__earth {
+  position: relative; z-index: 0;
+  margin: clamp(30px, 5vw, 56px) calc(var(--gutter) * -1) 0;
+  /* The band's own ratio. Stated so the box can never be squarer than the
+     picture; see images/src/README.md for what a squarer box costs. */
+  aspect-ratio: 1920 / 292;
+}
+.hero__earthimg { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+
+/* The band's top edge feathered into the ground, so the photograph and the
+   flat colour meet with no line — the same trick the social card uses. */
+.hero__earth::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 38%;
+  background: linear-gradient(180deg, var(--page) 0%, rgba(1,13,41,0) 100%);
+  z-index: 1; pointer-events: none;
+}
+
+/* ==========================================================================
+   PITCH
+   ========================================================================== */
+
+.pitch {
+  background: var(--page-2);
+  border-block: 1px solid var(--line);
+  padding-block: clamp(40px, 6vw, 72px);
+}
+
+.pitch__in {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+  gap: clamp(24px, 4vw, 52px);
+  align-items: start;
+}
+
+.pitch__head {
+  font-size: clamp(26px, 3.6vw, 40px);
+  font-weight: 800; text-transform: uppercase; letter-spacing: -.01em;
+}
+.pitch__body { margin: 16px 0 0; color: var(--ink-2); max-width: 52ch; }
+.pitch__note {
+  margin: 12px 0 0; font-size: 13px; color: var(--ink-3);
+  border-left: 2px solid var(--line); padding-left: 12px; max-width: 52ch;
+}
+.pitch__lead .actions { margin-top: 22px; }
+
+.chips { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.chip {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--blue);
+  background: var(--card);
+  padding: 13px 15px;
+}
+.chip:nth-child(2) { border-left-color: #8a5cff; }
+.chip:nth-child(3) { border-left-color: var(--red); }
+.chip__k {
+  display: block; font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+}
+.chip__v { display: block; margin-top: 3px; font-weight: 700; font-size: 15px; }
+
+/* Set vertically, running up the right edge, as in the design. The <br> in the
+   markup is suppressed here: in vertical-rl a line break makes a SECOND column
+   beside the first, and two 11px columns 3px apart read as one smudge. The
+   break is left in the markup because the horizontal fallback below wants it. */
+.pitch__slogan {
+  margin: 0; font-size: 11px; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  justify-self: end; align-self: stretch;
+  border-left: 1px solid var(--line);
+  padding-left: 14px;
+  white-space: nowrap;
+}
+.pitch__slogan br { display: none; }
+
+/* ==========================================================================
+   A GLOBAL MOMENT + QUOTE WALL
+   ========================================================================== */
+
+.moment { padding-block: clamp(44px, 7vw, 84px); }
+.moment__in { display: grid; gap: clamp(28px, 4vw, 48px); }
+
+.kicker {
+  margin: 0 0 12px; font-size: 11px; font-weight: 700;
+  letter-spacing: .24em; text-transform: uppercase; color: var(--blue);
+}
+.moment__head {
+  font-size: clamp(28px, 4.4vw, 50px); font-weight: 800; text-transform: uppercase;
+}
+.moment__body { margin: 18px 0 0; color: var(--ink-2); max-width: 60ch; }
+
+.quotes__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; margin-bottom: 18px;
+}
+.quotes__title {
+  font-size: 12px; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+.quotes__more {
+  font-size: 12px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--blue); text-decoration: none;
+}
+.quotes__more:hover { text-decoration: underline; }
+
+.quotes__grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* A quote card, deliberately NOT shaped like a social post: no verified
+   badge, no handle, no engagement counts, and a source link instead. */
+.quote {
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.quote__top { display: flex; align-items: center; gap: 11px; }
+.quote__avatar {
+  width: 38px; height: 38px; flex: none;
+  display: grid; place-items: center;
+  background: var(--blue-soft); border: 1px solid var(--line);
+  color: var(--ink); font-weight: 800; font-size: 13px; letter-spacing: .04em;
+}
+.quote__who { min-width: 0; }
+.quote__name { display: block; font-size: 14px; }
+.quote__role { display: block; font-size: 12px; color: var(--ink-3); }
+.quote__text {
+  margin: 0; color: var(--ink); font-size: 15px; line-height: 1.55;
+  border-left: 2px solid var(--blue); padding-left: 13px;
+}
+.quote__meta {
+  margin: auto 0 0; padding-top: 4px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  font-size: 12px; color: var(--ink-3);
+}
+.quote__src { color: var(--blue); text-decoration: none; font-weight: 600; }
+.quote__src:hover { text-decoration: underline; }
+
+/* ==========================================================================
+   DASHBOARD
+   ========================================================================== */
+
+.dash {
+  background: var(--page-2);
+  border-block: 1px solid var(--line);
+  padding-block: clamp(40px, 6vw, 72px);
+}
+
+.dash__head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap; margin-bottom: 22px;
+}
+.dash__title {
+  font-size: clamp(20px, 2.8vw, 30px); font-weight: 800; text-transform: uppercase;
+}
+
+.pill {
+  margin: 0; display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 13px;
+  border: 1px solid rgba(35,194,101,.4);
+  background: rgba(35,194,101,.1);
+  color: #9ff0c1;
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+}
+.pill__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
+  box-shadow: 0 0 0 0 rgba(35,194,101,.65);
+  animation: pulse 2.2s ease-out infinite;
+}
+@keyframes pulse {
+  70%  { box-shadow: 0 0 0 7px rgba(35,194,101,0); }
+  100% { box-shadow: 0 0 0 0 rgba(35,194,101,0); }
+}
+.pill__age {
+  padding-left: 9px; margin-left: 2px;
+  border-left: 1px solid rgba(35,194,101,.35);
+  color: #7fd6a4; letter-spacing: .08em; text-transform: none; font-weight: 600;
+}
+
+.stats {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.stat {
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 18px 14px;
+  text-align: center;
+  transition: transform .16s, border-color .16s, box-shadow .16s;
+}
+.stat:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue-soft), 0 14px 34px rgba(0,0,0,.5);
+}
+
+.stat__icon {
+  display: grid; place-items: center;
+  width: 38px; height: 38px; margin: 0 auto 11px;
+  background: var(--blue-soft);
+  border: 1px solid var(--line);
+  color: var(--blue);
+}
+.stat__icon svg {
+  width: 19px; height: 19px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.stat__label {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3);
+  min-height: 2.6em;
+}
+.stat__value {
+  margin: 8px 0 0; font-size: clamp(17px, 2vw, 23px); font-weight: 800;
+  letter-spacing: -.01em; word-break: break-word;
+}
+.stat__unit { font-size: .62em; font-weight: 700; color: var(--ink-3); margin-left: 5px; }
+.stat__sub { margin: 3px 0 0; font-size: 13px; color: var(--ink-2); }
+
+/* A figure no source could supply. Dimmed rather than hidden: the dash IS the
+   answer, and it must not read as a number that failed to load. */
+[data-value].is-empty { color: var(--ink-3); font-weight: 700; }
+
+/* The loading placeholder — three dots, before anything has resolved. */
+.dots { display: inline-flex; gap: 4px; vertical-align: middle; }
+.dots i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--ink-3); display: block;
+  animation: blink 1.3s ease-in-out infinite;
+}
+.dots i:nth-child(2) { animation-delay: .18s; }
+.dots i:nth-child(3) { animation-delay: .36s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+.legend {
+  margin: 16px 0 0; text-align: center;
+  font-size: 12px; color: var(--ink-3);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.legend__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); flex: none;
+}
+.legend.is-live .legend__dot  { background: var(--ok); }
+.legend.is-stale .legend__dot { background: #d9a13b; }
+.legend.is-error .legend__dot { background: var(--red); }
+
+/* The ?debug=1 panel. app.js writes light-theme colours as INLINE styles, so
+   these need !important to land — it is a diagnostic surface, not a visitor
+   one, but an unreadable diagnostic is no diagnostic. */
+#dash-debug {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  border-radius: var(--r) !important;
+  color: var(--ink-2) !important;
+}
+
+/* ==========================================================================
+   DISTRIBUTION
+   ========================================================================== */
+
+.dist { padding-block: clamp(40px, 6vw, 72px); }
+.dist__title {
+  font-size: clamp(20px, 2.8vw, 30px); font-weight: 800;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.dist__sub { color: var(--ink-3); font-weight: 700; }
+
+.dist__grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.dist__card {
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 20px 14px; text-align: center;
+  transition: transform .16s, border-color .16s;
+}
+.dist__card:hover { transform: translateY(-2px); border-color: var(--blue); }
+.dist__logo { width: 44px; height: 44px; margin: 0 auto 12px; object-fit: contain; }
+.dist__logo--text {
+  display: grid; place-items: center;
+  background: var(--blue-soft); border: 1px solid var(--line);
+  font-weight: 800; font-size: 15px; color: var(--ink);
+}
+.dist__name { font-size: 15px; font-weight: 700; }
+.dist__ticker {
+  margin: 2px 0 0; font-size: 11px; font-weight: 700;
+  letter-spacing: .1em; color: var(--ink-3);
+}
+.dist__tokens { margin: 12px 0 0; font-size: 19px; font-weight: 800; }
+.dist__usd { margin: 2px 0 0; font-size: 13px; color: var(--ink-2); }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.foot { background: var(--page-2); border-top: 1px solid var(--line); }
+
+.foot__band {
+  position: relative;
+  /* 7.4:1 — the band's own ratio. A squarer box would keep the middle 60% and
+     throw BOTH flags away, which are at the extreme left and right edges. */
+  aspect-ratio: 1920 / 260;
+}
+.foot__bandimg { width: 100%; height: 100%; object-fit: cover; }
+.foot__band::after {
+  content: ''; position: absolute; inset: auto 0 0 0; height: 45%;
+  background: linear-gradient(180deg, rgba(4,17,47,0) 0%, var(--page-2) 100%);
+}
+
+.foot__in { padding-block: clamp(32px, 5vw, 56px); }
+
+.eco {
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+.eco__half {
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  text-align: center; text-decoration: none;
+  border: 1px solid var(--line); background: var(--card);
+  padding: 20px 16px;
+  transition: border-color .16s, transform .16s;
+}
+.eco__half:hover { border-color: var(--blue); transform: translateY(-2px); }
+.eco__kicker {
+  font-size: 10px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.eco__logo { width: auto; max-height: 30px; }
+.eco__logo--stonks { max-height: 26px; }
+.eco__base { display: inline-flex; align-items: center; gap: 9px; color: #2f7dff; }
+.eco__baselogo { width: 24px; height: 24px; }
+.eco__basename { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -.01em; }
+.eco__sub { font-size: 11px; color: var(--ink-3); }
+
+.foot__slogan {
+  margin: 30px 0 0; text-align: center;
+  font-size: clamp(11px, 1.5vw, 13px); font-weight: 700;
+  letter-spacing: .24em; text-transform: uppercase; color: var(--ink-2);
+}
+
+.foot__fine {
+  margin: 22px auto 0; max-width: 74ch; text-align: center;
+  font-size: 11.5px; line-height: 1.7; color: var(--ink-3);
+}
+.foot__fine b { color: var(--ink-2); }
+
+/* ==========================================================================
+   ENTRANCE ANIMATIONS
+   --------------------------------------------------------------------------
+   Opt-in: the script adds .anim to <html> and .rise to each element, so with
+   no JS the page is simply the page. The keyframes animate `translate`, not
+   `transform` — they are separate properties now, and an animation with
+   fill:both keeps ownership of what it animated, so animating `transform`
+   would beat .stat:hover's transform and kill every hover lift after the
+   reveal ran.
+   ========================================================================== */
+
+.anim .rise { opacity: 0; }
+.anim .rise.is-in { animation: rise .55s cubic-bezier(.2,.7,.3,1) var(--d, 0ms) both; }
+.anim [data-rise] { opacity: 0; }
+.anim [data-rise].is-in { animation: rise .6s cubic-bezier(.2,.7,.3,1) var(--d, 0ms) both; }
+
+@keyframes rise {
+  from { opacity: 0; translate: 0 14px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pitch__in { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  /* Below this width there is no room for a vertical rail, so it lies down
+     across the full row and the markup's <br> comes back. */
+  .pitch__slogan {
+    writing-mode: horizontal-tb; justify-self: start;
+    grid-column: 1 / -1; text-align: center; width: 100%;
+    border-left: 0; padding-left: 0; border-top: 1px solid var(--line);
+    padding-top: 18px; white-space: normal;
+  }
+  .pitch__slogan br { display: inline; }
+}
+
+@media (max-width: 860px) {
+  .eco { grid-template-columns: 1fr; }
+  .pitch__in { grid-template-columns: 1fr; }
+  .lockup__name { display: none; }
+}
+
+@media (max-width: 620px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* The buttons stay on one line down to 320px, shedding padding and type
+     size as they go — the template's rule, and the CA chip is the one that
+     has to survive it. */
+  .btn { padding: 8px 10px; font-size: 12px; }
+  .btn__text { display: none; }
+  .btn--ca .btn__ca { display: inline; font-size: 12px; }
+  .hero__earth::before { height: 46%; }
+}
+
+@media (max-width: 380px) {
+  .btn { padding: 7px 8px; gap: 5px; }
+  .btn__ca { font-size: 11px; }
+}
+
+/* Reduced motion: flatten everything, including the pill's pulse. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

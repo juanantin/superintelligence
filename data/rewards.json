@@ -1,0 +1,37 @@
+{
+  "__doc": [
+    "Fees collected, rewards distributed and the holder count, published by",
+    "scripts/index-rewards.mjs on a schedule so that no visitor has to compute",
+    "them. Reading a few hundred thousand blocks of Base in the browser takes",
+    "dozens of RPC calls and about a minute of an uninterrupted tab: a desktop",
+    "waits it out, a phone gets backgrounded and shows em dashes. These figures",
+    "are served immediately instead, and app.js's own chain scan refines them",
+    "afterwards.",
+    "",
+    "EVERY FIELD IS null AND THAT IS THE LAUNCH STATE, NOT A FAULT. The indexer",
+    "has not run, and it will refuse to run until worker/src/config.js is filled",
+    "in from .github/workflows/discover.yml — including HOLDER_SHARE, which must",
+    "be read off this token's own Stockify panel. Nulls render as em dashes,",
+    "which is the honest answer while a total is unknown.",
+    "",
+    "data/rewards-state.json is deliberately ABSENT until then. loadState()",
+    "falls back to START_BLOCK only when that file is missing, so an empty or",
+    "templated cursor sitting in a present file would be read as gospel and",
+    "scan Base from genesis. It gets committed, seeded with cursor =",
+    "START_BLOCK, in the same change that fills in the config."
+  ],
+  "totalDistributed": null,
+  "totalDistributedUsd": null,
+  "totalFeesCollected": null,
+  "totalFeesTokens": null,
+  "holders": null,
+  "marketCap": null,
+  "liquidity": null,
+  "volume24h": null,
+  "updatedAt": null,
+  "meta": {
+    "synced": false,
+    "blocksBehind": null,
+    "kexPriceUsd": null
+  }
+}

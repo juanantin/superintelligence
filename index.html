@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Super Intelligence — $SI</title>
+<meta name="description" content="$SI on Base. Trading fees are routed to a Stockify index and distributed to holders in the reward token. 1,000,000,000 fixed supply, launched on Stonks Exchange.">
+
+<!-- The social card. Three things here are not stylistic:
+
+     ABSOLUTE URLs. A scraper fetches these from its own servers, with no page
+     to resolve a relative path against — a relative og:image is the usual
+     reason a shared link renders with a blank space where the art should be.
+
+     ⚠ The domain below is a PLACEHOLDER until Vercel is connected and writes
+     the deployment URL into the repo's homepage field. While it is wrong,
+     every card renders blank. It is the last thing to set before announcing.
+
+     1200×630, which every platform documents and none of them cuts into.
+     images/social.jpg letterboxes the Earth band rather than cropping it: X
+     crops a large-image card to 2:1 and takes the SIDES, which on a 6.6:1
+     band would leave a strip of ocean and nothing else.
+
+     And twitter:image is stated rather than left to fall back to og:image.
+     The fallback is real but not universal, and writing it down costs a line. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Super Intelligence">
+<meta property="og:url" content="https://superintelligence.vercel.app/">
+<meta property="og:title" content="Super Intelligence — $SI">
+<meta property="og:description" content="Hold $SI. Trading fees route to a tokenized-equity index and are distributed to holders. 1B fixed supply on Base.">
+<meta property="og:image" content="https://superintelligence.vercel.app/images/social.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The chrome SI monogram above the curve of the Earth at night, city lights and network arcs below.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SuperIQ_base">
+<meta name="twitter:image" content="https://superintelligence.vercel.app/images/social.jpg">
+<meta name="twitter:image:alt" content="The chrome SI monogram above the curve of the Earth at night, city lights and network arcs below.">
+<meta name="theme-color" content="#010d29">
+
+<!-- favicon.ico sits at the root because browsers request /favicon.ico on
+     their own, regardless of these tags. Every icon is generated from the
+     supplied SI monogram: trimmed to its own alpha bounds, centred on a square
+     with a small margin, and left TRANSPARENT so it sits on a light or a dark
+     tab strip without carrying a card around with it. The Apple one is the
+     exception and is flattened onto the artwork's own #010d29, because iOS
+     renders a transparent home-screen icon as pure black.
+
+     The ?v= is what makes a browser let go of the icon it has cached;
+     node scripts/stamp.mjs moves all of them together. -->
+<link rel="icon" href="favicon.ico?v=5" sizes="any">
+<link rel="icon" type="image/png" href="images/favicon.png?v=5">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=5">
+<link rel="manifest" href="site.webmanifest?v=5">
+
+<!-- One face — Inter — across five weights. 800 is not decoration: the
+     headings and the wordmark are set in it, and asking for a weight the file
+     does not carry makes the browser synthesise it, which smears the stems.
+
+     Loaded WITHOUT blocking: a pending stylesheet holds up script execution,
+     so a slow or blocked fonts.googleapis.com stalls the dashboard itself —
+     measured at 12.8 seconds before app.js ran at all on a sibling, on a page
+     whose figures were otherwise a same-origin file away. media="print" makes
+     the fetch non-blocking; onload promotes it once it lands, and the URL
+     already says display=swap. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
+<link rel="stylesheet" href="assets/css/styles.css?v=5">
+</head>
+<body>
+
+<!-- ===================== TOP BAR ===================== -->
+<header class="topbar">
+  <div class="topbar__in">
+
+    <a class="lockup" href="#top">
+      <img class="lockup__mark" src="images/si_mark.webp?v=5" alt=""
+           width="1000" height="500" decoding="async">
+      <span class="lockup__name">Super Intelligence Race</span>
+    </a>
+
+    <!-- The same three controls as the hero, and deliberately the same
+         markup pattern — except the ids, which app.js binds by id and which
+         must therefore be unique. The bar carries the -top suffix. -->
+    <nav class="actions actions--bar" aria-label="Token links">
+
+      <a class="btn" id="link-x" href="https://x.com/SuperIQ_base" title="X (Twitter)" target="_blank" rel="noopener noreferrer">
+        <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M17.53 3h3.1l-6.77 7.73L21.83 21h-6.24l-4.89-6.39L5.11 21H2l7.24-8.27L2.17 3h6.4l4.42 5.84L17.53 3Zm-1.09 16.13h1.72L7.63 4.78H5.79l10.65 14.35Z"/>
+        </svg>
+        <span class="btn__text">X</span>
+      </a>
+
+      <a class="btn" id="link-chart" href="#" title="Chart" target="_blank" rel="noopener noreferrer">
+        <svg class="btn__icon btn__icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4.4 19.6h15.2"/><path d="M6.6 19.6v-5"/>
+          <path d="M12 19.6V9.8"/><path d="M17.4 19.6V5.4"/>
+        </svg>
+        <span class="btn__text">Chart</span>
+      </a>
+
+      <!-- The CA chip: the truncated address plus a copy glyph. #ca-short is
+           filled by app.js from contractAddress — never typed into the markup,
+           so there is exactly one place the address lives. -->
+      <div class="ca-wrap">
+        <button class="btn btn--ca" id="copy-ca" type="button" title="Copy contract address">
+          <span class="btn__ca" id="ca-short">…</span>
+          <svg class="btn__icon btn__icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M9.4 9.4h9.2v9.2H9.4z"/><path d="M14.6 9.4V5.4H5.4v9.2h4"/>
+          </svg>
+          <span class="sr-only">Copy contract address</span>
+        </button>
+
+        <div class="toast" id="copy-toast" role="status" aria-live="polite">
+          <svg class="toast__check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="m7.8 12.3 2.9 2.9 5.5-5.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span id="toast-text">Copied!</span>
+        </div>
+      </div>
+
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<!-- The Earth band sits at the BOTTOM of the hero and the type above it, on a
+     field whose colour (#010d29) is sampled from the supplied artwork's own
+     night sky — which is what lets the photograph meet the flat ground with no
+     seam. The band is 6.6:1 and the stylesheet gives it a box that wide;
+     object-fit: cover crops silently when a ratio is guessed.
+
+     The star field above is drawn, not shipped: an inline radial-gradient
+     tile, so it stays crisp at any zoom and costs no request. -->
+<main id="top">
+<section class="hero">
+  <div class="hero__stars" aria-hidden="true"></div>
+
+  <div class="hero__copy">
+    <img class="hero__mark" src="images/si_mark.webp?v=5"
+         alt="Super Intelligence"
+         width="1000" height="500" fetchpriority="high" decoding="async">
+    <h1 class="hero__title">Super Intelligence Race</h1>
+    <p class="hero__rule" aria-hidden="true"></p>
+    <p class="hero__kicker">Real companies × Real progress × Real rewards</p>
+  </div>
+
+  <div class="hero__earth" aria-hidden="true">
+    <img class="hero__earthimg" src="images/hero_earth.webp?v=5" alt=""
+         width="1920" height="292" fetchpriority="high" decoding="async">
+  </div>
+</section>
+
+<!-- ===================== PITCH ===================== -->
+<section class="pitch">
+  <div class="wrap pitch__in">
+
+    <div class="pitch__lead">
+      <h2 class="pitch__head">Buy $SI.<br>Earn the tech race.</h2>
+      <p class="pitch__body">
+        Every trade in $SI generates fees. Those fees are routed to this
+        token's Stockify index, which holds tokenized equity exposure, and
+        what the index pays out is distributed to $SI holders automatically —
+        no staking, no claiming, no lock-up.
+      </p>
+      <!-- What holders actually receive. The reward token is a tokenized
+           WRAPPER, not equity, and its ticker is not inferable from branding —
+           a sibling's answers symbol() with "AMZNc". This line stays
+           deliberately vague until the discovery run reads the real one, and
+           it will never say "company stock" unless that is literally true. -->
+      <p class="pitch__note">
+        Rewards arrive in the index's own reward token — a tokenized
+        instrument tracking equity, not shares in any company.
+      </p>
+
+      <nav class="actions" aria-label="Token links">
+        <a class="btn" href="https://x.com/SuperIQ_base" title="X (Twitter)" target="_blank" rel="noopener noreferrer">
+          <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M17.53 3h3.1l-6.77 7.73L21.83 21h-6.24l-4.89-6.39L5.11 21H2l7.24-8.27L2.17 3h6.4l4.42 5.84L17.53 3Zm-1.09 16.13h1.72L7.63 4.78H5.79l10.65 14.35Z"/>
+          </svg>
+          <span class="btn__text">X</span>
+        </a>
+        <a class="btn" id="link-chart-2" href="#" title="Chart" target="_blank" rel="noopener noreferrer">
+          <svg class="btn__icon btn__icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4.4 19.6h15.2"/><path d="M6.6 19.6v-5"/>
+            <path d="M12 19.6V9.8"/><path d="M17.4 19.6V5.4"/>
+          </svg>
+          <span class="btn__text">Chart</span>
+        </a>
+        <button class="btn btn--ca" id="copy-ca-2" type="button" title="Copy contract address">
+          <span class="btn__ca" id="ca-short-2">…</span>
+          <svg class="btn__icon btn__icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M9.4 9.4h9.2v9.2H9.4z"/><path d="M14.6 9.4V5.4H5.4v9.2h4"/>
+          </svg>
+          <span class="sr-only">Copy contract address</span>
+        </button>
+      </nav>
+    </div>
+
+    <ul class="chips">
+      <li class="chip">
+        <span class="chip__k">1B fixed supply</span>
+        <span class="chip__v">Base chain</span>
+      </li>
+      <li class="chip">
+        <span class="chip__k">Launched on</span>
+        <span class="chip__v">Stonks Exchange</span>
+      </li>
+      <li class="chip">
+        <span class="chip__k">Holder rewards powered by</span>
+        <span class="chip__v">Stockify</span>
+      </li>
+    </ul>
+
+    <!-- The two halves are spans with real whitespace between them, and the
+         <br> is only for the stacked layout below 1080px. Hiding a <br> removes
+         the ONLY thing separating two adjacent text nodes, which set this line
+         vertically as "SAME TECHNOLOGYA BRIGHTER TOMORROW."; the spaces either
+         side of it survive the hide and keep the words apart. -->
+    <p class="pitch__slogan"><span>Same technology.</span> <br> <span>A brighter tomorrow.</span></p>
+
+  </div>
+</section>
+
+<!-- ===================== A GLOBAL MOMENT ===================== -->
+<section class="moment">
+  <div class="wrap moment__in">
+
+    <div class="moment__lead">
+      <p class="kicker">A global moment</p>
+      <h2 class="moment__head">Superintelligence is here.</h2>
+      <p class="moment__body">
+        Heads of state and the people running the largest technology companies
+        on earth are now arguing about the same thing in public: how fast
+        machine intelligence is arriving, who gets there first, and what it
+        costs. It is the defining industrial race of the decade, and the
+        companies running it are the ones this index tracks.
+      </p>
+    </div>
+
+    <!-- QUOTE WALL.
+
+         Deliberately EMPTY, and rendered from data rather than written into
+         the markup. The design this was built from showed seven dated posts
+         from named public figures, with verified badges and like/retweet/view
+         counts, plus a poll reading "2.4M votes · Final results". None of that
+         was real, and built that way it reads as screenshots of real posts.
+
+         What ships here instead is real, verifiable public statements: the
+         actual quote, the person's name, the real date, and A LINK TO THE
+         SOURCE. No engagement numbers, and no chrome that makes a card look
+         like a captured post. A quote whose source cannot be linked does not
+         ship. Fill QUOTES in assets/js/quotes.js and the wall appears. -->
+    <div class="quotes" id="quotes" hidden>
+      <div class="quotes__head">
+        <h3 class="quotes__title">In their own words</h3>
+        <a class="quotes__more" id="quotes-more" href="https://x.com/SuperIQ_base" target="_blank" rel="noopener noreferrer">View more →</a>
+      </div>
+      <ul class="quotes__grid" id="quotes-grid"></ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== LIVE DASHBOARD ===================== -->
+<section class="dash">
+  <div class="wrap">
+
+    <div class="dash__head">
+      <h2 class="dash__title">Live on-chain dashboard</h2>
+      <p class="pill" id="dash-pill"><span class="pill__dot" aria-hidden="true"></span>Real-time data</p>
+    </div>
+
+    <div class="stats" id="stats" aria-label="Live token stats">
+
+      <article class="stat" data-metric="fees">
+        <span class="stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <ellipse cx="12" cy="6.6" rx="7.2" ry="2.8"/>
+            <path d="M4.8 6.6v3.6c0 1.5 3.2 2.8 7.2 2.8s7.2-1.3 7.2-2.8V6.6"/>
+            <path d="M4.8 10.6v3.6c0 1.6 3.2 2.8 7.2 2.8s7.2-1.2 7.2-2.8v-3.6"/>
+          </svg>
+        </span>
+        <h3 class="stat__label">Total Fees Collected</h3>
+        <p class="stat__value"><span data-value="fees"><span class="dots" role="img" aria-label="Loading"><i></i><i></i><i></i></span></span><span class="stat__unit" data-unit-for="fees" hidden>tokens</span></p>
+      </article>
+
+      <!-- The reward token's ticker is NOT written here. app.js fills the
+           figure; the label stays generic until discovery reads symbol() off
+           chain, because a wrapper decorates the ticker it wraps. -->
+      <article class="stat" data-metric="distributed">
+        <span class="stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4.4 11.4h15.2v8.2H4.4z"/><path d="M3.2 7.8h17.6v3.6H3.2z"/>
+            <path d="M12 7.8v11.8"/>
+            <path d="M12 7.8c-1.6-2.6-2.8-3.6-4.2-3.6a1.9 1.9 0 0 0 0 3.6H12Zm0 0c1.6-2.6 2.8-3.6 4.2-3.6a1.9 1.9 0 0 1 0 3.6H12Z"/>
+          </svg>
+        </span>
+        <h3 class="stat__label">Tech Stocks Distributed</h3>
+        <p class="stat__value"><span data-value="distributed"><span class="dots" role="img" aria-label="Loading"><i></i><i></i><i></i></span></span></p>
+        <p class="stat__sub" data-chip-for="distributedUsd">(<b data-value="distributedUsd"><span class="dots" role="img" aria-label="Loading"><i></i><i></i><i></i></span></b>)</p>
+      </article>
+
+      <article class="stat" data-metric="holders">
+        <span class="stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9.2" cy="8.4" r="3.4"/><circle cx="16.8" cy="9.4" r="2.6"/>
+            <path d="M3.4 19.2c0-3.3 2.6-5.3 5.8-5.3s5.8 2 5.8 5.3"/>
+            <path d="M16.6 14c2.6.2 4.2 1.8 4.2 4.4"/>
+          </svg>
+        </span>
+        <h3 class="stat__label">Holders</h3>
+        <p class="stat__value"><span data-value="holders"><span class="dots" role="img" aria-label="Loading"><i></i><i></i><i></i></span></span></p>
+      </article>
+
+      <article class="stat" data-metric="marketCap">
+        <span class="stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4.4 19.6h15.2"/>
+            <rect x="5.6" y="13.4" width="3.4" height="6"/>
+            <rect x="10.3" y="9.4" width="3.4" height="10"/>
+            <rect x="15" y="5.4" width="3.4" height="14"/>
+          </svg>
+        </span>
+        <h3 class="stat__label">Market Cap</h3>
+        <p class="stat__value"><span data-value="marketCap"><span class="dots" role="img" aria-label="Loading"><i></i><i></i><i></i></span></span></p>
+      </article>
+
+      <article class="stat" data-metric="liquidity">
+        <span class="stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3.6c0 0 6.4 6.5 6.4 10.5A6.4 6.4 0 0 1 12 20.4a6.4 6.4 0 0 1-6.4-6.3C5.6 10.1 12 3.6 12 3.6Z"/>
+          </svg>
+        </span>
+        <h3 class="stat__label">Liquidity</h3>
+        <p class="stat__value"><span data-value="liquidity"><span class="dots" role="img" aria-label="Loading"><i></i><i></i><i></i></span></span></p>
+      </article>
+
+      <article class="stat" data-metric="volume24h">
+        <span class="stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4.6 19.4h14.8"/>
+            <rect x="5.4" y="12.6" width="3.6" height="6.8"/>
+            <rect x="10.2" y="7.4" width="3.6" height="12"/>
+            <rect x="15" y="10.2" width="3.6" height="9.2"/>
+          </svg>
+        </span>
+        <h3 class="stat__label">24h Volume</h3>
+        <p class="stat__value"><span data-value="volume24h"><span class="dots" role="img" aria-label="Loading"><i></i><i></i><i></i></span></span></p>
+      </article>
+
+    </div>
+
+    <!-- Says where the figures came from and whether they are current. The dot
+         carries the state, the words carry the detail. It is the only thing on
+         the page that answers "is this number stale", and a dashboard that
+         cannot be questioned is worse than a line of 12px grey. -->
+    <p class="legend" id="dash-note" aria-live="polite">
+      <span class="legend__dot" aria-hidden="true"></span>
+      <span id="legend-text">Reading the chain…</span>
+    </p>
+
+  </div>
+</section>
+
+<!-- ===================== DISTRIBUTION ===================== -->
+<!-- Also EMPTY and also data-driven, for the same reason as the quote wall.
+     The design showed six company cards — Google, NVIDIA, Apple, SpaceX,
+     Tesla, Amazon — each with a token amount and a dollar figure. This site
+     renders only what the Stockify index ACTUALLY holds, and how many names
+     that is comes from the discovery run, not from the mockup. On a sibling
+     the panel read "1 name, fixed at creation".
+
+     SpaceX in particular is not publicly traded, so whatever "$SPCX" was meant
+     to represent has to come from the index or not appear at all. If per-name
+     distribution is not available on chain, this section does not ship. -->
+<section class="dist" id="dist" hidden>
+  <div class="wrap">
+    <h2 class="dist__title">Tech stock distribution <span class="dist__sub">(total)</span></h2>
+    <ul class="dist__grid" id="dist-grid"></ul>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+
+  <!-- The band from the supplied footer artwork: skyline, holographic globe,
+       and both flags at the edges. Every face in the original sits below this
+       crop line. 7.4:1 — the stylesheet gives it a box that wide, because
+       object-fit: cover crops silently and a squarer box here would keep the
+       middle 60% and throw both flags away. -->
+  <div class="foot__band" aria-hidden="true">
+    <img class="foot__bandimg" src="images/footer_band.webp?v=5" alt=""
+         width="1920" height="260" loading="lazy" decoding="async">
+  </div>
+
+  <div class="wrap foot__in">
+
+    <div class="eco">
+      <a class="eco__half" id="link-launched" href="https://www.thestonks.exchange/" target="_blank" rel="noopener noreferrer">
+        <span class="eco__kicker">Launched on</span>
+        <!-- The light variant: the supplied lockup sets "STONKS." in near-black,
+             which on this ground is invisible. images/src/README.md carries the
+             derivation — the greyscale pixels have their LUMINANCE inverted, so
+             the antialiasing survives, and the blue/green badge is untouched. -->
+        <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=5" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
+        <span class="eco__sub">1B supply launches · creator fee integration</span>
+      </a>
+
+      <a class="eco__half" id="link-rewards" href="https://www.stockify.finance/" target="_blank" rel="noopener noreferrer">
+        <span class="eco__kicker">Holder rewards powered by</span>
+        <img class="eco__logo" src="images/stockify_logo.png?v=5" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
+        <span class="eco__sub">tokenized equities · automated holder distributions</span>
+      </a>
+
+      <a class="eco__half" href="https://www.base.org/" target="_blank" rel="noopener noreferrer">
+        <span class="eco__kicker">Built on</span>
+        <span class="eco__base">
+          <svg class="eco__baselogo" viewBox="0 0 111 111" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M54.9 110.0c30.6 0 55.4-24.7 55.4-55.0S85.5 0 54.9 0C25.9 0 2.1 22.2 0 50.5h73.1v9H0C2.1 87.8 25.9 110 54.9 110z"/>
+          </svg>
+          <span class="eco__basename">Base</span>
+        </span>
+        <span class="eco__sub">the L2 this token lives on</span>
+      </a>
+    </div>
+
+    <p class="foot__slogan">Same technology. A brighter tomorrow.</p>
+
+    <!-- The non-affiliation notice. It has to name what the artwork, the
+         tickers and the quotes might be mistaken for. -->
+    <p class="foot__fine">
+      <b>Not affiliated.</b> Super Intelligence ($SI) is not affiliated with,
+      endorsed by, sponsored by or connected to any company, index provider or
+      individual named or depicted anywhere on this page. Company names, logos
+      and ticker symbols appear descriptively, to identify the tokenized
+      instruments this token's rewards index holds, and are the property of
+      their respective owners. Any statements quoted on this page are the
+      speakers' own, made in public and linked to their source; quoting someone
+      is not an endorsement by them.
+    </p>
+    <p class="foot__fine">
+      Rewards are paid in a tokenized instrument tracking equity — <b>not
+      shares</b>, and holding $SI confers no ownership, dividend or voting
+      right in any company. Figures on this page are read from Base and from
+      public APIs; a figure no source can supply shows as an em dash rather
+      than a number. Not financial advice. Crypto assets are volatile — do your
+      own research.
+    </p>
+
+  </div>
+</footer>
+
+<!-- Entrance animations.
+
+     Everything is VISIBLE by default and this script opts in, rather than the
+     stylesheet hiding things and the script revealing them. That order is the
+     whole safety of it: no JS, an old browser, a thrown exception, an
+     IntersectionObserver that never fires — any of those and the page is
+     simply the page, fully readable. The other way round leaves a blank site.
+
+     The keyframes animate `translate`, not `transform`. They are separate
+     properties now, and that matters: a finished animation with fill:both
+     keeps ownership of the property it animated, so animating `transform`
+     would beat .stat:hover's own transform and kill every hover lift on the
+     page after the reveal ran. -->
+<script>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+    document.documentElement.classList.add('anim');
+
+    var hero = document.querySelectorAll('[data-rise]');
+    Array.prototype.forEach.call(hero, function (el, i) {
+      el.style.setProperty('--d', (i * 70) + 'ms');
+      el.classList.add('is-in');
+    });
+
+    var groups = ['.stat', '.chip', '.eco__half', '.quote', '.dist__card'];
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+
+    groups.forEach(function (sel) {
+      Array.prototype.forEach.call(document.querySelectorAll(sel), function (el, i) {
+        el.style.setProperty('--d', (i * 80) + 'ms');
+        el.classList.add('rise');
+        io.observe(el);
+      });
+    });
+  })();
+</script>
+
+<!-- ?v= is the cache buster: run `node scripts/stamp.mjs` on every deploy,
+     which moves every ?v= here and `version` in config.js together. Skip it
+     and a CDN keeps serving the previous config.js and app.js. -->
+<script src="config.js?v=5"></script>
+<script src="assets/js/quotes.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script src="assets/js/page.js?v=5"></script>
+</body>
+</html>
