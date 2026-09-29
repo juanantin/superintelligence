@@ -49,10 +49,10 @@
 
      The ?v= is what makes a browser let go of the icon it has cached;
      node scripts/stamp.mjs moves all of them together. -->
-<link rel="icon" href="favicon.ico?v=5" sizes="any">
-<link rel="icon" type="image/png" href="images/favicon.png?v=5">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=5">
-<link rel="manifest" href="site.webmanifest?v=5">
+<link rel="icon" href="favicon.ico?v=8" sizes="any">
+<link rel="icon" type="image/png" href="images/favicon.png?v=8">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=8">
+<link rel="manifest" href="site.webmanifest?v=8">
 
 <!-- One face — Inter — across five weights. 800 is not decoration: the
      headings and the wordmark are set in it, and asking for a weight the file
@@ -70,7 +70,7 @@
       media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
-<link rel="stylesheet" href="assets/css/styles.css?v=5">
+<link rel="stylesheet" href="assets/css/styles.css?v=8">
 </head>
 <body>
 
@@ -79,7 +79,7 @@
   <div class="topbar__in">
 
     <a class="lockup" href="#top">
-      <img class="lockup__mark" src="images/si_mark.webp?v=5" alt=""
+      <img class="lockup__mark" src="images/si_mark.webp?v=8" alt=""
            width="1000" height="500" decoding="async">
       <span class="lockup__name">Super Intelligence Race</span>
     </a>
@@ -93,7 +93,7 @@
         <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path fill="currentColor" d="M17.53 3h3.1l-6.77 7.73L21.83 21h-6.24l-4.89-6.39L5.11 21H2l7.24-8.27L2.17 3h6.4l4.42 5.84L17.53 3Zm-1.09 16.13h1.72L7.63 4.78H5.79l10.65 14.35Z"/>
         </svg>
-        <span class="btn__text">X</span>
+        <span class="sr-only">X</span>
       </a>
 
       <a class="btn" id="link-chart" href="#" title="Chart" target="_blank" rel="noopener noreferrer">
@@ -101,7 +101,7 @@
           <path d="M4.4 19.6h15.2"/><path d="M6.6 19.6v-5"/>
           <path d="M12 19.6V9.8"/><path d="M17.4 19.6V5.4"/>
         </svg>
-        <span class="btn__text">Chart</span>
+        <span class="sr-only">Chart</span>
       </a>
 
       <!-- The CA chip: the truncated address plus a copy glyph. #ca-short is
@@ -109,7 +109,7 @@
            so there is exactly one place the address lives. -->
       <div class="ca-wrap">
         <button class="btn btn--ca" id="copy-ca" type="button" title="Copy contract address">
-          <span class="btn__ca" id="ca-short">…</span>
+          <span class="btn__calabel" aria-hidden="true">CA:</span><span class="btn__ca" id="ca-short">…</span>
           <svg class="btn__icon btn__icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M9.4 9.4h9.2v9.2H9.4z"/><path d="M14.6 9.4V5.4H5.4v9.2h4"/>
           </svg>
@@ -143,7 +143,7 @@
   <div class="hero__stars" aria-hidden="true"></div>
 
   <div class="hero__copy">
-    <img class="hero__mark" src="images/si_mark.webp?v=5"
+    <img class="hero__mark" src="images/si_mark.webp?v=8"
          alt="Super Intelligence"
          width="1000" height="500" fetchpriority="high" decoding="async">
     <h1 class="hero__title">Super Intelligence Race</h1>
@@ -152,7 +152,7 @@
   </div>
 
   <div class="hero__earth" aria-hidden="true">
-    <img class="hero__earthimg" src="images/hero_earth.webp?v=5" alt=""
+    <img class="hero__earthimg" src="images/hero_earth.webp?v=8" alt=""
          width="1920" height="292" fetchpriority="high" decoding="async">
   </div>
 </section>
@@ -184,17 +184,17 @@
           <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path fill="currentColor" d="M17.53 3h3.1l-6.77 7.73L21.83 21h-6.24l-4.89-6.39L5.11 21H2l7.24-8.27L2.17 3h6.4l4.42 5.84L17.53 3Zm-1.09 16.13h1.72L7.63 4.78H5.79l10.65 14.35Z"/>
           </svg>
-          <span class="btn__text">X</span>
+          <span class="sr-only">X</span>
         </a>
         <a class="btn" id="link-chart-2" href="#" title="Chart" target="_blank" rel="noopener noreferrer">
           <svg class="btn__icon btn__icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M4.4 19.6h15.2"/><path d="M6.6 19.6v-5"/>
             <path d="M12 19.6V9.8"/><path d="M17.4 19.6V5.4"/>
           </svg>
-          <span class="btn__text">Chart</span>
+          <span class="sr-only">Chart</span>
         </a>
         <button class="btn btn--ca" id="copy-ca-2" type="button" title="Copy contract address">
-          <span class="btn__ca" id="ca-short-2">…</span>
+          <span class="btn__calabel" aria-hidden="true">CA:</span><span class="btn__ca" id="ca-short-2">…</span>
           <svg class="btn__icon btn__icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M9.4 9.4h9.2v9.2H9.4z"/><path d="M14.6 9.4V5.4H5.4v9.2h4"/>
           </svg>
@@ -259,7 +259,7 @@
          ship. Fill QUOTES in assets/js/quotes.js and the wall appears. -->
     <div class="quotes" id="quotes" hidden>
       <div class="quotes__head">
-        <h3 class="quotes__title">In their own words</h3>
+        <h3 class="quotes__title">Latest on <svg class="quotes__x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.53 3h3.1l-6.77 7.73L21.83 21h-6.24l-4.89-6.39L5.11 21H2l7.24-8.27L2.17 3h6.4l4.42 5.84L17.53 3Zm-1.09 16.13h1.72L7.63 4.78H5.79l10.65 14.35Z"/></svg></h3>
         <a class="quotes__more" id="quotes-more" href="https://x.com/SuperIQ_base" target="_blank" rel="noopener noreferrer">View more →</a>
       </div>
       <ul class="quotes__grid" id="quotes-grid"></ul>
@@ -398,7 +398,7 @@
        object-fit: cover crops silently and a squarer box here would keep the
        middle 60% and throw both flags away. -->
   <div class="foot__band" aria-hidden="true">
-    <img class="foot__bandimg" src="images/footer_band.webp?v=5" alt=""
+    <img class="foot__bandimg" src="images/footer_band.webp?v=8" alt=""
          width="1920" height="260" loading="lazy" decoding="async">
   </div>
 
@@ -411,13 +411,13 @@
              which on this ground is invisible. images/src/README.md carries the
              derivation — the greyscale pixels have their LUMINANCE inverted, so
              the antialiasing survives, and the blue/green badge is untouched. -->
-        <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=5" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
+        <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=8" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
         <span class="eco__sub">1B supply launches · creator fee integration</span>
       </a>
 
       <a class="eco__half" id="link-rewards" href="https://www.stockify.finance/" target="_blank" rel="noopener noreferrer">
         <span class="eco__kicker">Holder rewards powered by</span>
-        <img class="eco__logo" src="images/stockify_logo.png?v=5" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
+        <img class="eco__logo" src="images/stockify_logo.png?v=8" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
         <span class="eco__sub">tokenized equities · automated holder distributions</span>
       </a>
 
@@ -506,9 +506,9 @@
 <!-- ?v= is the cache buster: run `node scripts/stamp.mjs` on every deploy,
      which moves every ?v= here and `version` in config.js together. Skip it
      and a CDN keeps serving the previous config.js and app.js. -->
-<script src="config.js?v=5"></script>
-<script src="assets/js/quotes.js?v=5"></script>
-<script src="assets/js/app.js?v=5"></script>
-<script src="assets/js/page.js?v=5"></script>
+<script src="config.js?v=8"></script>
+<script src="assets/js/quotes.js?v=8"></script>
+<script src="assets/js/app.js?v=8"></script>
+<script src="assets/js/page.js?v=8"></script>
 </body>
 </html>

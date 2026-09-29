@@ -22,7 +22,7 @@ window.SITE_CONFIG = {
      a browser actually has rather than guessing at a cache. Bump it together
      with the ?v= on the script tags in index.html whenever you deploy —
      `node scripts/stamp.mjs` moves all of them at once. */
-  version: '5',
+  version: '8',
 
   /* ---- Token ---------------------------------------------------------- */
 
@@ -52,7 +52,7 @@ window.SITE_CONFIG = {
      that has nothing to do with this token. discover.yml resolves it two ways
      (the platform's /api/coins block_number, and a timestamp search for the
      pool's own pairCreatedAt) and they should agree. */
-  launchBlock: null,
+  launchBlock: 51737858,
 
   /* How the reward token is recognised among everything that touches the
      distributor. Matched case-insensitively and as a SUBSTRING against each
@@ -92,13 +92,20 @@ window.SITE_CONFIG = {
      liquidity and volume no matter what contractAddress says. Null means the
      search by contract address is used instead — correct, if slower. */
   contracts: {
-    pool: null,
+    /* The trading pair: SI/WETH on Uniswap v3, from the platform's /api/coins
+       and corroborated by DexScreener resolving the same pair. Named here
+       because DexScreener is asked about THIS pool before it searches, and
+       this token has TWO pairs: this one with $9,573 of liquidity, and a
+       Uniswap v4 SI/USDC pool with $2.28. They report market caps of 10,968
+       and 15,435 — a 41% difference — so leaving this null made every load a
+       coin flip between them. */
+    pool: '0x1fF0Ffe0c516d6146ff0d072FBe6FA3a98674c53',
     rewardPool: null,
     /* Where trading fees accrue. PLATFORM-WIDE — byte-for-byte the same
        address on every sibling — so it is never summed: doing that reports the
        whole platform's fees as this token's. Recorded only so it can be
        excluded from the holder count. */
-    feeLocker: null,
+    feeLocker: '0x71D1D363176723f85d98B8B430DF33cde89f0A7f',
     /* The distributor holders are paid from. Per token, and the only one of
        these that is this token's alone. Not derivable on chain — it is a
        routing decision, reported by the platform's /api/fee-routing.
@@ -107,7 +114,7 @@ window.SITE_CONFIG = {
        That address is seeded into discover.yml's CANDIDATES rather than
        written here, so the run reports whether the reward token really flows
        both IN and OUT of it before this site treats it as the distributor. */
-    rewardsIndex: null,
+    rewardsIndex: '0x4E2e072C38735BD0b9374F429Cf0AE1c07412450',
   },
 
   /* ---- Links ---------------------------------------------------------- */

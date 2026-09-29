@@ -98,6 +98,37 @@
      what this section exists to avoid. There is no engagement-count field.
      --------------------------------------------------------------------- */
 
+  /* Entrance animation for nodes this file CREATES.
+
+     The inline reveal script in index.html runs before this one and queries
+     the document once, so cards injected here were never observed by it —
+     they inherited `.anim .rise { opacity: 0 }` and stayed invisible forever,
+     which is exactly how the wall and the distribution row rendered as two
+     empty holes under their own headings.
+
+     So the markup below no longer ships `.rise`, and this adds it only when
+     there is an observer to take it off again. No observer, reduced motion,
+     or an exception here and the cards are simply visible. */
+  function animateIn(nodes) {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+    if (!document.documentElement.classList.contains('anim')) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+
+    Array.prototype.forEach.call(nodes, function (el, i) {
+      el.style.setProperty('--d', (i * 60) + 'ms');
+      el.classList.add('rise');
+      io.observe(el);
+    });
+  }
+
   function esc(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -121,34 +152,67 @@
   }
 
   var quotes = Array.isArray(window.QUOTES) ? window.QUOTES : [];
+
+  /* A 'sourced' card makes a claim about what someone else said, so it has to
+     carry all four of quote / name / date / link or it is dropped. A 'project'
+     card is the token talking about itself and needs only its text and the
+     account it lives on — there is no third party to misquote. */
   var usable = quotes.filter(function (q) {
-    return q && q.quote && q.name && q.href && q.date && !isNaN(new Date(q.date).getTime());
+    if (!q) return false;
+    if (q.kind === 'project') return !!q.text;
+    return q.quote && q.name && q.href && q.date && !isNaN(new Date(q.date).getTime());
   });
 
   var quotesWrap = document.getElementById('quotes');
   var quotesGrid = document.getElementById('quotes-grid');
 
+  function projectCard(q) {
+    return '' +
+      '<li class="quote quote--project">' +
+        '<div class="quote__top">' +
+          '<img class="quote__avatar quote__avatar--mark" src="images/si_mark.webp" alt="" width="1000" height="500" loading="lazy" decoding="async">' +
+          '<span class="quote__who">' +
+            '<b class="quote__name">$SI</b>' +
+            '<span class="quote__role">@SuperIQ_base</span>' +
+          '</span>' +
+          '<svg class="quote__x" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+            '<path fill="currentColor" d="M17.53 3h3.1l-6.77 7.73L21.83 21h-6.24l-4.89-6.39L5.11 21H2l7.24-8.27L2.17 3h6.4l4.42 5.84L17.53 3Zm-1.09 16.13h1.72L7.63 4.78H5.79l10.65 14.35Z"/>' +
+          '</svg>' +
+        '</div>' +
+        '<p class="quote__text">' + esc(q.text) + '</p>' +
+      '</li>';
+  }
+
+  function sourcedCard(q) {
+    return '' +
+      '<li class="quote">' +
+        '<div class="quote__top">' +
+          '<span class="quote__avatar" aria-hidden="true">' + esc(initials(q.name)) + '</span>' +
+          '<span class="quote__who">' +
+            '<b class="quote__name">' + esc(q.name) + '</b>' +
+            (q.role ? '<span class="quote__role">' + esc(q.role) + '</span>' : '') +
+          '</span>' +
+        '</div>' +
+        '<blockquote class="quote__text">' + esc(q.quote) + '</blockquote>' +
+        '<p class="quote__meta">' +
+          '<time datetime="' + esc(q.date) + '">' + esc(prettyDate(q.date)) + '</time>' +
+          '<a class="quote__src" href="' + esc(q.href) + '" target="_blank" rel="noopener noreferrer">' +
+            'Source' + (q.source ? ' · ' + esc(q.source) : '') + ' →' +
+          '</a>' +
+        '</p>' +
+      '</li>';
+  }
+
   if (quotesWrap && quotesGrid && usable.length) {
     quotesGrid.innerHTML = usable.map(function (q) {
-      return '' +
-        '<li class="quote rise">' +
-          '<div class="quote__top">' +
-            '<span class="quote__avatar" aria-hidden="true">' + esc(initials(q.name)) + '</span>' +
-            '<span class="quote__who">' +
-              '<b class="quote__name">' + esc(q.name) + '</b>' +
-              (q.role ? '<span class="quote__role">' + esc(q.role) + '</span>' : '') +
-            '</span>' +
-          '</div>' +
-          '<blockquote class="quote__text">' + esc(q.quote) + '</blockquote>' +
-          '<p class="quote__meta">' +
-            '<time datetime="' + esc(q.date) + '">' + esc(prettyDate(q.date)) + '</time>' +
-            '<a class="quote__src" href="' + esc(q.href) + '" target="_blank" rel="noopener noreferrer">' +
-              'Source' + (q.source ? ' · ' + esc(q.source) : '') + ' →' +
-            '</a>' +
-          '</p>' +
-        '</li>';
+      return q.kind === 'project' ? projectCard(q) : sourcedCard(q);
     }).join('');
+    /* The design splits the wall 3 across then 4 across. With 7 cards that
+       shape is reproduced exactly; with any other count the grid just flows,
+       rather than leaving a hole where the design assumed a card. */
+    quotesGrid.classList.toggle('quotes__grid--3then4', usable.length === 7);
     quotesWrap.hidden = false;
+    animateIn(quotesGrid.children);
   }
 
   /* ---------------------------------------------------------------------
@@ -179,7 +243,7 @@
   if (distWrap && distGrid && dist.length) {
     distGrid.innerHTML = dist.map(function (d) {
       return '' +
-        '<li class="dist__card rise">' +
+        '<li class="dist__card">' +
           (d.logo
             ? '<img class="dist__logo" src="' + esc(d.logo) + '" alt="" width="64" height="64" loading="lazy" decoding="async">'
             : '<span class="dist__logo dist__logo--text" aria-hidden="true">' + esc(initials(d.name)) + '</span>') +
@@ -190,6 +254,7 @@
         '</li>';
     }).join('');
     distWrap.hidden = false;
+    animateIn(distGrid.children);
   }
 
   /* ---------------------------------------------------------------------

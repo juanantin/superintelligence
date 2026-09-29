@@ -144,9 +144,13 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   fill: none; stroke: currentColor; stroke-width: 1.7;
   stroke-linecap: round; stroke-linejoin: round;
 }
-.btn__text { display: inline; }
+/* The button labels are screen-reader-only by request: the glyph alone
+   carries X and the chart, and the row is tighter for it. The names have NOT
+   been deleted, only unpainted — each button keeps an .sr-only name, so a
+   screen reader still announces "Chart" rather than "button". */
 
-.btn--ca { gap: 9px; }
+.btn--ca { gap: 7px; }
+.btn__calabel { color: var(--ink-3); font-weight: 700; letter-spacing: .06em; }
 .btn__ca { letter-spacing: .02em; text-transform: none; font-weight: 600; }
 
 .ca-wrap { position: relative; display: inline-flex; }
@@ -179,7 +183,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .hero {
   position: relative;
-  padding: clamp(48px, 9vw, 104px) var(--gutter) 0;
+  padding: clamp(34px, 6vw, 68px) var(--gutter) 0;
   text-align: center;
   overflow: hidden;
   background:
@@ -245,7 +249,11 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
      picture; see images/src/README.md for what a squarer box costs. */
   aspect-ratio: 1920 / 292;
 }
-.hero__earthimg { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+/* Wide screens have room to show the band at its own ratio. Narrow ones do
+   not, and a 6.6:1 strip on a phone is a horizon line rather than a picture,
+   so below 900px the box gets squarer and cover crops the sides instead. */
+@media (min-width: 900px) { .hero__earth { aspect-ratio: 1920 / 360; } }
+.hero__earthimg { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
 
 /* The band's top edge feathered into the ground, so the photograph and the
    flat colour meet with no line — the same trick the social card uses. */
@@ -318,7 +326,12 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
    ========================================================================== */
 
 .moment { padding-block: clamp(44px, 7vw, 84px); }
-.moment__in { display: grid; gap: clamp(28px, 4vw, 48px); }
+.moment__in {
+  display: grid; gap: clamp(28px, 4vw, 48px);
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  align-items: start;
+}
+@media (max-width: 980px) { .moment__in { grid-template-columns: 1fr; } }
 
 .kicker {
   margin: 0 0 12px; font-size: 11px; font-weight: 700;
@@ -326,6 +339,15 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 .moment__head {
   font-size: clamp(28px, 4.4vw, 50px); font-weight: 800; text-transform: uppercase;
+  /* "SUPERINTELLIGENCE" is 17 characters with no break opportunity in it, so
+     at the two-column width it overran the column and was clipped by the wall
+     beside it. Both of these are needed: the cap keeps it inside the column,
+     and break-word lets the single long word break rather than overflow if a
+     narrower viewport still cannot fit it. */
+  overflow-wrap: break-word;
+}
+@media (min-width: 981px) {
+  .moment__head { font-size: clamp(24px, 2.5vw, 34px); }
 }
 .moment__body { margin: 18px 0 0; color: var(--ink-2); max-width: 60ch; }
 
@@ -336,7 +358,9 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .quotes__title {
   font-size: 12px; font-weight: 700; letter-spacing: .2em;
   text-transform: uppercase; color: var(--ink-2);
+  display: inline-flex; align-items: center; gap: 7px;
 }
+.quotes__x { width: 13px; height: 13px; color: var(--ink); }
 .quotes__more {
   font-size: 12px; font-weight: 700; letter-spacing: .1em;
   text-transform: uppercase; color: var(--blue); text-decoration: none;
@@ -345,8 +369,15 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .quotes__grid {
   list-style: none; margin: 0; padding: 0;
-  display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+/* Exactly seven cards: three across, then four. Applied by page.js only at
+   that count, so any other number flows rather than leaving a hole. */
+@media (min-width: 760px) {
+  .quotes__grid--3then4 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .quotes__grid--3then4 > :nth-child(-n+3) { grid-column: span 4; }
+  .quotes__grid--3then4 > :nth-child(n+4)  { grid-column: span 3; }
 }
 
 /* A quote card, deliberately NOT shaped like a social post: no verified
@@ -354,25 +385,36 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .quote {
   border: 1px solid var(--line);
   background: var(--card);
-  padding: 18px;
-  display: flex; flex-direction: column; gap: 12px;
+  padding: 13px;
+  display: flex; flex-direction: column; gap: 9px;
 }
-.quote__top { display: flex; align-items: center; gap: 11px; }
+.quote__top { display: flex; align-items: center; gap: 9px; }
 .quote__avatar {
-  width: 38px; height: 38px; flex: none;
+  width: 30px; height: 30px; flex: none;
   display: grid; place-items: center;
   background: var(--blue-soft); border: 1px solid var(--line);
-  color: var(--ink); font-weight: 800; font-size: 13px; letter-spacing: .04em;
+  color: var(--ink); font-weight: 800; font-size: 11px; letter-spacing: .04em;
 }
-.quote__who { min-width: 0; }
-.quote__name { display: block; font-size: 14px; }
-.quote__role { display: block; font-size: 12px; color: var(--ink-3); }
+/* The project's own cards carry the SI mark rather than initials — it is the
+   account's actual avatar, so nothing here stands in for a person. */
+.quote__avatar--mark {
+  width: 30px; height: auto; object-fit: contain;
+  background: none; border: 0;
+}
+.quote__who { min-width: 0; flex: 1; }
+.quote__name { display: block; font-size: 13px; }
+.quote__role { display: block; font-size: 11px; color: var(--ink-3); }
+.quote__x { width: 13px; height: 13px; flex: none; color: var(--ink-3); }
 .quote__text {
-  margin: 0; color: var(--ink); font-size: 15px; line-height: 1.55;
-  border-left: 2px solid var(--blue); padding-left: 13px;
+  margin: 0; color: var(--ink); font-size: 13.5px; line-height: 1.5;
+}
+/* Only a SOURCED quote gets the quotation rule. The project's own posts are
+   statements, not quotations of anybody. */
+.quote:not(.quote--project) .quote__text {
+  border-left: 2px solid var(--blue); padding-left: 11px;
 }
 .quote__meta {
-  margin: auto 0 0; padding-top: 4px;
+  margin: auto 0 0; padding-top: 2px;
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   font-size: 12px; color: var(--ink-3);
 }
@@ -428,9 +470,14 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .stat {
   border: 1px solid var(--line);
   background: var(--card);
-  padding: 18px 14px;
-  text-align: center;
+  padding: 14px;
+  text-align: left;
   transition: transform .16s, border-color .16s, box-shadow .16s;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: 'label label' 'icon value' 'icon sub';
+  align-items: center;
+  column-gap: 11px; row-gap: 2px;
 }
 .stat:hover {
   transform: translateY(-2px);
@@ -439,8 +486,9 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 .stat__icon {
+  grid-area: icon;
   display: grid; place-items: center;
-  width: 38px; height: 38px; margin: 0 auto 11px;
+  width: 34px; height: 34px;
   background: var(--blue-soft);
   border: 1px solid var(--line);
   color: var(--blue);
@@ -452,16 +500,21 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 .stat__label {
-  font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  grid-area: label;
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
   text-transform: uppercase; color: var(--ink-3);
-  min-height: 2.6em;
+  margin-bottom: 9px;
+  /* Two lines' worth, reserved, so a one-line and a two-line label do not
+     put their figures at different heights across the row. */
+  min-height: 2.4em;
 }
 .stat__value {
-  margin: 8px 0 0; font-size: clamp(17px, 2vw, 23px); font-weight: 800;
+  grid-area: value;
+  margin: 0; font-size: clamp(16px, 1.7vw, 21px); font-weight: 800;
   letter-spacing: -.01em; word-break: break-word;
 }
-.stat__unit { font-size: .62em; font-weight: 700; color: var(--ink-3); margin-left: 5px; }
-.stat__sub { margin: 3px 0 0; font-size: 13px; color: var(--ink-2); }
+.stat__unit { font-size: .6em; font-weight: 700; color: var(--ink-3); margin-left: 5px; }
+.stat__sub { grid-area: sub; margin: 0; font-size: 12px; color: var(--blue); }
 
 /* A figure no source could supply. Dimmed rather than hidden: the dash IS the
    answer, and it must not read as a number that failed to load. */
@@ -644,7 +697,6 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
      size as they go — the template's rule, and the CA chip is the one that
      has to survive it. */
   .btn { padding: 8px 10px; font-size: 12px; }
-  .btn__text { display: none; }
   .btn--ca .btn__ca { display: inline; font-size: 12px; }
   .hero__earth::before { height: 46%; }
 }

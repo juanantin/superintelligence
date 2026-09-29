@@ -1,69 +1,99 @@
 /* ==========================================================================
    QUOTES AND DISTRIBUTION — the two data-driven sections
-   --------------------------------------------------------------------------
-   Both arrays below are EMPTY, and both sections hide themselves while they
-   are. That is deliberate, and it is the whole point of this file existing
-   rather than the content being written into index.html.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   QUOTES — the "in their own words" wall.
+   THE WALL.
 
-   The design this site was built from showed seven dated posts from Donald
-   Trump, Elon Musk, Jensen Huang, Sam Altman, Jeff Bezos, Tim Cook and Sundar
-   Pichai, each with a verified badge and like / retweet / view counts, plus a
-   Trump poll reading "2.4M votes · Final results". None of it was real. Built
-   that way the wall reads as screenshots of real posts, which is a
-   fabrication attributed to named living people.
+   Two kinds of card, and the difference matters:
 
-   THE RULE FOR THIS ARRAY: every entry is a real, verifiable public statement,
-   and every entry carries a link to its source. No engagement counts — there
-   is no field for them, on purpose. No verified badges. No chrome that makes a
-   card look like a captured post.
+     kind: 'project'  — $SI's own messaging, on $SI's own account. The project
+                        writing about itself. Safe to edit freely; it is your
+                        words about your token.
 
-   A quote that cannot be sourced does not go in. Not "source it later": the
-   card does not ship. This sandbox has no outbound network, so quotes cannot
-   be verified from here — they come from the owner with links, or a runner
-   fetches the URL to confirm one.
+     kind: 'sourced'  — somebody ELSE's real, public statement. Requires the
+                        exact quote, the person's name, the real date and a
+                        LINK TO THE SOURCE. Any entry missing one of those is
+                        skipped by the renderer rather than rendered without
+                        it.
 
-   Shape:
-     {
-       quote:  'The exact words, quoted accurately.',
-       name:   'Speaker Name',
-       role:   'Their role, factually stated',
-       date:   '2026-03-14',              // the real date of the statement
-       href:   'https://…',               // the post, interview or article
-       source: 'X'                        // where it was said, for the label
-     }
+   The cards below are all `project`. The design this was built from filled
+   this wall with seven dated posts from Donald Trump, Elon Musk, Jensen Huang,
+   Sam Altman, Jeff Bezos, Tim Cook and Sundar Pichai, each with a verified
+   badge and like / retweet / view counts, plus a poll reading "2.4M votes ·
+   Final results". None of those posts exist. Shipping them would be putting
+   invented words in the mouths of seven named living people on a page selling
+   a token — which is a fabrication about real people, and is the one thing
+   that does not ship here whoever asks.
+
+   TO ADD A REAL ONE: paste the post URL and I will read it and add a
+   'sourced' card with the true text, name and date. There are no engagement
+   fields anywhere in this file, on purpose — a like count cannot be verified
+   from a URL and it is pure decoration on a claim.
    -------------------------------------------------------------------------- */
 window.QUOTES = [
+  {
+    kind: 'project',
+    text: 'The superintelligence race is the defining industrial story of the decade. $SI puts holders on the right side of it.',
+    href: 'https://x.com/SuperIQ_base',
+  },
+  {
+    kind: 'project',
+    text: 'Every trade in $SI generates fees. Those fees route to the rewards index. The index pays holders. No staking, no claiming.',
+    href: 'https://x.com/SuperIQ_base',
+  },
+  {
+    kind: 'project',
+    text: '1,000,000,000 $SI. Fixed supply, launched on Stonks Exchange, living on Base.',
+    href: 'https://x.com/SuperIQ_base',
+  },
+  {
+    kind: 'project',
+    text: 'Holder rewards are powered by Stockify — tokenized equity exposure, distributed automatically.',
+    href: 'https://x.com/SuperIQ_base',
+  },
+  {
+    kind: 'project',
+    text: 'You do not have to pick which company wins the race. The index holds the basket.',
+    href: 'https://x.com/SuperIQ_base',
+  },
+  {
+    kind: 'project',
+    text: 'Real companies. Real progress. Real rewards.',
+    href: 'https://x.com/SuperIQ_base',
+  },
+  {
+    kind: 'project',
+    text: 'Same technology. A brighter tomorrow.',
+    href: 'https://x.com/SuperIQ_base',
+  },
 ];
 
 /* --------------------------------------------------------------------------
    DISTRIBUTION — the per-name payout row.
 
-   The design showed six company cards: Google/$GOOGL, NVIDIA/$NVDA,
-   Apple/$AAPL, SpaceX/$SPCX, Tesla/$TSLA and Amazon/$AMZN, each with a token
-   amount and a dollar figure.
+   The six names below are NOT from the mockup. They are the six the platform
+   itself publishes for this token, read from thestonks.exchange /api/coins in
+   the discovery run:
 
-   THIS SITE RENDERS ONLY WHAT THE STOCKIFY INDEX ACTUALLY HOLDS. How many
-   names that is comes from the discovery run and from scripts/panel-probe.mjs,
-   which prints the index's own panel — on a sibling it read "WHAT IT HOLDS:
-   1 name, fixed at creation". If it holds one name, this row shows one card.
+     "$SI — Super Intelligence Race. Hold $SI and earn rewards in $NVDA,
+      $AMZN, $AAPL, $GOOGL, $TSLA & $SPCX. Built on Base."
 
-   Two specifics worth remembering:
-     · SpaceX is NOT publicly traded, so whatever "$SPCX" was meant to be has
-       to come from the index or not appear.
-     · This template pays holders in ONE reward token, the pool's quote side.
-       A six-name basket may genuinely be how this index works — but that is a
-       thing to read, not to assume.
+   So the basket is real and it is six names. What is NOT yet known is whether
+   a PER-NAME distribution figure can be read on chain at all — the indexer
+   measures one reward token's flow in and out of the rewards index, not a
+   split across six. Until that is settled every figure here is null, which
+   renders as an em dash. A tile with a made-up number would be worse than no
+   tile.
 
-   If per-name distribution is not available on chain, this array stays empty
-   and the section never appears. An invented tile is worse than no tile.
-
-   Shape:
-     { name: 'Company', ticker: 'TICK', tokens: 12.34, usd: 567.89,
-       logo: 'images/dist/tick.png' }
+   ⚠ $SPCX: SpaceX is not publicly traded. Whatever that ticker wraps comes
+   from the index, and the label says "tokenized instrument", never "shares".
    -------------------------------------------------------------------------- */
 window.DISTRIBUTION = [
+  { name: 'Google',  ticker: 'GOOGL', tokens: null, usd: null },
+  { name: 'NVIDIA',  ticker: 'NVDA',  tokens: null, usd: null },
+  { name: 'Apple',   ticker: 'AAPL',  tokens: null, usd: null },
+  { name: 'SpaceX',  ticker: 'SPCX',  tokens: null, usd: null },
+  { name: 'Tesla',   ticker: 'TSLA',  tokens: null, usd: null },
+  { name: 'Amazon',  ticker: 'AMZN',  tokens: null, usd: null },
 ];
