@@ -96,7 +96,13 @@ jobs:
       - name: Probe the live site
         if: always()
         env:
-          SITE_URL: ${{ vars.SITE_URL || 'https://purr-puce.vercel.app' }}
+          # ⚠ The template shipped a SIBLING's URL as this fallback, and with
+          # the SITE_URL variable unset the live-site pass silently probed
+          # purr-puce.vercel.app instead of this token's deployment — it
+          # reported $BASECAT tiles and "build 10" against a repo on build 5,
+          # which looks like a broken deploy rather than the wrong site.
+          # This is this repo's own Vercel deployment, from its homepage field.
+          SITE_URL: ${{ vars.SITE_URL || 'https://superintelligence-sigma.vercel.app' }}
         run: |
           set -uo pipefail
           WANT=$(node -e "
