@@ -1,0 +1,74 @@
+name: Read the index's holdings
+
+# Per-name payouts for the six names this token's Stockify index holds.
+#
+# The indexer in worker/ measures ONE reward token in and out of the rewards
+# index. That is exact for fees, which arrive as ETH, but it cannot produce a
+# per-name payout: this index buys six tokenized equities by weight and pays
+# those out per name. Reading the six wrapper contracts off chain needs an
+# unfiltered eth_getLogs across the index's whole history, and the public Base
+# endpoint refuses wide ranges, drops to 1,250-block windows, then rate-limits
+# after ~51 calls — about a quarter of the way. So these figures are read from
+# the index's own published panel instead, which is the same page a holder
+# would open. See scripts/holdings-probe.mjs for the full reasoning.
+#
+# Add an RPC_URL secret and the chain scan becomes the better source.
+
+on:
+  schedule:
+    # Twice an hour, off the :00/:30 boundary where GitHub's scheduler is most
+    # oversubscribed. The panel's own rounds are far rarer than this.
+    - cron: '9,39 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - scripts/holdings-probe.mjs
+      - .github/workflows/holdings.yml
+  workflow_dispatch:
+
+concurrency:
+  group: holdings
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  holdings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: npm i -D playwright@1.47.2 && npx playwright install --with-deps chromium
+
+      - name: Read the panel
+        run: node scripts/holdings-probe.mjs
+
+      - name: Commit if anything changed
+        # NOT always(): the probe exits non-zero when it parsed no names, and
+        # in that case it deliberately leaves the previous file alone. Running
+        # this step anyway would commit nothing, but gating on success keeps
+        # the intent legible.
+        run: |
+          set -u
+          if git diff --quiet -- data/holdings.json; then echo "no change"; exit 0; fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p /tmp/h && cp data/holdings.json /tmp/h/
+          for attempt in 1 2 3 4 5; do
+            git fetch origin "$GITHUB_REF_NAME"
+            git reset --hard "origin/$GITHUB_REF_NAME"
+            cp /tmp/h/holdings.json data/
+            if git diff --quiet -- data/holdings.json; then echo "remote already current"; exit 0; fi
+            git add data/holdings.json
+            git commit -m "chore: refresh index holdings [skip ci]"
+            if git push origin HEAD:"$GITHUB_REF_NAME"; then echo "pushed on attempt $attempt"; exit 0; fi
+            echo "push rejected — retrying"
+            sleep $((attempt * 3))
+          done
+          echo "could not push after 5 attempts"
+          exit 1

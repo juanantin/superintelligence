@@ -1,0 +1,30 @@
+{
+  "__doc": [
+    "Per-name holdings and payouts, read from this token's own Stockify index",
+    "panel by scripts/holdings-probe.mjs and refreshed twice an hour by",
+    ".github/workflows/holdings.yml. Every figure is printed on that page;",
+    "nothing here is computed or inferred, and a field the page does not show",
+    "is null, which the site renders as an em dash.",
+    "",
+    "This first entry is a real reading taken at the readAt timestamp below,",
+    "not a placeholder — but it IS a point-in-time reading, which is why it",
+    "carries that timestamp and why the schedule replaces it."
+  ],
+  "source": "https://www.stockify.finance/indices/0x4e2e072c38735bd0b9374f429cf0ae1c07412450",
+  "readAt": "2026-09-29T15:22:47Z",
+  "paidToHoldersUsd": 638,
+  "feesCollectedUsd": 724,
+  "feesCollectedToken": "0.2682 ETH",
+  "roundsPaid": 18,
+  "walletPayments": 1644,
+  "holderSharePct": 90,
+  "whatItHolds": "6 names, fixed at creation.",
+  "holdings": [
+    { "ticker": "NVDAc",  "name": "NVIDIA",   "weightPct": 17, "tokens": 0.4803 },
+    { "ticker": "AAPLc",  "name": "Apple",    "weightPct": 17, "tokens": 0.3208 },
+    { "ticker": "GOOGLc", "name": "Alphabet", "weightPct": 17, "tokens": 0.3154 },
+    { "ticker": "AMZNc",  "name": "Amazon",   "weightPct": 17, "tokens": 0.4337 },
+    { "ticker": "SPCXc",  "name": "SpaceX",   "weightPct": 17, "tokens": 0.7307 },
+    { "ticker": "TSLAc",  "name": "Tesla",    "weightPct": 17, "tokens": 0.2807 }
+  ]
+}

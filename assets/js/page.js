@@ -240,8 +240,14 @@
   var distWrap = document.getElementById('dist');
   var distGrid = document.getElementById('dist-grid');
 
-  if (distWrap && distGrid && dist.length) {
-    distGrid.innerHTML = dist.map(function (d) {
+  /* The logo and display name per ticker come from window.DISTRIBUTION; the
+     FIGURES come from data/holdings.json, which is read off the index's own
+     panel on a schedule. Nothing here is computed: a name the panel does not
+     report keeps a null and renders as an em dash. */
+  var distPainted = false;
+  function renderDist(rows) {
+    if (!distWrap || !distGrid || !rows.length) return;
+    distGrid.innerHTML = rows.map(function (d) {
       return '' +
         '<li class="dist__card">' +
           (d.logo
@@ -250,12 +256,61 @@
           '<h3 class="dist__name">' + esc(d.name) + '</h3>' +
           (d.ticker ? '<p class="dist__ticker">$' + esc(d.ticker) + '</p>' : '') +
           '<p class="dist__tokens">' + esc(amount(d.tokens)) + '</p>' +
-          '<p class="dist__usd">' + esc(usd(d.usd)) + '</p>' +
+          '<p class="dist__usd">' + esc(d.sub) + '</p>' +
         '</li>';
     }).join('');
     distWrap.hidden = false;
-    animateIn(distGrid.children);
+    /* Only the FIRST paint animates. The merged re-render replaces these nodes
+       while the row is already on screen, and re-running the entrance left the
+       new cards at opacity 0 — the observer does not reliably re-fire for
+       content that is already in view, so five of six simply never appeared. */
+    if (!distPainted) { animateIn(distGrid.children); distPainted = true; }
   }
+
+  /* Paint immediately from the static list so the row is never an empty hole,
+     then refine it the moment the panel reading lands. */
+  renderDist(dist.map(function (d) {
+    return { name: d.name, ticker: d.ticker, logo: d.logo, tokens: null, sub: '—' };
+  }));
+
+  fetch('data/holdings.json', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (h) {
+      if (!h || !Array.isArray(h.holdings) || !h.holdings.length) return;
+
+      /* The panel writes the wrapper ticker ("NVDAc"); the cards are keyed by
+         the underlying one ("NVDA"). Match on the underlying, so a wrapper
+         whose suffix ever changes still lands on the right card. */
+      function underlying(t) { return String(t || '').toUpperCase().replace(/C$/, ''); }
+      var byTicker = {};
+      h.holdings.forEach(function (row) { byTicker[underlying(row.ticker)] = row; });
+
+      var merged = dist.map(function (d) {
+        var row = byTicker[String(d.ticker).toUpperCase()];
+        return {
+          name: d.name, ticker: d.ticker, logo: d.logo,
+          tokens: row ? row.tokens : null,
+          /* The panel publishes a token amount per name and a dollar figure
+             only in aggregate, so the sub-line carries the weight — which it
+             does publish per name — rather than a USD figure split six ways,
+             which would be this site's arithmetic presented as the index's. */
+          sub: row && row.weightPct != null ? row.weightPct + '% weight' : '—',
+        };
+      });
+      renderDist(merged);
+
+      if (h.readAt) {
+        var note = document.getElementById('dist-note');
+        if (note) {
+          var d = new Date(h.readAt);
+          if (!isNaN(d.getTime())) {
+            note.textContent = note.textContent.replace(/\s*·\s*read .*$/, '') +
+              ' · read from the index panel ' + d.toLocaleString();
+          }
+        }
+      }
+    })
+    .catch(function () { /* the static row already painted */ });
 
   /* ---------------------------------------------------------------------
      4. The "updated N seconds ago" stamp.

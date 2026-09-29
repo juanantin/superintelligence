@@ -434,15 +434,15 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .dash {
   background: var(--page-2);
   border-block: 1px solid var(--line);
-  padding-block: clamp(26px, 3.4vw, 44px);
+  padding-block: clamp(20px, 2.6vw, 34px);
 }
 
 .dash__head {
   display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap; margin-bottom: 22px;
+  gap: 14px; flex-wrap: wrap; margin-bottom: 14px;
 }
 .dash__title {
-  font-size: clamp(20px, 2.8vw, 30px); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(16px, 2vw, 23px); font-weight: 800; text-transform: uppercase;
 }
 
 .pill {
@@ -469,21 +469,21 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 .stats {
-  display: grid; gap: 12px;
+  display: grid; gap: 8px;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .stat {
   border: 1px solid var(--line);
   background: var(--card);
-  padding: 14px;
+  padding: 10px 11px;
   text-align: left;
   transition: transform .16s, border-color .16s, box-shadow .16s;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   grid-template-areas: 'label label' 'icon value' 'icon sub';
   align-items: center;
-  column-gap: 11px; row-gap: 2px;
+  column-gap: 9px; row-gap: 1px;
 }
 .stat:hover {
   transform: translateY(-2px);
@@ -494,33 +494,33 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .stat__icon {
   grid-area: icon;
   display: grid; place-items: center;
-  width: 38px; height: 38px;
+  width: 30px; height: 30px;
   background: var(--blue-soft);
   border: 1px solid var(--line);
   color: var(--blue);
 }
 .stat__icon svg {
-  width: 21px; height: 21px;
+  width: 17px; height: 17px;
   fill: none; stroke: currentColor; stroke-width: 1.6;
   stroke-linecap: round; stroke-linejoin: round;
 }
 
 .stat__label {
   grid-area: label;
-  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  font-size: 9px; font-weight: 700; letter-spacing: .09em;
   text-transform: uppercase; color: var(--ink-3);
-  margin-bottom: 9px;
+  margin-bottom: 6px;
   /* Two lines' worth, reserved, so a one-line and a two-line label do not
      put their figures at different heights across the row. */
   min-height: 2.4em;
 }
 .stat__value {
   grid-area: value;
-  margin: 0; font-size: clamp(18px, 2vw, 25px); font-weight: 800;
+  margin: 0; font-size: clamp(15px, 1.5vw, 19px); font-weight: 800;
   letter-spacing: -.01em; word-break: break-word;
 }
 .stat__unit { font-size: .6em; font-weight: 700; color: var(--ink-3); margin-left: 5px; }
-.stat__sub { grid-area: sub; margin: 0; font-size: 12px; color: var(--blue); }
+.stat__sub { grid-area: sub; margin: 0; font-size: 10.5px; color: var(--blue); }
 
 /* A figure no source could supply. Dimmed rather than hidden: the dash IS the
    answer, and it must not read as a number that failed to load. */
@@ -563,41 +563,46 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
    DISTRIBUTION
    ========================================================================== */
 
-.dist { padding-block: clamp(26px, 3.4vw, 44px); }
+/* Inside the dashboard now, so it gets a divider and a little air rather
+   than a section's worth of padding. */
+.dist {
+  margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
 .dist__title {
-  font-size: 13px; font-weight: 700; letter-spacing: .16em;
-  text-transform: uppercase; margin-bottom: 6px; color: var(--ink-2);
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; margin-bottom: 4px; color: var(--ink-2);
 }
 .dist__sub { color: var(--ink-3); font-weight: 700; }
-.dist__note { margin: 0 0 16px; font-size: 11.5px; color: var(--ink-3); max-width: 78ch; }
+.dist__note { margin: 0 0 11px; font-size: 10.5px; color: var(--ink-3); max-width: 86ch; }
 
 .dist__grid {
   list-style: none; margin: 0; padding: 0;
-  display: grid; gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 .dist__card {
   border: 1px solid var(--line);
   background: var(--card);
-  padding: 20px 14px; text-align: center;
+  padding: 12px 8px; text-align: center;
   transition: transform .16s, border-color .16s;
 }
 .dist__card:hover { transform: translateY(-2px); border-color: var(--blue); }
-.dist__logo { width: 44px; height: 44px; margin: 0 auto 10px; object-fit: contain; }
+.dist__logo { width: 30px; height: 30px; margin: 0 auto 7px; object-fit: contain; }
 .dist__logo--text {
   display: grid; place-items: center;
   background: var(--blue-soft); border: 1px solid var(--line);
   font-weight: 800; font-size: 15px; color: var(--ink);
 }
 .dist__name {
-  font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
 }
 .dist__ticker {
-  margin: 2px 0 0; font-size: 11px; font-weight: 700;
+  margin: 1px 0 0; font-size: 9.5px; font-weight: 700;
   letter-spacing: .08em; color: var(--ink-3);
 }
-.dist__tokens { margin: 10px 0 0; font-size: 22px; font-weight: 800; }
-.dist__usd { margin: 1px 0 0; font-size: 13px; font-weight: 600; color: var(--blue); }
+.dist__tokens { margin: 7px 0 0; font-size: 17px; font-weight: 800; }
+.dist__usd { margin: 1px 0 0; font-size: 10.5px; font-weight: 600; color: var(--blue); }
 
 /* ==========================================================================
    FOOTER
@@ -685,6 +690,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 @media (max-width: 1080px) {
   .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dist__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pitch__in { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
   /* Stacked: the slogan crosses the full row and centres. */
   .pitch__slogan {
@@ -704,6 +710,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 @media (max-width: 620px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dist__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   /* The buttons stay on one line down to 320px, shedding padding and type
      size as they go — the template's rule, and the CA chip is the one that
      has to survive it. */
