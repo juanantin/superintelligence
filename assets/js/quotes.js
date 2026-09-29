@@ -89,11 +89,17 @@ window.QUOTES = [
    ⚠ $SPCX: SpaceX is not publicly traded. Whatever that ticker wraps comes
    from the index, and the label says "tokenized instrument", never "shares".
    -------------------------------------------------------------------------- */
+/* The marks in images/dist/ are cut from THIS TOKEN'S OWN launch banner
+   (images/src/launch_banner.jpg), which carries all six in a row — so they
+   arrived with the token rather than being fetched from six companies'
+   websites. They appear descriptively, to identify which tokenized
+   instruments the index holds, and the footer carries the non-affiliation
+   notice that says so. */
 window.DISTRIBUTION = [
-  { name: 'Google',  ticker: 'GOOGL', tokens: null, usd: null },
-  { name: 'NVIDIA',  ticker: 'NVDA',  tokens: null, usd: null },
-  { name: 'Apple',   ticker: 'AAPL',  tokens: null, usd: null },
-  { name: 'SpaceX',  ticker: 'SPCX',  tokens: null, usd: null },
-  { name: 'Tesla',   ticker: 'TSLA',  tokens: null, usd: null },
-  { name: 'Amazon',  ticker: 'AMZN',  tokens: null, usd: null },
+  { name: 'Google',  ticker: 'GOOGL', tokens: null, usd: null, logo: 'images/dist/googl.png' },
+  { name: 'NVIDIA',  ticker: 'NVDA',  tokens: null, usd: null, logo: 'images/dist/nvda.png' },
+  { name: 'Apple',   ticker: 'AAPL',  tokens: null, usd: null, logo: 'images/dist/aapl.png' },
+  { name: 'SpaceX',  ticker: 'SPCX',  tokens: null, usd: null, logo: 'images/dist/spcx.png' },
+  { name: 'Tesla',   ticker: 'TSLA',  tokens: null, usd: null, logo: 'images/dist/tsla.png' },
+  { name: 'Amazon',  ticker: 'AMZN',  tokens: null, usd: null, logo: 'images/dist/amzn.png' },
 ];

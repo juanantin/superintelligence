@@ -49,10 +49,10 @@
 
      The ?v= is what makes a browser let go of the icon it has cached;
      node scripts/stamp.mjs moves all of them together. -->
-<link rel="icon" href="favicon.ico?v=10" sizes="any">
-<link rel="icon" type="image/png" href="images/favicon.png?v=10">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=10">
-<link rel="manifest" href="site.webmanifest?v=10">
+<link rel="icon" href="favicon.ico?v=13" sizes="any">
+<link rel="icon" type="image/png" href="images/favicon.png?v=13">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=13">
+<link rel="manifest" href="site.webmanifest?v=13">
 
 <!-- One face — Inter — across five weights. 800 is not decoration: the
      headings and the wordmark are set in it, and asking for a weight the file
@@ -70,7 +70,7 @@
       media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
-<link rel="stylesheet" href="assets/css/styles.css?v=10">
+<link rel="stylesheet" href="assets/css/styles.css?v=13">
 </head>
 <body>
 
@@ -79,7 +79,7 @@
   <div class="topbar__in">
 
     <a class="lockup" href="#top">
-      <img class="lockup__mark" src="images/si_mark.webp?v=10" alt=""
+      <img class="lockup__mark" src="images/si_mark.webp?v=13" alt=""
            width="1000" height="500" decoding="async">
       <span class="lockup__name">Super Intelligence Race</span>
     </a>
@@ -143,7 +143,7 @@
   <div class="hero__stars" aria-hidden="true"></div>
 
   <div class="hero__copy">
-    <img class="hero__mark" src="images/si_mark.webp?v=10"
+    <img class="hero__mark" src="images/si_mark.webp?v=13"
          alt="Super Intelligence"
          width="1000" height="500" fetchpriority="high" decoding="async">
     <h1 class="hero__title">Super Intelligence Race</h1>
@@ -152,7 +152,7 @@
   </div>
 
   <div class="hero__earth" aria-hidden="true">
-    <img class="hero__earthimg" src="images/hero_earth.webp?v=10" alt=""
+    <img class="hero__earthimg" src="images/hero_earth.webp?v=13" alt=""
          width="1920" height="292" fetchpriority="high" decoding="async">
   </div>
 </section>
@@ -162,12 +162,11 @@
   <div class="wrap pitch__in">
 
     <div class="pitch__lead">
-      <h2 class="pitch__head">Buy $SI.<br>Earn the tech race.</h2>
+      <h2 class="pitch__head">Buy $SI. Earn the tech race.</h2>
       <p class="pitch__body">
-        Every trade in $SI generates fees. Those fees are routed to this
-        token's Stockify index, which holds tokenized equity exposure, and
-        what the index pays out is distributed to $SI holders automatically —
-        no staking, no claiming, no lock-up.
+        Super Intelligence Coin ($SI) turns the global race for superintelligence
+        into a holder-rewards opportunity. Every trade fuels a basket of the 6
+        biggest tech companies, automatically distributed to $SI holders.
       </p>
       <!-- What holders actually receive. The reward token is a tokenized
            WRAPPER, not equity, and its ticker is not inferable from branding —
@@ -205,16 +204,31 @@
 
     <ul class="chips">
       <li class="chip">
-        <span class="chip__k">1B fixed supply</span>
-        <span class="chip__v">Base chain</span>
+        <span class="chip__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.4 12h7.2"/></svg>
+        </span>
+        <span class="chip__t">
+          <span class="chip__k">1B fixed supply</span>
+          <span class="chip__v">Base chain</span>
+        </span>
       </li>
       <li class="chip">
-        <span class="chip__k">Launched on</span>
-        <span class="chip__v">Stonks Exchange</span>
+        <span class="chip__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M13.4 3.2 6.2 13.4h4.6l-1 7.4 7.2-10.2h-4.6z"/></svg>
+        </span>
+        <span class="chip__t">
+          <span class="chip__k">Launched on</span>
+          <span class="chip__v">Stonks Exchange</span>
+        </span>
       </li>
       <li class="chip">
-        <span class="chip__k">Holder rewards powered by</span>
-        <span class="chip__v">Stockify</span>
+        <span class="chip__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.2 12h17.6"/><path d="M12 3.2a14 14 0 0 1 0 17.6a14 14 0 0 1 0-17.6z"/></svg>
+        </span>
+        <span class="chip__t">
+          <span class="chip__k">Holder rewards powered by</span>
+          <span class="chip__v">Stockify</span>
+        </span>
       </li>
     </ul>
 
@@ -234,13 +248,11 @@
 
     <div class="moment__lead">
       <p class="kicker">A global moment</p>
-      <h2 class="moment__head">Superintelligence is here.</h2>
+      <h2 class="moment__head">Superintelligence<br>is here.</h2>
       <p class="moment__body">
-        Heads of state and the people running the largest technology companies
-        on earth are now arguing about the same thing in public: how fast
-        machine intelligence is arriving, who gets there first, and what it
-        costs. It is the defining industrial race of the decade, and the
-        companies running it are the ones this index tracks.
+        World leaders and the biggest tech visionaries are all talking about
+        Superintelligence. From the White House to Silicon Valley, $SI puts you
+        at the center of this historic race.
       </p>
     </div>
 
@@ -383,6 +395,8 @@
 <section class="dist" id="dist" hidden>
   <div class="wrap">
     <h2 class="dist__title">Tech stock distribution <span class="dist__sub">(total)</span></h2>
+    <p class="dist__note">Paid out per name, bought by weight — six names, fixed at creation.
+      Rounds skip wallets under 10,000 $SI and their slice stays with everyone above the line.</p>
     <ul class="dist__grid" id="dist-grid"></ul>
   </div>
 </section>
@@ -398,7 +412,7 @@
        object-fit: cover crops silently and a squarer box here would keep the
        middle 60% and throw both flags away. -->
   <div class="foot__band" aria-hidden="true">
-    <img class="foot__bandimg" src="images/footer_band.webp?v=10" alt=""
+    <img class="foot__bandimg" src="images/footer_band.webp?v=13" alt=""
          width="1920" height="260" loading="lazy" decoding="async">
   </div>
 
@@ -411,13 +425,13 @@
              which on this ground is invisible. images/src/README.md carries the
              derivation — the greyscale pixels have their LUMINANCE inverted, so
              the antialiasing survives, and the blue/green badge is untouched. -->
-        <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=10" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
+        <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=13" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
         <span class="eco__sub">1B supply launches · creator fee integration</span>
       </a>
 
       <a class="eco__half" id="link-rewards" href="https://www.stockify.finance/" target="_blank" rel="noopener noreferrer">
         <span class="eco__kicker">Holder rewards powered by</span>
-        <img class="eco__logo" src="images/stockify_logo.png?v=10" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
+        <img class="eco__logo" src="images/stockify_logo.png?v=13" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
         <span class="eco__sub">tokenized equities · automated holder distributions</span>
       </a>
 
@@ -431,9 +445,9 @@
         </span>
         <span class="eco__sub">the L2 this token lives on</span>
       </a>
-    </div>
 
-    <p class="foot__slogan">Same technology. A brighter tomorrow.</p>
+      <p class="eco__slogan">Same technology.<br>A brighter<br>tomorrow.</p>
+    </div>
 
     <!-- The non-affiliation notice. It has to name what the artwork, the
          tickers and the quotes might be mistaken for. -->
@@ -506,9 +520,9 @@
 <!-- ?v= is the cache buster: run `node scripts/stamp.mjs` on every deploy,
      which moves every ?v= here and `version` in config.js together. Skip it
      and a CDN keeps serving the previous config.js and app.js. -->
-<script src="config.js?v=10"></script>
-<script src="assets/js/quotes.js?v=10"></script>
-<script src="assets/js/app.js?v=10"></script>
-<script src="assets/js/page.js?v=10"></script>
+<script src="config.js?v=13"></script>
+<script src="assets/js/quotes.js?v=13"></script>
+<script src="assets/js/app.js?v=13"></script>
+<script src="assets/js/page.js?v=13"></script>
 </body>
 </html>

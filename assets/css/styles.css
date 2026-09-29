@@ -275,14 +275,15 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .pitch__in {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr) auto;
   gap: clamp(24px, 4vw, 52px);
   align-items: start;
 }
 
 .pitch__head {
-  font-size: clamp(26px, 3.6vw, 40px);
-  font-weight: 800; text-transform: uppercase; letter-spacing: -.01em;
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 800; text-transform: uppercase; letter-spacing: -.015em;
+  text-wrap: balance;
 }
 .pitch__body { margin: 16px 0 0; color: var(--ink-2); max-width: 52ch; }
 .pitch__note {
@@ -294,32 +295,37 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .chips { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .chip {
   border: 1px solid var(--line);
-  border-left: 3px solid var(--blue);
   background: var(--card);
-  padding: 13px 15px;
+  padding: 11px 14px;
+  display: flex; align-items: center; gap: 11px;
 }
-.chip:nth-child(2) { border-left-color: #8a5cff; }
-.chip:nth-child(3) { border-left-color: var(--red); }
+.chip__ico {
+  width: 30px; height: 30px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--blue); color: #fff;
+}
+.chip:nth-child(2) .chip__ico { background: #8a5cff; }
+.chip:nth-child(3) .chip__ico { background: #1f6fe0; }
+.chip__ico svg {
+  width: 16px; height: 16px;
+  fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.chip:nth-child(2) .chip__ico svg { fill: currentColor; stroke: none; }
+.chip__t { min-width: 0; }
 .chip__k {
   display: block; font-size: 11px; font-weight: 700;
   letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
 }
-.chip__v { display: block; margin-top: 3px; font-weight: 700; font-size: 15px; }
+.chip__v { display: block; margin-top: 1px; font-weight: 700; font-size: 15px; }
 
-/* Set vertically, running up the right edge, as in the design. The <br> in the
-   markup is suppressed here: in vertical-rl a line break makes a SECOND column
-   beside the first, and two 11px columns 3px apart read as one smudge. The
-   break is left in the markup because the horizontal fallback below wants it. */
+/* Set HORIZONTALLY and right-aligned, as the design has it — an earlier pass
+   ran it vertically up the edge, which is not what the mockup does. */
 .pitch__slogan {
-  margin: 0; font-size: 11px; font-weight: 700;
+  margin: 0; font-size: 11px; font-weight: 700; line-height: 1.9;
   letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
-  writing-mode: vertical-rl; text-orientation: mixed;
-  justify-self: end; align-self: stretch;
-  border-left: 1px solid var(--line);
-  padding-left: 14px;
-  white-space: nowrap;
+  text-align: right; align-self: center; white-space: nowrap;
 }
-.pitch__slogan br { display: none; }
 
 /* ==========================================================================
    A GLOBAL MOMENT + QUOTE WALL
@@ -328,10 +334,13 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .moment { padding-block: clamp(44px, 7vw, 84px); }
 .moment__in {
   display: grid; gap: clamp(28px, 4vw, 48px);
-  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 350px) minmax(0, 1fr);
   align-items: start;
 }
-@media (max-width: 980px) { .moment__in { grid-template-columns: 1fr; } }
+@media (max-width: 980px) {
+  .moment__in { grid-template-columns: 1fr; }
+  .moment__head br { display: none; }
+}
 
 .kicker {
   margin: 0 0 12px; font-size: 11px; font-weight: 700;
@@ -347,7 +356,12 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   overflow-wrap: break-word;
 }
 @media (min-width: 981px) {
-  .moment__head { font-size: clamp(24px, 2.5vw, 34px); }
+  /* 17 characters with no break opportunity: at 30px in a 350px column it
+     sets on one line, which is what the design does. */
+  .moment__head { font-size: 30px; overflow-wrap: normal; }
+  /* The design breaks after "SUPERINTELLIGENCE"; the markup's <br> does that
+     at this width and is suppressed below, where the column is full-width and
+     a forced break would leave a short, ragged first line. */
 }
 .moment__body { margin: 18px 0 0; color: var(--ink-2); max-width: 60ch; }
 
@@ -488,13 +502,13 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .stat__icon {
   grid-area: icon;
   display: grid; place-items: center;
-  width: 34px; height: 34px;
+  width: 38px; height: 38px;
   background: var(--blue-soft);
   border: 1px solid var(--line);
   color: var(--blue);
 }
 .stat__icon svg {
-  width: 19px; height: 19px;
+  width: 21px; height: 21px;
   fill: none; stroke: currentColor; stroke-width: 1.6;
   stroke-linecap: round; stroke-linejoin: round;
 }
@@ -510,7 +524,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 .stat__value {
   grid-area: value;
-  margin: 0; font-size: clamp(16px, 1.7vw, 21px); font-weight: 800;
+  margin: 0; font-size: clamp(18px, 2vw, 25px); font-weight: 800;
   letter-spacing: -.01em; word-break: break-word;
 }
 .stat__unit { font-size: .6em; font-weight: 700; color: var(--ink-3); margin-left: 5px; }
@@ -559,10 +573,11 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .dist { padding-block: clamp(40px, 6vw, 72px); }
 .dist__title {
-  font-size: clamp(20px, 2.8vw, 30px); font-weight: 800;
-  text-transform: uppercase; margin-bottom: 20px;
+  font-size: 13px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 6px; color: var(--ink-2);
 }
 .dist__sub { color: var(--ink-3); font-weight: 700; }
+.dist__note { margin: 0 0 16px; font-size: 11.5px; color: var(--ink-3); max-width: 78ch; }
 
 .dist__grid {
   list-style: none; margin: 0; padding: 0;
@@ -576,19 +591,21 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   transition: transform .16s, border-color .16s;
 }
 .dist__card:hover { transform: translateY(-2px); border-color: var(--blue); }
-.dist__logo { width: 44px; height: 44px; margin: 0 auto 12px; object-fit: contain; }
+.dist__logo { width: 44px; height: 44px; margin: 0 auto 10px; object-fit: contain; }
 .dist__logo--text {
   display: grid; place-items: center;
   background: var(--blue-soft); border: 1px solid var(--line);
   font-weight: 800; font-size: 15px; color: var(--ink);
 }
-.dist__name { font-size: 15px; font-weight: 700; }
+.dist__name {
+  font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+}
 .dist__ticker {
   margin: 2px 0 0; font-size: 11px; font-weight: 700;
-  letter-spacing: .1em; color: var(--ink-3);
+  letter-spacing: .08em; color: var(--ink-3);
 }
-.dist__tokens { margin: 12px 0 0; font-size: 19px; font-weight: 800; }
-.dist__usd { margin: 2px 0 0; font-size: 13px; color: var(--ink-2); }
+.dist__tokens { margin: 10px 0 0; font-size: 22px; font-weight: 800; }
+.dist__usd { margin: 1px 0 0; font-size: 13px; font-weight: 600; color: var(--blue); }
 
 /* ==========================================================================
    FOOTER
@@ -611,18 +628,26 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .foot__in { padding-block: clamp(32px, 5vw, 56px); }
 
 .eco {
-  display: grid; gap: 18px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
+  display: grid; gap: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  align-items: center;
 }
+/* Hairline dividers between the lockups rather than three boxes — the design
+   separates them with rules and no card. */
 .eco__half {
-  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
   text-align: center; text-decoration: none;
-  border: 1px solid var(--line); background: var(--card);
-  padding: 20px 16px;
-  transition: border-color .16s, transform .16s;
+  padding: 6px 24px;
+  border-right: 1px solid var(--line);
+  transition: opacity .16s;
 }
-.eco__half:hover { border-color: var(--blue); transform: translateY(-2px); }
+.eco__half:hover { opacity: .78; }
+.eco__slogan {
+  margin: 0; padding-left: 24px;
+  font-size: 10.5px; font-weight: 700; line-height: 2;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
+  text-align: left; white-space: nowrap;
+}
 .eco__kicker {
   font-size: 10px; font-weight: 700; letter-spacing: .18em;
   text-transform: uppercase; color: var(--ink-3);
@@ -633,12 +658,6 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .eco__baselogo { width: 24px; height: 24px; }
 .eco__basename { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -.01em; }
 .eco__sub { font-size: 11px; color: var(--ink-3); }
-
-.foot__slogan {
-  margin: 30px 0 0; text-align: center;
-  font-size: clamp(11px, 1.5vw, 13px); font-weight: 700;
-  letter-spacing: .24em; text-transform: uppercase; color: var(--ink-2);
-}
 
 .foot__fine {
   margin: 22px auto 0; max-width: 74ch; text-align: center;
@@ -674,19 +693,18 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 @media (max-width: 1080px) {
   .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pitch__in { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
-  /* Below this width there is no room for a vertical rail, so it lies down
-     across the full row and the markup's <br> comes back. */
+  /* Stacked: the slogan crosses the full row and centres. */
   .pitch__slogan {
-    writing-mode: horizontal-tb; justify-self: start;
-    grid-column: 1 / -1; text-align: center; width: 100%;
-    border-left: 0; padding-left: 0; border-top: 1px solid var(--line);
-    padding-top: 18px; white-space: normal;
+    grid-column: 1 / -1; text-align: center; white-space: normal;
+    border-top: 1px solid var(--line); padding-top: 16px;
   }
-  .pitch__slogan br { display: inline; }
 }
 
 @media (max-width: 860px) {
-  .eco { grid-template-columns: 1fr; }
+  .eco { grid-template-columns: 1fr; gap: 18px; }
+  /* Stacked, the vertical rules become horizontal ones between rows. */
+  .eco__half { border-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
+  .eco__slogan { padding-left: 0; text-align: center; white-space: normal; }
   .pitch__in { grid-template-columns: 1fr; }
   .lockup__name { display: none; }
 }
