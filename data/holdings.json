@@ -10,8 +10,8 @@
     "public RPC, and what would make it so."
   ],
   "source": "https://www.stockify.finance/indices/0x4e2e072c38735bd0b9374f429cf0ae1c07412450",
-  "readAt": "2026-09-29T19:51:36.418Z",
-  "paidToHoldersUsd": 638,
+  "readAt": "2026-09-29T19:55:05.434Z",
+  "paidToHoldersUsd": 639,
   "feesCollectedUsd": 722,
   "feesCollectedToken": "0.2682 ETH",
   "roundsPaid": 18,
@@ -44,7 +44,9 @@
       "tokens": 0.3154,
       "weightPct": 17,
       "name": "Alphabet",
-      "address": "0xc7b88a684104f17e02f232cb82dc47b72178f1c0",
+      "address": null,
+      "symbol": null,
+      "decimals": null,
       "verified": false
     },
     {
@@ -52,7 +54,9 @@
       "tokens": 0.4337,
       "weightPct": 17,
       "name": "Amazon",
-      "address": "0xd0237a0d6b112460f63a725667fa0d344bc661ab",
+      "address": null,
+      "symbol": null,
+      "decimals": null,
       "verified": false
     },
     {
@@ -60,7 +64,9 @@
       "tokens": 0.7307,
       "weightPct": 17,
       "name": "SpaceX",
-      "address": "0x407d192b7a94b1b41a260afda7e84e2f588df5a4",
+      "address": null,
+      "symbol": null,
+      "decimals": null,
       "verified": false
     },
     {
@@ -68,9 +74,11 @@
       "tokens": 0.2807,
       "weightPct": 17,
       "name": "Tesla",
-      "address": "0xb3b8abfe583e64698dd6275f2deab223fe76c8ba",
+      "address": null,
+      "symbol": null,
+      "decimals": null,
       "verified": false
     }
   ],
-  "verifiedAt": "2026-09-29T19:51:37.605Z"
+  "verifiedAt": "2026-09-29T19:55:24.187Z"
 }
