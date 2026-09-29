@@ -7,7 +7,8 @@ going back to whoever made the original.
 | File | What it is | What comes from it |
 |---|---|---|
 | `si_logo.png` | The chrome **SI** monogram as supplied, 1774×887, RGBA with a transparent ground | `images/si_mark.png` (trimmed to its own alpha bounds), `images/si_mark.webp` (the served copy), and every icon: `images/favicon.png`, `icon-192`, `icon-512`, `apple-touch-icon`, `/favicon.ico` |
-| `si_header.png` | The supplied header, 1983×793. **Only its lower third is used** — see below | `images/hero_earth.webp`, and the ground colour `#010d29` sampled from its own night sky |
+| `si_header.png` | The supplied header, 1983×793. **Only the parts with no person in them are used** — see below | `images/hero_scene.webp` (the full-bleed hero), `images/hero_earth.webp`, and the ground colour `#010d29` sampled from its own night sky |
+| `launch_banner.jpg` | The banner the token launched with, 1280×427, pulled from thestonks.exchange by `.github/workflows/fetch-art.yml`. Also carries the two portraits | the six company marks in `images/dist/`, cut from the logo row across its middle |
 | `si_footer.png` | The supplied footer, 1983×793. **Only its upper third is used** — see below | `images/footer_band.webp` |
 
 ## Why only part of two of them is used
@@ -22,6 +23,13 @@ agreed before any of this was built.
 What does ship is **the part of each picture that has no people in it**, which
 turned out to be the best part of both:
 
+- **`hero_scene.webp`** — the hero the page actually serves, 2400×1000. Two
+  people-free pieces of the header composited: the starfield and nebula from
+  the **column between the two figures** (x 0.38–0.58, which is sky top to
+  bottom), mirror-tiled out to full width, with the full-width Earth band
+  feathered across the bottom. Mirror-tiling rather than stretching, because
+  stretching that column six times over smeared the nebula into horizontal
+  streaks; mirrored it just reads as more sky.
 - **`hero_earth.webp`** — the bottom 38% of the header: the curve of the Earth
   at night, city lights, and the blue and red network arcs sweeping across it.
   The blue-left / red-right framing survives the crop, so the geopolitical

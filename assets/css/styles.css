@@ -183,36 +183,36 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .hero {
   position: relative;
-  padding: clamp(18px, 2.4vw, 34px) var(--gutter) 0;
-  text-align: center;
+  display: grid;
+  place-items: center;
+  /* The scene is 2.4:1 and the design's hero is about 2.56:1, so the section
+     takes the picture's shape rather than a height in vh — a vh-based hero
+     slides the crop around as the window changes, and this picture puts the
+     Earth's limb at a fixed place in the frame. */
+  min-height: clamp(380px, 41vw, 680px);
+  padding: clamp(20px, 3vw, 44px) var(--gutter);
   overflow: hidden;
-  background:
-    radial-gradient(120% 90% at 50% 0%, #0a1f4d 0%, rgba(10,31,77,0) 62%),
-    var(--page);
+  background: var(--page);
+  text-align: center;
 }
 
-/* The star field is DRAWN, not shipped: three radial-gradient tiles, so it
-   stays crisp at any zoom and costs no request. */
-.hero__stars {
+.hero__bg {
   position: absolute; inset: 0;
-  background-image:
-    radial-gradient(1.4px 1.4px at 18% 22%, rgba(255,255,255,.85) 50%, transparent 51%),
-    radial-gradient(1.1px 1.1px at 63% 12%, rgba(255,255,255,.65) 50%, transparent 51%),
-    radial-gradient(1.6px 1.6px at 84% 34%, rgba(255,255,255,.75) 50%, transparent 51%),
-    radial-gradient(1px 1px at 38% 48%, rgba(255,255,255,.5) 50%, transparent 51%),
-    radial-gradient(1.2px 1.2px at 8% 62%, rgba(255,255,255,.55) 50%, transparent 51%),
-    radial-gradient(1.3px 1.3px at 74% 66%, rgba(255,255,255,.6) 50%, transparent 51%);
-  background-size: 460px 320px, 380px 300px, 520px 360px, 300px 240px, 420px 340px, 350px 280px;
-  opacity: .5;
-  pointer-events: none;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center bottom;
+  z-index: 0;
 }
 
-.hero__copy { position: relative; z-index: 1; }
+/* A short wash at the foot so the picture meets the pitch strip below it
+   without a hard line. */
+.hero::after {
+  content: ''; position: absolute; inset: auto 0 0 0; height: 16%;
+  background: linear-gradient(180deg, rgba(4,17,47,0) 0%, var(--page-2) 100%);
+  z-index: 1; pointer-events: none;
+}
 
-/* The design's mark is about a quarter of the frame's width and the type
-   sits tight beneath it. An earlier pass had it at 34vw with 100px of air
-   above and below, which stretched the hero to roughly four times the height
-   the design gives it and left the mark floating in empty navy. */
+.hero__copy { position: relative; z-index: 2; }
+
 .hero__mark {
   width: clamp(150px, 19vw, 280px);
   height: auto;
@@ -245,27 +245,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   font-size: clamp(10px, 1.1vw, 12px);
   font-weight: 600; letter-spacing: .26em; text-transform: uppercase;
   color: var(--ink-2);
-}
-
-.hero__earth {
-  position: relative; z-index: 0;
-  margin: clamp(16px, 2.2vw, 30px) calc(var(--gutter) * -1) 0;
-  /* The band's own ratio. Stated so the box can never be squarer than the
-     picture; see images/src/README.md for what a squarer box costs. */
-  aspect-ratio: 1920 / 292;
-}
-/* Wide screens have room to show the band at its own ratio. Narrow ones do
-   not, and a 6.6:1 strip on a phone is a horizon line rather than a picture,
-   so below 900px the box gets squarer and cover crops the sides instead. */
-@media (min-width: 900px) { .hero__earth { aspect-ratio: 1920 / 360; } }
-.hero__earthimg { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
-
-/* The band's top edge feathered into the ground, so the photograph and the
-   flat colour meet with no line — the same trick the social card uses. */
-.hero__earth::before {
-  content: ''; position: absolute; inset: 0 0 auto 0; height: 38%;
-  background: linear-gradient(180deg, var(--page) 0%, rgba(1,13,41,0) 100%);
-  z-index: 1; pointer-events: none;
+  text-shadow: 0 1px 12px rgba(1,13,41,.9);
 }
 
 /* ==========================================================================
@@ -721,7 +701,6 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
      has to survive it. */
   .btn { padding: 8px 10px; font-size: 12px; }
   .btn--ca .btn__ca { display: inline; font-size: 12px; }
-  .hero__earth::before { height: 46%; }
 }
 
 @media (max-width: 380px) {
