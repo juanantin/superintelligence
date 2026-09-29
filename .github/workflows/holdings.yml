@@ -48,6 +48,16 @@ jobs:
       - name: Read the panel
         run: node scripts/holdings-probe.mjs
 
+      # The addresses above came off a third-party page, so they are claims.
+      # This reads symbol() and decimals() for each one and drops any whose
+      # symbol does not match the ticker the panel filed it under. Twelve
+      # eth_calls — nothing like the unfiltered log scan the public endpoint
+      # refuses, so it needs no private RPC.
+      - name: Verify those addresses on chain
+        env:
+          RPC_URL: ${{ secrets.RPC_URL || 'https://mainnet.base.org' }}
+        run: node scripts/verify-holdings.mjs
+
       - name: Commit if anything changed
         # NOT always(): the probe exits non-zero when it parsed no names, and
         # in that case it deliberately leaves the previous file alone. Running
