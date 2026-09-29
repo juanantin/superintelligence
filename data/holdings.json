@@ -10,7 +10,7 @@
     "public RPC, and what would make it so."
   ],
   "source": "https://www.stockify.finance/indices/0x4e2e072c38735bd0b9374f429cf0ae1c07412450",
-  "readAt": "2026-09-29T19:34:59.953Z",
+  "readAt": "2026-09-29T19:47:51.541Z",
   "paidToHoldersUsd": 638,
   "feesCollectedUsd": 722,
   "feesCollectedToken": "0.2682 ETH",
@@ -23,37 +23,43 @@
       "ticker": "NVDAc",
       "tokens": 0.4803,
       "weightPct": 17,
-      "name": "NVIDIA"
+      "name": "NVIDIA",
+      "address": "0x9a2154ada61e7b15815795053952036b37141709"
     },
     {
       "ticker": "AAPLc",
       "tokens": 0.3208,
       "weightPct": 17,
-      "name": "Apple"
+      "name": "Apple",
+      "address": "0xabe55453fafb57093d31205dae0bd5b15d9ebd07"
     },
     {
       "ticker": "GOOGLc",
       "tokens": 0.3154,
       "weightPct": 17,
-      "name": "Alphabet"
+      "name": "Alphabet",
+      "address": "0xc7b88a684104f17e02f232cb82dc47b72178f1c0"
     },
     {
       "ticker": "AMZNc",
       "tokens": 0.4337,
       "weightPct": 17,
-      "name": "Amazon"
+      "name": "Amazon",
+      "address": "0xd0237a0d6b112460f63a725667fa0d344bc661ab"
     },
     {
       "ticker": "SPCXc",
       "tokens": 0.7307,
       "weightPct": 17,
-      "name": "SpaceX"
+      "name": "SpaceX",
+      "address": "0x407d192b7a94b1b41a260afda7e84e2f588df5a4"
     },
     {
       "ticker": "TSLAc",
       "tokens": 0.2807,
       "weightPct": 17,
-      "name": "Tesla"
+      "name": "Tesla",
+      "address": "0xb3b8abfe583e64698dd6275f2deab223fe76c8ba"
     }
   ]
 }
