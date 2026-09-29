@@ -469,14 +469,14 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 .stats {
-  display: grid; gap: 8px;
+  display: grid; gap: 6px;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .stat {
   border: 1px solid var(--line);
   background: var(--card);
-  padding: 10px 11px;
+  padding: 8px 9px;
   text-align: left;
   transition: transform .16s, border-color .16s, box-shadow .16s;
   display: grid;
@@ -494,29 +494,29 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .stat__icon {
   grid-area: icon;
   display: grid; place-items: center;
-  width: 30px; height: 30px;
+  width: 26px; height: 26px;
   background: var(--blue-soft);
   border: 1px solid var(--line);
   color: var(--blue);
 }
 .stat__icon svg {
-  width: 17px; height: 17px;
+  width: 15px; height: 15px;
   fill: none; stroke: currentColor; stroke-width: 1.6;
   stroke-linecap: round; stroke-linejoin: round;
 }
 
 .stat__label {
   grid-area: label;
-  font-size: 9px; font-weight: 700; letter-spacing: .09em;
+  font-size: 8.5px; font-weight: 700; letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink-3);
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   /* Two lines' worth, reserved, so a one-line and a two-line label do not
      put their figures at different heights across the row. */
   min-height: 2.4em;
 }
 .stat__value {
   grid-area: value;
-  margin: 0; font-size: clamp(15px, 1.5vw, 19px); font-weight: 800;
+  margin: 0; font-size: clamp(13px, 1.25vw, 17px); font-weight: 800;
   letter-spacing: -.01em; word-break: break-word;
 }
 .stat__unit { font-size: .6em; font-weight: 700; color: var(--ink-3); margin-left: 5px; }
@@ -578,31 +578,36 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .dist__grid {
   list-style: none; margin: 0; padding: 0;
-  display: grid; gap: 8px;
+  /* Six across at EVERY width. The row is a comparison — six names side by
+     side — and wrapping it to 3+3 or 2+2+2 turns that into a grid you have to
+     read twice. The cards shed padding and type instead; minmax(0,1fr) lets
+     the columns go genuinely narrow rather than refusing below their content. */
+  display: grid; gap: 5px;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 .dist__card {
   border: 1px solid var(--line);
   background: var(--card);
-  padding: 12px 8px; text-align: center;
+  padding: 8px 4px; text-align: center;
   transition: transform .16s, border-color .16s;
 }
 .dist__card:hover { transform: translateY(-2px); border-color: var(--blue); }
-.dist__logo { width: 30px; height: 30px; margin: 0 auto 7px; object-fit: contain; }
+.dist__logo { width: 22px; height: 22px; margin: 0 auto 5px; object-fit: contain; }
 .dist__logo--text {
   display: grid; place-items: center;
   background: var(--blue-soft); border: 1px solid var(--line);
   font-weight: 800; font-size: 15px; color: var(--ink);
 }
 .dist__name {
-  font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  font-size: 9.5px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .dist__ticker {
-  margin: 1px 0 0; font-size: 9.5px; font-weight: 700;
+  margin: 0; font-size: 8.5px; font-weight: 700;
   letter-spacing: .08em; color: var(--ink-3);
 }
-.dist__tokens { margin: 7px 0 0; font-size: 17px; font-weight: 800; }
-.dist__usd { margin: 1px 0 0; font-size: 10.5px; font-weight: 600; color: var(--blue); }
+.dist__tokens { margin: 5px 0 0; font-size: 14px; font-weight: 800; }
+.dist__usd { margin: 0; font-size: 9px; font-weight: 600; color: var(--blue); }
 
 /* ==========================================================================
    FOOTER
@@ -640,6 +645,9 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   transition: opacity .16s;
 }
 .eco__half:hover { opacity: .78; }
+/* Not a link, so it does not offer the hover a link offers. */
+.eco__half--static { cursor: default; }
+.eco__half--static:hover { opacity: 1; }
 .eco__slogan {
   margin: 0; padding-left: 24px;
   font-size: 10.5px; font-weight: 700; line-height: 2;
@@ -690,7 +698,6 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 @media (max-width: 1080px) {
   .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .dist__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pitch__in { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
   /* Stacked: the slogan crosses the full row and centres. */
   .pitch__slogan {
@@ -710,7 +717,15 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 @media (max-width: 620px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .dist__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Still six across; below this width they lose the logo and the ticker
+     rather than the row. */
+  .dist__grid { gap: 3px; }
+  .dist__card { padding: 7px 2px; }
+  .dist__logo { width: 18px; height: 18px; }
+  .dist__ticker { display: none; }
+  .dist__name { font-size: 8px; letter-spacing: 0; }
+  .dist__tokens { font-size: 11px; }
+  .dist__usd { font-size: 8px; }
   /* The buttons stay on one line down to 320px, shedding padding and type
      size as they go — the template's rule, and the CA chip is the one that
      has to survive it. */
