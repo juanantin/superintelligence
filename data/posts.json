@@ -8,7 +8,7 @@
     "",
     "Edit data/post-urls.json to change which posts appear."
   ],
-  "fetchedAt": "2026-09-30T16:16:00.680Z",
+  "fetchedAt": "2026-09-30T20:54:41.636Z",
   "posts": [
     {
       "url": "https://x.com/FoxNews/status/2105021743970558177",
@@ -69,6 +69,33 @@
       "text": "LATEST: 🤖 Mark Zuckerberg says he believes \"superintelligence will create significant new opportunities for all people and businesses.\"",
       "name": "CoinMarketCap",
       "handle": "CoinMarketCap",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/Forbes/status/2105151934487293993",
+      "text": "Trump Signs Order Renaming AI To ‘Super Intelligence’— Here’s What It Says",
+      "name": "Forbes",
+      "handle": "Forbes",
+      "date": "2026-09-30",
+      "dateText": "September 30, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/DavidSacks/status/2105312446949085627",
+      "text": "The Bretton Woods of Super Intelligence",
+      "name": "David Sacks",
+      "handle": "DavidSacks",
+      "date": "2026-09-30",
+      "dateText": "September 30, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/WhiteHouse/status/2105039074033873258",
+      "text": "America leads the future of Super Intelligence. 🇺🇸",
+      "name": "The White House",
+      "handle": "WhiteHouse",
       "date": "2026-09-29",
       "dateText": "September 29, 2026",
       "via": "oembed"
