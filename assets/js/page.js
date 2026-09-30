@@ -170,7 +170,7 @@
     return '' +
       '<li class="quote quote--project">' +
         '<div class="quote__top">' +
-          '<img class="quote__avatar quote__avatar--mark" src="images/si_mark.webp" alt="" width="1000" height="500" loading="lazy" decoding="async">' +
+          '<img class="quote__avatar quote__avatar--mark" src="images/si_icon.png" alt="" width="545" height="545" loading="lazy" decoding="async">' +
           '<span class="quote__who">' +
             '<b class="quote__name">$SI</b>' +
             '<span class="quote__role">@SuperIQ_base</span>' +

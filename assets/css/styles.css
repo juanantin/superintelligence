@@ -4,26 +4,30 @@
    DARK BY DESIGN. The template this came from was light throughout and
    sampled its page colour from a bright banner; every colour below is new.
 
-   --page is sampled from the supplied header artwork's OWN night sky
-   (#010d29, averaged over the upper-middle of the frame, away from the glow).
-   That is what lets the Earth band meet the flat ground with no seam, and it
-   is why the value is not a round number. Resample it if the artwork changes.
+   --page is sampled from the supplied artwork's OWN ground, which after the
+   rebrand reads a true black in its quiet corners. Resample it whenever the
+   artwork changes: the old value was a deep navy taken from the previous
+   header, and against these pictures it sat visibly lighter than every one of
+   them, putting a rim around each band.
 
-   The two accents are the artwork's own: --blue from the left-hand arcs,
-   --red from the right. They carry the two-power framing through the page
-   without a single likeness — blue leads, red answers.
+   The accents are the artwork's own — the blue and the gold that run through
+   the light streaks.
    ========================================================================== */
 
 :root {
-  --page:        #010d29;   /* sampled from the artwork's night sky */
-  --page-2:      #04112f;   /* one step up, for banded sections */
-  --card:        #0a1838;
-  --card-2:      #0d1d42;
-  --line:        #1b2d56;
+  /* Resampled for the rebrand. The new artwork's ground reads a true #000000
+     in its quiet corners, so the old deep navy sat visibly lighter than every
+     picture on the page and gave each band a rim. These are near-black with a
+     faint cool cast, which is where the art's own shadows sit. */
+  --page:        #050608;
+  --page-2:      #090b11;   /* one step up, for banded sections */
+  --card:        #0d1018;
+  --card-2:      #12161f;
+  --line:        #1e2431;
 
   --ink:         #eaf0ff;   /* primary type */
-  --ink-2:       #a8b8d8;   /* labels, secondary */
-  --ink-3:       #6f82a8;   /* fine print */
+  --ink-2:       #a9b4c8;   /* labels, secondary */
+  --ink-3:       #6f7a8e;   /* fine print */
 
   --blue:        #2f7dff;
   --blue-soft:   rgba(47, 125, 255, .14);
@@ -87,7 +91,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 .topbar {
   position: sticky; top: 0; z-index: 40;
-  background: rgba(1, 13, 41, .82);
+  background: rgba(5, 6, 8, .86);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
@@ -104,7 +108,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   display: flex; align-items: center; gap: 10px;
   text-decoration: none; min-width: 0;
 }
-.lockup__mark { width: 40px; height: auto; flex: none; }
+.lockup__mark { width: 30px; height: 30px; flex: none; border-radius: 50%; }
 .lockup__name {
   font-weight: 800; font-size: 13px; letter-spacing: .14em;
   text-transform: uppercase; color: var(--ink);
@@ -185,12 +189,16 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   position: relative;
   display: grid;
   place-items: center;
+  align-content: end;
   /* The scene is 2.4:1 and the design's hero is about 2.56:1, so the section
      takes the picture's shape rather than a height in vh — a vh-based hero
      slides the crop around as the window changes, and this picture puts the
      Earth's limb at a fixed place in the frame. */
-  min-height: clamp(360px, 39vw, 640px);
-  padding: clamp(20px, 3vw, 44px) var(--gutter);
+  /* The new hero art is 1.795:1 and carries the wordmark at its centre, so
+     the section takes a ratio near the picture's own and object-position
+     holds the centre — a wide, short box would crop the name off both ends. */
+  min-height: clamp(300px, 44vw, 660px);
+  padding: clamp(20px, 3vw, 44px) var(--gutter) clamp(16px, 2.2vw, 28px);
   overflow: hidden;
   background: var(--page);
   text-align: center;
@@ -207,63 +215,46 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
    without a hard line. */
 .hero::after {
   content: ''; position: absolute; inset: auto 0 0 0; height: 16%;
-  background: linear-gradient(180deg, rgba(4,17,47,0) 0%, var(--page-2) 100%);
+  background: linear-gradient(180deg, rgba(9,11,17,0) 0%, var(--page-2) 100%);
   z-index: 1; pointer-events: none;
 }
 
 /* A soft scrim under the type only. The Earth's city lights run right through
    where the kicker sits, and at 12px letterspaced it was unreadable against
    them; a drop shadow alone was not enough over the bright limb. */
+/* The strapline sits at the FOOT of the picture, below the wordmark that is
+   part of the artwork, rather than centred over it. */
 .hero__copy {
   position: relative; z-index: 2;
-  padding: 10px 26px 16px;
-  background: radial-gradient(60% 70% at 50% 58%, rgba(1,13,41,.72) 0%, rgba(1,13,41,0) 100%);
+  align-self: end;
+  text-align: center;
+  padding: 0 20px 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
 }
 
-.hero__mark {
-  width: clamp(150px, 19vw, 280px);
-  height: auto;
-  margin-inline: auto;
-  filter: drop-shadow(0 0 34px rgba(47,125,255,.42))
-          drop-shadow(0 0 60px rgba(255,59,48,.18));
-}
 
-.hero__title {
-  margin-top: 10px;
-  font-size: clamp(18px, 2.3vw, 34px);
-  font-weight: 800;
-  line-height: 1.04;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  /* Chrome type, to echo the mark rather than compete with it. */
-  background: linear-gradient(180deg, #ffffff 0%, #cfe0ff 44%, #7f9ed6 62%, #ffffff 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
 
-.hero__rule {
-  width: 110px; height: 2px; margin: 13px auto 0;
-  background: linear-gradient(90deg, transparent, var(--blue) 30%, var(--red) 70%, transparent);
-}
+
+
+
 
 .hero__base {
-  margin: 14px 0 0;
+  margin: 0;
   display: inline-flex; align-items: center; gap: 7px;
   font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
   color: var(--ink-2);
-  text-shadow: 0 1px 3px rgba(1,13,41,1), 0 2px 14px rgba(1,13,41,.95);
+  text-shadow: 0 1px 3px rgba(5,6,8,1), 0 2px 14px rgba(5,6,8,.95);
 }
 .hero__baseon { color: var(--ink-3); }
 .hero__baselogo { width: 13px; height: 13px; color: #2f7dff; }
 .hero__basename { color: var(--ink); letter-spacing: .1em; }
 
 .hero__kicker {
-  margin: 11px 0 0;
+  margin: 0;
   font-size: clamp(10px, 1.1vw, 12px);
   font-weight: 600; letter-spacing: .26em; text-transform: uppercase;
   color: var(--ink);
-  text-shadow: 0 1px 3px rgba(1,13,41,1), 0 2px 16px rgba(1,13,41,.95);
+  text-shadow: 0 1px 3px rgba(5,6,8,1), 0 2px 16px rgba(5,6,8,.95);
 }
 
 /* ==========================================================================
@@ -329,6 +320,28 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
   text-align: right; align-self: center; white-space: nowrap;
 }
+
+/* ==========================================================================
+   MID BAND
+   ========================================================================== */
+
+.midband {
+  position: relative;
+  /* The picture is 1.78:1; a divider wants far wider. cover crops the sides,
+     and object-position centre keeps where the light converges. */
+  aspect-ratio: 4 / 1;
+  overflow: hidden;
+  background: var(--page);
+}
+.midband__img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+/* Both edges washed into the sections above and below, so the band reads as
+   part of the page rather than a photograph dropped into it. */
+.midband::before, .midband::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 30%;
+  pointer-events: none;
+}
+.midband::before { top: 0; background: linear-gradient(180deg, var(--page-2) 0%, rgba(9,11,17,0) 100%); }
+.midband::after  { bottom: 0; background: linear-gradient(180deg, rgba(5,6,8,0) 0%, var(--page) 100%); }
 
 /* ==========================================================================
    A GLOBAL MOMENT + QUOTE WALL
@@ -415,7 +428,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 /* The project's own cards carry the SI mark rather than initials — it is the
    account's actual avatar, so nothing here stands in for a person. */
 .quote__avatar--mark {
-  width: 30px; height: auto; object-fit: contain;
+  width: 30px; height: 30px; object-fit: cover; border-radius: 50%;
   background: none; border: 0;
 }
 .quote__who { min-width: 0; flex: 1; }
@@ -631,12 +644,24 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   /* The boardroom picture's own 2.5:1. It was 7.4:1 when this slot held a
      thin skyline band; at that shape this image would keep a strip across
      the table and lose the room, the windows and both flags. */
-  aspect-ratio: 2400 / 960;
+  /* The new footer art is 1.78:1 and its Earth limb sits along the bottom,
+     so the box is 3.4:1 and object-position bottom keeps the limb rather than
+     centring on empty sky. */
+  aspect-ratio: 2.9 / 1;
 }
-.foot__bandimg { width: 100%; height: 100%; object-fit: cover; }
+.foot__bandimg { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
+/* A SHORT wash at the foot only. At 45% this covered the bottom of the frame,
+   which is exactly where this picture's Earth limb sits — the band rendered
+   as a black gap with the artwork intact in the file. */
 .foot__band::after {
-  content: ''; position: absolute; inset: auto 0 0 0; height: 45%;
-  background: linear-gradient(180deg, rgba(4,17,47,0) 0%, var(--page-2) 100%);
+  content: ''; position: absolute; inset: auto 0 0 0; height: 16%;
+  background: linear-gradient(180deg, rgba(9,11,17,0) 0%, var(--page-2) 100%);
+}
+/* And one at the top, so it does not butt against the section above it. */
+.foot__band::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 18%;
+  background: linear-gradient(180deg, var(--page) 0%, rgba(5,6,8,0) 100%);
+  z-index: 1;
 }
 
 .foot__in { padding-block: clamp(22px, 3vw, 38px); }

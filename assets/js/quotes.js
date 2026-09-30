@@ -76,7 +76,7 @@ window.QUOTES = [
    itself publishes for this token, read from thestonks.exchange /api/coins in
    the discovery run:
 
-     "$SI — Super Intelligence Race. Hold $SI and earn rewards in $NVDA,
+     "$SI — Super Intelligence Base. Hold $SI and earn rewards in $NVDA,
       $AMZN, $AAPL, $GOOGL, $TSLA & $SPCX. Built on Base."
 
    So the basket is real and it is six names. What is NOT yet known is whether

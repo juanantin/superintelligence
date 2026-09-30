@@ -32,12 +32,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The chrome SI monogram above the curve of the Earth at night, city lights and network arcs below.">
+<meta property="og:image:alt" content="SUPER INTELLIGENCE — SI, set in chrome against streams of blue and gold light.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@SuperIQ_base">
 <meta name="twitter:image" content="https://superintelligence-sigma.vercel.app/images/social.jpg">
-<meta name="twitter:image:alt" content="The chrome SI monogram above the curve of the Earth at night, city lights and network arcs below.">
-<meta name="theme-color" content="#010d29">
+<meta name="twitter:image:alt" content="SUPER INTELLIGENCE — SI, set in chrome against streams of blue and gold light.">
+<meta name="theme-color" content="#050608">
 
 <!-- favicon.ico sits at the root because browsers request /favicon.ico on
      their own, regardless of these tags. Every icon is generated from the
@@ -49,10 +49,10 @@
 
      The ?v= is what makes a browser let go of the icon it has cached;
      node scripts/stamp.mjs moves all of them together. -->
-<link rel="icon" href="favicon.ico?v=24" sizes="any">
-<link rel="icon" type="image/png" href="images/favicon.png?v=24">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=24">
-<link rel="manifest" href="site.webmanifest?v=24">
+<link rel="icon" href="favicon.ico?v=27" sizes="any">
+<link rel="icon" type="image/png" href="images/favicon.png?v=27">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=27">
+<link rel="manifest" href="site.webmanifest?v=27">
 
 <!-- One face — Inter — across five weights. 800 is not decoration: the
      headings and the wordmark are set in it, and asking for a weight the file
@@ -70,7 +70,7 @@
       media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
-<link rel="stylesheet" href="assets/css/styles.css?v=24">
+<link rel="stylesheet" href="assets/css/styles.css?v=27">
 </head>
 <body>
 
@@ -79,9 +79,9 @@
   <div class="topbar__in">
 
     <a class="lockup" href="#top">
-      <img class="lockup__mark" src="images/si_mark.webp?v=24" alt=""
-           width="1000" height="500" decoding="async">
-      <span class="lockup__name">Super Intelligence Race</span>
+      <img class="lockup__mark" src="images/si_icon.png?v=27" alt=""
+           width="545" height="545" decoding="async">
+      <span class="lockup__name">Super Intelligence Base</span>
     </a>
 
     <!-- The same three controls as the hero, and deliberately the same
@@ -141,29 +141,21 @@
 <main id="top">
 <section class="hero">
 
-  <!-- ONE full-bleed picture, as the design has it — not a band of artwork
-       under a field of flat colour, which is what this was and why it read as
-       mostly empty navy. images/hero_scene.webp is composited from the
-       supplied header: the starfield and nebula from the column BETWEEN the
-       two figures, mirror-tiled to full width (stretching smeared it into
-       horizontal streaks), with the real, undistorted full-width Earth band
-       feathered across the bottom. No part of either figure is in it.
-       See images/src/README.md for the derivation. -->
-  <img class="hero__bg" src="images/hero_scene.webp?v=24" alt=""
-       width="2400" height="960" fetchpriority="high" decoding="async">
+  <!-- ONE picture, and it already CARRIES the wordmark — "SUPER
+       INTELLIGENCE" over "SI" is part of the artwork. So nothing is drawn on
+       top of it but the strapline: overlaying the mark and a typeset title, as
+       this did before the rebrand, would have set the name twice. The <h1> is
+       screen-reader only for the same reason — the name is in the picture,
+       where a screen reader cannot read it. -->
+  <img class="hero__bg" src="images/hero_scene.webp?v=27" alt=""
+       width="2000" height="1114" fetchpriority="high" decoding="async">
+
+  <h1 class="sr-only">Super Intelligence Base — $SI on Base</h1>
 
   <div class="hero__copy">
-    <img class="hero__mark" src="images/si_mark.webp?v=24"
-         alt="Super Intelligence"
-         width="1000" height="500" fetchpriority="high" decoding="async">
-    <h1 class="hero__title">Super<br>Intelligence<br>Race</h1>
-    <p class="hero__rule" aria-hidden="true"></p>
     <p class="hero__kicker">Real companies × Real progress × Real rewards</p>
 
-    <!-- Not a link, and not in the footer lockup row any more: it states
-         which chain the token lives on, which belongs with the token's own
-         identity rather than beside the two partner links a holder actually
-         needs to click. -->
+    <!-- Not a link: it states which chain the token lives on. -->
     <p class="hero__base">
       <span class="hero__baseon">Built on</span>
       <svg class="hero__baselogo" viewBox="0 0 111 111" aria-hidden="true" focusable="false">
@@ -378,6 +370,16 @@
   </div>
 </section>
 
+<!-- ===================== MID BAND ===================== -->
+<!-- The supplied middle artwork, full-bleed, between the pitch and the
+     editorial section. Its own 1.78:1 is far squarer than a divider wants, so
+     the box is 4:1 and object-position keeps the centre, where the light
+     converges — the corners are the emptiest part of this picture. -->
+<div class="midband" aria-hidden="true">
+  <img class="midband__img" src="images/mid_band.webp?v=27" alt=""
+       width="2000" height="1126" loading="lazy" decoding="async">
+</div>
+
 <!-- ===================== A GLOBAL MOMENT ===================== -->
 <section class="moment">
   <div class="wrap moment__in">
@@ -427,7 +429,7 @@
        object-fit: cover crops silently and a squarer box here would keep the
        middle 60% and throw both flags away. -->
   <div class="foot__band" aria-hidden="true">
-    <img class="foot__bandimg" src="images/footer_band.webp?v=24" alt=""
+    <img class="foot__bandimg" src="images/footer_band.webp?v=27" alt=""
          width="2400" height="960" loading="lazy" decoding="async">
   </div>
 
@@ -440,13 +442,13 @@
              which on this ground is invisible. images/src/README.md carries the
              derivation — the greyscale pixels have their LUMINANCE inverted, so
              the antialiasing survives, and the blue/green badge is untouched. -->
-        <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=24" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
+        <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=27" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
         <span class="eco__sub">1B supply launches · creator fee integration</span>
       </a>
 
       <a class="eco__half" id="link-rewards" href="https://www.stockify.finance/" target="_blank" rel="noopener noreferrer">
         <span class="eco__kicker">Holder rewards powered by</span>
-        <img class="eco__logo" src="images/stockify_logo.png?v=24" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
+        <img class="eco__logo" src="images/stockify_logo.png?v=27" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
         <span class="eco__sub">tokenized equities · automated holder distributions</span>
       </a>
 
@@ -524,9 +526,9 @@
 <!-- ?v= is the cache buster: run `node scripts/stamp.mjs` on every deploy,
      which moves every ?v= here and `version` in config.js together. Skip it
      and a CDN keeps serving the previous config.js and app.js. -->
-<script src="config.js?v=24"></script>
-<script src="assets/js/quotes.js?v=24"></script>
-<script src="assets/js/app.js?v=24"></script>
-<script src="assets/js/page.js?v=24"></script>
+<script src="config.js?v=27"></script>
+<script src="assets/js/quotes.js?v=27"></script>
+<script src="assets/js/app.js?v=27"></script>
+<script src="assets/js/page.js?v=27"></script>
 </body>
 </html>
