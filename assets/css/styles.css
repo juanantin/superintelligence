@@ -618,8 +618,8 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
      centring on empty sky. */
   /* Was 2.4:1 and 600px tall with the lockups sitting in its bottom fifth —
      four fifths of it was empty picture. */
-  aspect-ratio: 3.6 / 1;
-  min-height: 230px;
+  aspect-ratio: 3.2 / 1;
+  min-height: 280px;
   display: grid;
 }
 .foot__bandimg {
@@ -634,7 +634,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   position: relative; z-index: 2;
   align-self: end;
   width: 100%;
-  padding: 30px 0 clamp(18px, 2.4vw, 30px);
+  padding: 34px 0 clamp(22px, 2.8vw, 34px);
   /* Heavier than it looks like it needs to be: the lockups land over the
      artwork's brightest run — the Earth limb and the light sweeping across
      it — and at .72 the Stockify sub-line was unreadable against the glow.
@@ -670,9 +670,9 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 /* Hairline dividers between the lockups rather than three boxes — the design
    separates them with rules and no card. */
 .eco__half {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 11px;
   text-align: center; text-decoration: none;
-  padding: 6px 24px;
+  padding: 10px 24px;
   border-right: 1px solid rgba(255,255,255,.14);
   transition: opacity .16s;
 }
@@ -687,20 +687,24 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .eco__half--static:hover { opacity: 1; }
 .eco__slogan {
   margin: 0; padding-left: 24px;
-  font-size: 10.5px; font-weight: 700; line-height: 2;
+  font-size: 12px; font-weight: 700; line-height: 1.95;
   letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
   text-align: left; white-space: nowrap;
 }
 .eco__kicker {
-  font-size: 10px; font-weight: 700; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--ink-3);
+  font-size: 13px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-2);
 }
-.eco__logo { width: auto; max-height: 30px; }
-.eco__logo--stonks { max-height: 26px; }
+/* Sized against the artwork rather than against each other: the Stockify
+   lockup is a mark plus a wordmark and reads large at a given height, while
+   the Stonks one is a wide single line and reads small at the same height —
+   so they are set to LOOK the same size, not to measure the same. */
+.eco__logo { width: auto; max-height: 52px; }
+.eco__logo--stonks { max-height: 40px; }
 .eco__base { display: inline-flex; align-items: center; gap: 9px; color: #2f7dff; }
 .eco__baselogo { width: 24px; height: 24px; }
 .eco__basename { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -.01em; }
-.eco__sub { font-size: 11px; color: var(--ink-3); }
+.eco__sub { font-size: 12.5px; color: var(--ink-3); }
 
 .foot__fine {
   margin: 0 auto; max-width: 74ch; text-align: center;
