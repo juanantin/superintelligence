@@ -49,10 +49,10 @@
 
      The ?v= is what makes a browser let go of the icon it has cached;
      node scripts/stamp.mjs moves all of them together. -->
-<link rel="icon" href="favicon.ico?v=31" sizes="any">
-<link rel="icon" type="image/png" href="images/favicon.png?v=31">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=31">
-<link rel="manifest" href="site.webmanifest?v=31">
+<link rel="icon" href="favicon.ico?v=32" sizes="any">
+<link rel="icon" type="image/png" href="images/favicon.png?v=32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=32">
+<link rel="manifest" href="site.webmanifest?v=32">
 
 <!-- One face — Inter — across five weights. 800 is not decoration: the
      headings and the wordmark are set in it, and asking for a weight the file
@@ -70,7 +70,7 @@
       media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
-<link rel="stylesheet" href="assets/css/styles.css?v=31">
+<link rel="stylesheet" href="assets/css/styles.css?v=32">
 </head>
 <body>
 
@@ -79,7 +79,7 @@
   <div class="topbar__in">
 
     <a class="lockup" href="#top">
-      <img class="lockup__mark" src="images/si_icon.png?v=31" alt=""
+      <img class="lockup__mark" src="images/si_icon.png?v=32" alt=""
            width="545" height="545" decoding="async">
       <span class="lockup__name">Super Intelligence Base</span>
     </a>
@@ -141,14 +141,44 @@
 <main id="top">
 <section class="hero">
 
-  <!-- ONE picture, and it already CARRIES the wordmark — "SUPER
-       INTELLIGENCE" over "SI" is part of the artwork. So nothing is drawn on
-       top of it but the strapline: overlaying the mark and a typeset title, as
-       this did before the rebrand, would have set the name twice. The <h1> is
-       screen-reader only for the same reason — the name is in the picture,
-       where a screen reader cannot read it. -->
-  <img class="hero__bg" src="images/hero_scene.webp?v=31" alt=""
-       width="2000" height="1114" fetchpriority="high" decoding="async">
+  <!-- The hero clip, looping silently behind the type. It CARRIES the
+       wordmark — "SUPER INTELLIGENCE / SI" is in the footage — so nothing is
+       drawn on top of it but the strapline.
+
+       No controls: it is wallpaper, not a player. muted is what every
+       autoplay policy actually gates on, and playsinline stops iOS taking it
+       fullscreen.
+
+       The poster is the clip's OWN first frame, cut on a runner by
+       .github/workflows/poster.yml — this sandbox has no H.264 decoder. Any
+       other image there would flash a different picture the instant playback
+       began. -->
+  <video
+    class="hero__bg" id="hero-video"
+    poster="images/hero_poster.webp?v=32"
+    data-src="images/si_video.mp4?v=32"
+    width="736" height="400"
+    autoplay muted loop playsinline preload="none"
+    aria-hidden="true" tabindex="-1"></video>
+
+  <script>
+    (function () {
+      var v = document.getElementById('hero-video');
+      if (!v || !v.dataset.src) return;
+      // The poster is a real frame of the clip, so a visitor who has asked for
+      // less motion loses nothing by never loading it — and saves ~8MB.
+      var still = !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (still) return;
+      v.src = v.dataset.src;
+      v.preload = 'auto';
+      v.load();
+      // autoplay alone should suffice on a muted element, but play() costs one
+      // line and fails softly — a rejection just leaves the poster showing,
+      // which is this clip's own first frame.
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    })();
+  </script>
 
   <h1 class="sr-only">Super Intelligence Base — $SI on Base</h1>
 
@@ -291,7 +321,7 @@
      the box is 4:1 and object-position keeps the centre, where the light
      converges — the corners are the emptiest part of this picture. -->
 <div class="midband" aria-hidden="true">
-  <img class="midband__img" src="images/mid_band.webp?v=31" alt=""
+  <img class="midband__img" src="images/mid_band.webp?v=32" alt=""
        width="2000" height="1126" loading="lazy" decoding="async">
 </div>
 
@@ -342,7 +372,7 @@
        The band is no longer aria-hidden, because it now holds real content —
        only the <img> inside it is decorative. -->
   <div class="foot__band">
-    <img class="foot__bandimg" src="images/footer_band.webp?v=31" alt=""
+    <img class="foot__bandimg" src="images/footer_band.webp?v=32" alt=""
          width="2000" height="1126" loading="lazy" decoding="async">
 
     <div class="foot__overlay">
@@ -353,13 +383,13 @@
             <!-- The light variant: the supplied lockup sets "STONKS." in
                  near-black, invisible on this ground. images/src/README.md
                  carries the derivation. -->
-            <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=31" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
+            <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=32" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
             <span class="eco__sub">1B supply launches · creator fee integration</span>
           </a>
 
           <a class="eco__half" id="link-rewards" href="https://www.stockify.finance/" target="_blank" rel="noopener noreferrer">
             <span class="eco__kicker">Holder rewards powered by</span>
-            <img class="eco__logo" src="images/stockify_logo.png?v=31" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
+            <img class="eco__logo" src="images/stockify_logo.png?v=32" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
             <span class="eco__sub">tokenized equities · automated holder distributions</span>
           </a>
 
@@ -441,9 +471,9 @@
 <!-- ?v= is the cache buster: run `node scripts/stamp.mjs` on every deploy,
      which moves every ?v= here and `version` in config.js together. Skip it
      and a CDN keeps serving the previous config.js and app.js. -->
-<script src="config.js?v=31"></script>
-<script src="assets/js/quotes.js?v=31"></script>
-<script src="assets/js/app.js?v=31"></script>
-<script src="assets/js/page.js?v=31"></script>
+<script src="config.js?v=32"></script>
+<script src="assets/js/quotes.js?v=32"></script>
+<script src="assets/js/app.js?v=32"></script>
+<script src="assets/js/page.js?v=32"></script>
 </body>
 </html>

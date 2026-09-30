@@ -197,19 +197,28 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   /* The new hero art is 1.795:1 and carries the wordmark at its centre, so
      the section takes a ratio near the picture's own and object-position
      holds the centre — a wide, short box would crop the name off both ends. */
-  min-height: clamp(300px, 44vw, 660px);
+  min-height: clamp(300px, 43vw, 650px);
   padding: clamp(20px, 3vw, 44px) var(--gutter) clamp(16px, 2.2vw, 28px);
   overflow: hidden;
   background: var(--page);
   text-align: center;
 }
 
+/* The clip is 736x400 (1.84:1) and the section is near that, so cover takes
+   very little off the sides. It is a <video> now, but the rule is the same:
+   a box whose ratio drifts from the footage's crops it silently. */
 .hero__bg {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover; object-position: center center;
   z-index: 0;
+  border: 0;
+  background: var(--page);
+  pointer-events: none;   /* wallpaper, not a player */
 }
+
+/* Reduced motion: the script never loads the clip, so the poster is what
+   shows. Nothing here needs to hide it. */
 
 /* A short wash at the foot so the picture meets the pitch strip below it
    without a hard line. */
