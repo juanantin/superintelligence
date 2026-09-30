@@ -347,8 +347,13 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .quotes__grid {
   list-style: none; margin: 0; padding: 0;
   display: grid; gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
 }
+/* Explicit counts at the wide sizes, because auto-fit left a single card
+   stranded on its own row — 3, 3, 3, 1 at ten posts. These divide the counts
+   the wall actually carries. */
+@media (min-width: 1180px) { .quotes__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (min-width: 981px) and (max-width: 1179px) { .quotes__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 /* Exactly seven cards: three across, then four. Applied by page.js only at
    that count, so any other number flows rather than leaving a hole. */
 @media (min-width: 760px) {
@@ -368,9 +373,9 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   padding: 13px;
   display: flex; flex-direction: column; gap: 9px;
 }
-.quote__top { display: flex; align-items: center; gap: 9px; }
+.quote__top { display: flex; align-items: center; gap: 7px; min-width: 0; }
 .quote__avatar {
-  width: 30px; height: 30px; flex: none;
+  width: 26px; height: 26px; flex: none;
   display: grid; place-items: center;
   background: var(--blue-soft); border: 1px solid var(--line);
   color: var(--ink); font-weight: 800; font-size: 11px; letter-spacing: .04em;
@@ -382,8 +387,17 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   background: none; border: 0;
 }
 .quote__who { min-width: 0; flex: 1; }
-.quote__name { display: block; font-size: 13px; }
-.quote__role { display: block; font-size: 11px; color: var(--ink-3); }
+/* Five across leaves ~165px a card, and at 13px a name like "CoinMarketCap"
+   ran past its own box. Smaller, and both lines clip rather than overflow —
+   the full name is on the post the card links to. */
+.quote__name {
+  display: block; font-size: 11.5px; line-height: 1.25;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.quote__role {
+  display: block; font-size: 10px; color: var(--ink-3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 .quote__x { width: 13px; height: 13px; flex: none; color: var(--ink-3); }
 
 /* A fetched post is a link end to end — the whole card goes to the original,
@@ -619,7 +633,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   /* Was 2.4:1 and 600px tall with the lockups sitting in its bottom fifth —
      four fifths of it was empty picture. */
   aspect-ratio: 3.2 / 1;
-  min-height: 280px;
+  width: 100%;
   display: grid;
 }
 .foot__bandimg {
@@ -744,7 +758,9 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 @media (max-width: 860px) {
-  .eco { grid-template-columns: 1fr; gap: 18px; }
+  /* Content sets the height here; see the note on .foot__band. */
+  .foot__band { aspect-ratio: auto; }
+  .eco { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   /* Stacked, the vertical rules become horizontal ones between rows. */
   .eco__half { border-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
   .eco__slogan { padding-left: 0; text-align: center; white-space: normal; }
