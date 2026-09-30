@@ -21,17 +21,17 @@
     "START_BLOCK, in the same change that fills in the config."
   ],
   "totalDistributed": 0.2913740546673879,
-  "totalDistributedUsd": 779.2070656942622,
-  "totalFeesCollected": 923.9627614308264,
+  "totalDistributedUsd": 782.1557711274961,
+  "totalFeesCollected": 927.45925695132,
   "totalFeesTokens": 0.3455035099301959,
-  "holders": 155,
-  "marketCap": 18298,
-  "liquidity": 13533.46,
-  "volume24h": 66086.55,
-  "updatedAt": "2026-09-30T20:16:37.605Z",
+  "holders": 150,
+  "marketCap": 15865,
+  "liquidity": 12370.82,
+  "volume24h": 54196.39,
+  "updatedAt": "2026-09-30T23:57:19.846Z",
   "meta": {
     "synced": true,
     "blocksBehind": 0,
-    "kexPriceUsd": 2674.25
+    "kexPriceUsd": 2684.37
   }
 }
