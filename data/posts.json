@@ -8,11 +8,11 @@
     "",
     "Edit data/post-urls.json to change which posts appear."
   ],
-  "fetchedAt": "2026-09-30T16:11:47.943Z",
+  "fetchedAt": "2026-09-30T16:16:00.680Z",
   "posts": [
     {
       "url": "https://x.com/FoxNews/status/2105021743970558177",
-      "text": "BREAKING: President Trump says that he and tech leaders have officially changed the name of AI to 'Super Intelligence.' pic.twitter.com/MkuWluXqEu",
+      "text": "BREAKING: President Trump says that he and tech leaders have officially changed the name of AI to 'Super Intelligence.'",
       "name": "Fox News",
       "handle": "FoxNews",
       "date": "2026-09-29",
@@ -21,7 +21,7 @@
     },
     {
       "url": "https://x.com/WhiteHouse/status/2105052569601294798",
-      "text": "Official. pic.twitter.com/BoTuIhxbTg",
+      "text": "Official.",
       "name": "The White House",
       "handle": "WhiteHouse",
       "date": "2026-09-29",
@@ -30,7 +30,7 @@
     },
     {
       "url": "https://x.com/ENERGY/status/2105050123143421978",
-      "text": "AI was so last year. pic.twitter.com/uhtMkyimrC",
+      "text": "AI was so last year.",
       "name": "U.S. Department of Energy",
       "handle": "ENERGY",
       "date": "2026-09-29",
@@ -39,7 +39,7 @@
     },
     {
       "url": "https://x.com/Gemini/status/2105009658708603277",
-      "text": "Artificial Intelligence → Super Intelligence Welcome to the next meta pic.twitter.com/YQ5J0OLFJt",
+      "text": "Artificial Intelligence → Super Intelligence Welcome to the next meta",
       "name": "Gemini",
       "handle": "Gemini",
       "date": "2026-09-29",
@@ -48,7 +48,7 @@
     },
     {
       "url": "https://x.com/DoWCTO/status/2105043178122289183",
-      "text": "The future of warfare is NOW. The War Department will continue to DOMINATE in Superintelligence. 🇺🇸 pic.twitter.com/VyhLVGGKf8",
+      "text": "The future of warfare is NOW. The War Department will continue to DOMINATE in Superintelligence. 🇺🇸",
       "name": "Department of War CTO",
       "handle": "DoWCTO",
       "date": "2026-09-29",
@@ -57,7 +57,7 @@
     },
     {
       "url": "https://x.com/cb_doge/status/2105032841742725127",
-      "text": "ELON MUSK: Robots and superintelligence will create an age of abundance, with universal high income and better medical care for everyone. “I think by far the most likely outcome is an age of abundance where we don’t have just a universal basic income, we have universal high… pic.twitter.com/Cj0wIB7QQv",
+      "text": "ELON MUSK: Robots and superintelligence will create an age of abundance, with universal high income and better medical care for everyone. “I think by far the most likely outcome is an age of abundance where we don’t have just a universal basic income, we have universal high…",
       "name": "DogeDesigner",
       "handle": "cb_doge",
       "date": "2026-09-29",
@@ -66,7 +66,7 @@
     },
     {
       "url": "https://x.com/CoinMarketCap/status/2104912873814098408",
-      "text": "LATEST: 🤖 Mark Zuckerberg says he believes \"superintelligence will create significant new opportunities for all people and businesses.\" pic.twitter.com/KWmaEMvY3f",
+      "text": "LATEST: 🤖 Mark Zuckerberg says he believes \"superintelligence will create significant new opportunities for all people and businesses.\"",
       "name": "CoinMarketCap",
       "handle": "CoinMarketCap",
       "date": "2026-09-29",
