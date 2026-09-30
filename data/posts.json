@@ -1,10 +1,78 @@
 {
   "__doc": [
     "Posts quoted on the wall, fetched from X by scripts/fetch-posts.mjs.",
-    "Nulls here are the pre-first-run state. No card renders until a real",
-    "fetch fills this in — the wall shows nothing rather than something made up."
+    "Text, author, handle and date all come from the post itself — never from",
+    "a summary and never from memory. A URL that cannot be fetched produces no",
+    "card at all rather than an invented one, and lands in `failures` below so",
+    "it is visible instead of silently missing.",
+    "",
+    "Edit data/post-urls.json to change which posts appear."
   ],
-  "fetchedAt": null,
-  "posts": [],
+  "fetchedAt": "2026-09-30T16:11:47.943Z",
+  "posts": [
+    {
+      "url": "https://x.com/FoxNews/status/2105021743970558177",
+      "text": "BREAKING: President Trump says that he and tech leaders have officially changed the name of AI to 'Super Intelligence.' pic.twitter.com/MkuWluXqEu",
+      "name": "Fox News",
+      "handle": "FoxNews",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/WhiteHouse/status/2105052569601294798",
+      "text": "Official. pic.twitter.com/BoTuIhxbTg",
+      "name": "The White House",
+      "handle": "WhiteHouse",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/ENERGY/status/2105050123143421978",
+      "text": "AI was so last year. pic.twitter.com/uhtMkyimrC",
+      "name": "U.S. Department of Energy",
+      "handle": "ENERGY",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/Gemini/status/2105009658708603277",
+      "text": "Artificial Intelligence → Super Intelligence Welcome to the next meta pic.twitter.com/YQ5J0OLFJt",
+      "name": "Gemini",
+      "handle": "Gemini",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/DoWCTO/status/2105043178122289183",
+      "text": "The future of warfare is NOW. The War Department will continue to DOMINATE in Superintelligence. 🇺🇸 pic.twitter.com/VyhLVGGKf8",
+      "name": "Department of War CTO",
+      "handle": "DoWCTO",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/cb_doge/status/2105032841742725127",
+      "text": "ELON MUSK: Robots and superintelligence will create an age of abundance, with universal high income and better medical care for everyone. “I think by far the most likely outcome is an age of abundance where we don’t have just a universal basic income, we have universal high… pic.twitter.com/Cj0wIB7QQv",
+      "name": "DogeDesigner",
+      "handle": "cb_doge",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    },
+    {
+      "url": "https://x.com/CoinMarketCap/status/2104912873814098408",
+      "text": "LATEST: 🤖 Mark Zuckerberg says he believes \"superintelligence will create significant new opportunities for all people and businesses.\" pic.twitter.com/KWmaEMvY3f",
+      "name": "CoinMarketCap",
+      "handle": "CoinMarketCap",
+      "date": "2026-09-29",
+      "dateText": "September 29, 2026",
+      "via": "oembed"
+    }
+  ],
   "failures": []
 }
