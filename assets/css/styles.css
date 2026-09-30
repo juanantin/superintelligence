@@ -258,70 +258,6 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 /* ==========================================================================
-   PITCH
-   ========================================================================== */
-
-.pitch {
-  background: var(--page-2);
-  border-block: 1px solid var(--line);
-  padding-block: clamp(26px, 3.4vw, 44px);
-}
-
-.pitch__in {
-  display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr) auto;
-  gap: clamp(20px, 3vw, 40px);
-  align-items: start;
-}
-
-.pitch__head {
-  font-size: clamp(22px, 2.6vw, 34px);
-  font-weight: 800; text-transform: uppercase; letter-spacing: -.015em;
-  text-wrap: balance;
-}
-.pitch__body { margin: 16px 0 0; color: var(--ink-2); max-width: 52ch; }
-.pitch__note {
-  margin: 12px 0 0; font-size: 13px; color: var(--ink-3);
-  border-left: 2px solid var(--line); padding-left: 12px; max-width: 52ch;
-}
-.pitch__lead .actions { margin-top: 22px; }
-
-.chips { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.chip {
-  border: 1px solid var(--line);
-  background: var(--card);
-  padding: 11px 14px;
-  display: flex; align-items: center; gap: 11px;
-}
-.chip__ico {
-  width: 30px; height: 30px; flex: none; border-radius: 50%;
-  display: grid; place-items: center;
-  background: var(--blue); color: #fff;
-}
-.chip:nth-child(2) .chip__ico { background: #8a5cff; }
-.chip:nth-child(3) .chip__ico { background: #1f6fe0; }
-.chip__ico svg {
-  width: 16px; height: 16px;
-  fill: none; stroke: currentColor; stroke-width: 1.7;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-.chip:nth-child(2) .chip__ico svg { fill: currentColor; stroke: none; }
-.chip__t { min-width: 0; }
-.chip__k {
-  display: block; font-size: 11px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
-}
-.chip__v { display: block; margin-top: 1px; font-weight: 700; font-size: 15px; }
-
-/* Set HORIZONTALLY and right-aligned, as the design has it — an earlier pass
-   ran it vertically up the edge, which is not what the mockup does. */
-.pitch__slogan {
-  margin: 0; font-size: 11px; font-weight: 700; line-height: 1.9;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
-  text-align: right; align-self: center; white-space: nowrap;
-}
-
-/* ==========================================================================
    MID BAND
    ========================================================================== */
 
@@ -654,18 +590,43 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
    ========================================================================== */
 
 .foot { background: var(--page-2); border-top: 1px solid var(--line); }
+.foot__band { position: relative; overflow: hidden; }
 
 .foot__band {
   position: relative;
   /* The boardroom picture's own 2.5:1. It was 7.4:1 when this slot held a
      thin skyline band; at that shape this image would keep a strip across
      the table and lose the room, the windows and both flags. */
-  /* The new footer art is 1.78:1 and its Earth limb sits along the bottom,
-     so the box is 3.4:1 and object-position bottom keeps the limb rather than
+  /* The picture now carries the lockups, so it needs height for them: the
+     box is squarer than a divider's would be, and min-height keeps the type
+     from crushing when the viewport is narrow. Its Earth limb sits along the
+     bottom of the frame, so object-position bottom holds the limb rather than
      centring on empty sky. */
-  aspect-ratio: 2.9 / 1;
+  aspect-ratio: 2.4 / 1;
+  min-height: 300px;
+  display: grid;
 }
-.foot__bandimg { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
+.foot__bandimg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover; object-position: center bottom;
+}
+
+/* The lockups sit on the picture. The scrim is a vertical wash rather than a
+   flat panel — the artwork's light runs through the upper half and a solid
+   box over it would kill exactly the part worth showing. */
+.foot__overlay {
+  position: relative; z-index: 2;
+  align-self: end;
+  width: 100%;
+  padding: 40px 0 clamp(20px, 3vw, 36px);
+  /* Heavier than it looks like it needs to be: the lockups land over the
+     artwork's brightest run — the Earth limb and the light sweeping across
+     it — and at .72 the Stockify sub-line was unreadable against the glow.
+     The wash still starts fully clear, so the top two-thirds of the picture
+     is untouched. */
+  background: linear-gradient(180deg,
+      rgba(5,6,8,0) 0%, rgba(5,6,8,.55) 26%, rgba(5,6,8,.9) 58%, rgba(5,6,8,.97) 100%);
+}
 /* A SHORT wash at the foot only. At 45% this covered the bottom of the frame,
    which is exactly where this picture's Earth limb sits — the band rendered
    as a black gap with the artwork intact in the file. */
@@ -680,7 +641,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   z-index: 1;
 }
 
-.foot__in { padding-block: clamp(22px, 3vw, 38px); }
+.foot__in { padding-block: clamp(18px, 2.4vw, 30px); }
 
 .eco {
   display: grid; gap: 0;
@@ -696,10 +657,15 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   display: flex; flex-direction: column; align-items: center; gap: 8px;
   text-align: center; text-decoration: none;
   padding: 6px 24px;
-  border-right: 1px solid var(--line);
+  border-right: 1px solid rgba(255,255,255,.14);
   transition: opacity .16s;
 }
 .eco__half:hover { opacity: .78; }
+/* On the picture now, so the type carries its own shadow rather than relying
+   on a flat ground behind it. */
+.eco__kicker, .eco__sub, .eco__slogan {
+  text-shadow: 0 1px 3px rgba(5,6,8,1), 0 2px 12px rgba(5,6,8,.9);
+}
 /* Not a link, so it does not offer the hover a link offers. */
 .eco__half--static { cursor: default; }
 .eco__half--static:hover { opacity: 1; }
@@ -721,9 +687,10 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .eco__sub { font-size: 11px; color: var(--ink-3); }
 
 .foot__fine {
-  margin: 22px auto 0; max-width: 74ch; text-align: center;
+  margin: 0 auto; max-width: 74ch; text-align: center;
   font-size: 11.5px; line-height: 1.7; color: var(--ink-3);
 }
+.foot__fine + .foot__fine { margin-top: 14px; }
 .foot__fine b { color: var(--ink-2); }
 
 /* ==========================================================================
@@ -753,12 +720,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 
 @media (max-width: 1080px) {
   .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .pitch__in { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
-  /* Stacked: the slogan crosses the full row and centres. */
-  .pitch__slogan {
-    grid-column: 1 / -1; text-align: center; white-space: normal;
-    border-top: 1px solid var(--line); padding-top: 16px;
-  }
+
 }
 
 @media (max-width: 860px) {
@@ -766,7 +728,6 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   /* Stacked, the vertical rules become horizontal ones between rows. */
   .eco__half { border-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
   .eco__slogan { padding-left: 0; text-align: center; white-space: normal; }
-  .pitch__in { grid-template-columns: 1fr; }
   .lockup__name { display: none; }
 }
 

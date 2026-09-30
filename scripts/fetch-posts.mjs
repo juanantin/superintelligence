@@ -48,12 +48,25 @@ function decode(s) {
 }
 const stripTags = (s) => String(s).replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '');
 
+/* X appends a shortlink for any attached media, so the fetched text ends
+   "… pic.twitter.com/MkuWluXqEu". On a card that is noise — the card links to
+   the post, where the media actually is. Trailing t.co links go the same way;
+   a link in the MIDDLE of a sentence is left alone, because removing it would
+   change what the post says. */
+function tidy(t) {
+  return String(t)
+    .replace(/\s*(?:https?:\/\/)?pic\.(?:twitter|x)\.com\/\S+\s*$/gi, '')
+    .replace(/\s*https?:\/\/t\.co\/\S+\s*$/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 /* The oEmbed html is a blockquote: a <p> with the post's text, then an em
    dash, the display name, the handle in parentheses, and a dated permalink. */
 function parseOembed(j, url) {
   const html = j.html || '';
   const pm = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
-  const text = pm ? decode(stripTags(pm[1])).replace(/\s+/g, ' ').trim() : null;
+  const text = pm ? tidy(decode(stripTags(pm[1]))) : null;
 
   const hm = html.match(/\(@([A-Za-z0-9_]{1,15})\)/);
   const handle = hm ? hm[1] : (String(j.author_url || '').match(/(?:twitter|x)\.com\/([A-Za-z0-9_]+)/) || [])[1] || null;
@@ -96,7 +109,7 @@ async function viaBrowser(url) {
     const name = meta.title ? String(meta.title).replace(/\s+on X$/i, '').replace(/^["“]|["”]$/g, '').trim() : null;
     return {
       url,
-      text: meta.desc ? String(meta.desc).replace(/^["“]|["”]$/g, '').replace(/\s+/g, ' ').trim() : null,
+      text: meta.desc ? tidy(String(meta.desc).replace(/^["“]|["”]$/g, '')) : null,
       name, handle,
       date: meta.dt ? String(meta.dt).slice(0, 10) : null,
       dateText: null, via: 'og',
