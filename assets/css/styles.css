@@ -267,32 +267,30 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 /* ==========================================================================
-   MID BAND
-   ========================================================================== */
-
-.midband {
-  position: relative;
-  /* The picture is 1.78:1; a divider wants far wider. cover crops the sides,
-     and object-position centre keeps where the light converges. */
-  aspect-ratio: 4 / 1;
-  overflow: hidden;
-  background: var(--page);
-}
-.midband__img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
-/* Both edges washed into the sections above and below, so the band reads as
-   part of the page rather than a photograph dropped into it. */
-.midband::before, .midband::after {
-  content: ''; position: absolute; left: 0; right: 0; height: 30%;
-  pointer-events: none;
-}
-.midband::before { top: 0; background: linear-gradient(180deg, var(--page-2) 0%, rgba(9,11,17,0) 100%); }
-.midband::after  { bottom: 0; background: linear-gradient(180deg, rgba(5,6,8,0) 0%, var(--page) 100%); }
-
-/* ==========================================================================
    A GLOBAL MOMENT + QUOTE WALL
    ========================================================================== */
 
-.moment { padding-block: clamp(28px, 3.6vw, 48px); }
+.moment {
+  position: relative;
+  padding-block: clamp(34px, 4.4vw, 60px);
+  overflow: hidden;
+  background: var(--page);
+}
+/* The artwork sits behind the whole section. A wash at both edges lets it
+   meet the dashboard above and the footer below without a seam, and keeps
+   the middle dark enough for body copy to hold. */
+.moment__bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center center;
+  z-index: 0;
+}
+.moment::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, var(--page-2) 0%, rgba(5,6,8,.55) 18%, rgba(5,6,8,.55) 82%, var(--page-2) 100%);
+}
+.moment__in { position: relative; z-index: 2; }
 .moment__in {
   display: grid; gap: clamp(22px, 3vw, 40px);
   grid-template-columns: minmax(0, 350px) minmax(0, 1fr);
@@ -309,6 +307,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 .moment__head {
   font-size: clamp(28px, 4.4vw, 50px); font-weight: 800; text-transform: uppercase;
+  text-shadow: 0 2px 14px rgba(5,6,8,.9);
   /* "SUPERINTELLIGENCE" is 17 characters with no break opportunity in it, so
      at the two-column width it overran the column and was clipped by the wall
      beside it. Both of these are needed: the cap keeps it inside the column,
@@ -324,7 +323,10 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
      at this width and is suppressed below, where the column is full-width and
      a forced break would leave a short, ragged first line. */
 }
-.moment__body { margin: 18px 0 0; color: var(--ink-2); max-width: 60ch; }
+.moment__body {
+  margin: 18px 0 0; color: var(--ink-2); max-width: 60ch;
+  text-shadow: 0 1px 3px rgba(5,6,8,.95);
+}
 
 .quotes__head {
   display: flex; align-items: baseline; justify-content: space-between;
@@ -359,7 +361,10 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
    badge, no handle, no engagement counts, and a source link instead. */
 .quote {
   border: 1px solid var(--line);
-  background: var(--card);
+  /* Opaque, because the cards now sit on artwork rather than flat colour. */
+  background: rgba(13,16,24,.92);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   padding: 13px;
   display: flex; flex-direction: column; gap: 9px;
 }
@@ -611,8 +616,10 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
      from crushing when the viewport is narrow. Its Earth limb sits along the
      bottom of the frame, so object-position bottom holds the limb rather than
      centring on empty sky. */
-  aspect-ratio: 2.4 / 1;
-  min-height: 300px;
+  /* Was 2.4:1 and 600px tall with the lockups sitting in its bottom fifth —
+     four fifths of it was empty picture. */
+  aspect-ratio: 3.6 / 1;
+  min-height: 230px;
   display: grid;
 }
 .foot__bandimg {
@@ -627,7 +634,7 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
   position: relative; z-index: 2;
   align-self: end;
   width: 100%;
-  padding: 40px 0 clamp(20px, 3vw, 36px);
+  padding: 30px 0 clamp(18px, 2.4vw, 30px);
   /* Heavier than it looks like it needs to be: the lockups land over the
      artwork's brightest run — the Earth limb and the light sweeping across
      it — and at .72 the Stockify sub-line was unreadable against the glow.
