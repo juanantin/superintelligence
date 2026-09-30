@@ -203,6 +203,57 @@
       '</li>';
   }
 
+  /* A real post from a real account. Its text, name, handle and date were
+     fetched from the post itself by scripts/fetch-posts.mjs — nothing here is
+     typed by hand — and the whole card links back to the original so a reader
+     can check it. */
+  function postCard(q) {
+    var when = q.date ? prettyDate(q.date) : '';
+    return '' +
+      '<li class="quote quote--post">' +
+        '<a class="quote__link" href="' + esc(q.url) + '" target="_blank" rel="noopener noreferrer">' +
+          '<div class="quote__top">' +
+            '<span class="quote__avatar" aria-hidden="true">' + esc(initials(q.name)) + '</span>' +
+            '<span class="quote__who">' +
+              '<b class="quote__name">' + esc(q.name) + '</b>' +
+              '<span class="quote__role">@' + esc(q.handle) + '</span>' +
+            '</span>' +
+            '<svg class="quote__x" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+              '<path fill="currentColor" d="M17.53 3h3.1l-6.77 7.73L21.83 21h-6.24l-4.89-6.39L5.11 21H2l7.24-8.27L2.17 3h6.4l4.42 5.84L17.53 3Zm-1.09 16.13h1.72L7.63 4.78H5.79l10.65 14.35Z"/>' +
+            '</svg>' +
+          '</div>' +
+          '<p class="quote__text">' + esc(q.text) + '</p>' +
+          (when ? '<p class="quote__meta"><time datetime="' + esc(q.date) + '">' + esc(when) + '</time>' +
+                  '<span class="quote__src">View on X →</span></p>' : '') +
+        '</a>' +
+      '</li>';
+  }
+
+  function paintQuotes(rows) {
+    if (!quotesWrap || !quotesGrid || !rows.length) return;
+    quotesGrid.innerHTML = rows.map(function (q) {
+      if (q.kind === 'post') return postCard(q);
+      return q.kind === 'project' ? projectCard(q) : sourcedCard(q);
+    }).join('');
+    quotesGrid.classList.toggle('quotes__grid--3then4', rows.length === 7);
+    quotesWrap.hidden = false;
+  }
+
+  /* The fetched posts REPLACE the project cards when there are any. The
+     project cards exist so the section is never an empty hole; a real quoted
+     post is strictly better, so it wins. */
+  fetch('data/posts.json', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !Array.isArray(d.posts)) return;
+      var real = d.posts.filter(function (q) { return q && q.text && q.name && q.handle && q.url; });
+      if (!real.length) return;
+      paintQuotes(real.map(function (q) {
+        return { kind: 'post', text: q.text, name: q.name, handle: q.handle, date: q.date, url: q.url };
+      }));
+    })
+    .catch(function () { /* the project cards already painted */ });
+
   if (quotesWrap && quotesGrid && usable.length) {
     quotesGrid.innerHTML = usable.map(function (q) {
       return q.kind === 'project' ? projectCard(q) : sourcedCard(q);

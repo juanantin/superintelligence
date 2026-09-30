@@ -435,6 +435,22 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 .quote__name { display: block; font-size: 13px; }
 .quote__role { display: block; font-size: 11px; color: var(--ink-3); }
 .quote__x { width: 13px; height: 13px; flex: none; color: var(--ink-3); }
+
+/* A fetched post is a link end to end — the whole card goes to the original,
+   so a reader can check the quote against the post rather than taking the
+   site's word for it. */
+.quote--post { padding: 0; }
+.quote__link {
+  display: flex; flex-direction: column; gap: 9px;
+  padding: 13px; text-decoration: none; color: inherit; height: 100%;
+}
+.quote--post:hover { border-color: var(--blue); }
+.quote--post .quote__text {
+  display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.quote--post .quote__meta { color: var(--ink-3); }
+.quote--post .quote__src { color: var(--blue); font-weight: 600; }
 .quote__text {
   margin: 0; color: var(--ink); font-size: 13.5px; line-height: 1.5;
 }

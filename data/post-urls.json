@@ -1,0 +1,17 @@
+{
+  "__doc": [
+    "The X posts quoted on the wall, in the order they should appear.",
+    "scripts/fetch-posts.mjs reads each one and writes data/posts.json with the",
+    "real text, author, handle and date. Add or remove a URL here and the wall",
+    "follows on the next run — nothing about a post is written by hand."
+  ],
+  "urls": [
+    "https://x.com/FoxNews/status/2105021743970558177",
+    "https://x.com/WhiteHouse/status/2105052569601294798",
+    "https://x.com/ENERGY/status/2105050123143421978",
+    "https://x.com/Gemini/status/2105009658708603277",
+    "https://x.com/DoWCTO/status/2105043178122289183",
+    "https://x.com/cb_doge/status/2105032841742725127",
+    "https://x.com/CoinMarketCap/status/2104912873814098408"
+  ]
+}

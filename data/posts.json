@@ -1,0 +1,10 @@
+{
+  "__doc": [
+    "Posts quoted on the wall, fetched from X by scripts/fetch-posts.mjs.",
+    "Nulls here are the pre-first-run state. No card renders until a real",
+    "fetch fills this in — the wall shows nothing rather than something made up."
+  ],
+  "fetchedAt": null,
+  "posts": [],
+  "failures": []
+}
