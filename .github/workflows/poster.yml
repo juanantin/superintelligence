@@ -13,9 +13,11 @@ name: Prepare the hero clip
 #      nobody can ever hear. The teaser KEEPS its audio: it plays on a click
 #      and the sound is the point.
 #
-#   3. CUT THE POSTERS from each clip's OWN FIRST FRAME. A <video> shows
-#      nothing until it has buffered. It must be frame 0, not a nearby
-#      keyframe, or the hand-off to playback visibly jumps.
+#   3. CUT THE POSTERS, by different rules. The HERO's must be frame 0: it
+#      autoplays, so the poster is what shows until the clip has buffered and
+#      playback then starts on that exact frame. The TEASER's must not be —
+#      it fades up from black, so frame 0 is a black rectangle, and nothing
+#      has to match because it only plays on a click.
 #
 # Posters are cut AFTER the re-encode, so they are frames of the file actually
 # served rather than of a version that no longer exists.
@@ -62,16 +64,40 @@ jobs:
           f=images/si_video.mp4
           [ -f "$f" ] || { echo "no hero clip"; exit 0; }
 
+          # TWO guards, because this workflow runs again every time the clip
+          # or this file changes, and H.264 is lossy: a second pass costs
+          # picture and buys almost nothing.
+          #
+          # The marker is the definitive one. A file this step has already
+          # handled carries it, so it is never encoded twice no matter what
+          # bitrate it came out at. The bitrate test only decides what to do
+          # with a file that has never been through here.
+          MARK=si-reencoded-v1
+          mark=$(ffprobe -v error -show_entries format_tags=comment \
+                         -of default=nw=1:nk=1 "$f" 2>/dev/null || true)
+          if [ "$mark" = "$MARK" ]; then
+            echo "already re-encoded by this workflow — leaving it alone"
+            exit 0
+          fi
+
           bytes=$(stat -c%s "$f")
           dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f")
           kbps=$(python3 -c "print(int($bytes*8/$dur/1000))")
           echo "current: $bytes bytes, ${dur}s, ${kbps} kbps"
 
-          # GUARD: only re-encode when it is genuinely bloated. Without this the
-          # job would re-encode its own output on every later push, and each
-          # pass through a lossy codec costs a little more picture.
-          if [ "$kbps" -lt 2500 ]; then
-            echo "already at a sane bitrate — leaving it alone"
+          # 5000, not 2500. The clip that prompted this arrived at 6380 kbps.
+          # The CRF 20 pass brought it to 4431 — which is the output of a
+          # quality-targeted encode, not bloat, so a threshold below it would
+          # have sent this workflow's own result straight back through the
+          # encoder on the next run.
+          if [ "$kbps" -lt 5000 ]; then
+            # Still mark it, losslessly: -c copy rewrites the container and
+            # touches no pixels, so the question is settled for good without
+            # the file paying for it.
+            echo "not over-provisioned — marking it so, without re-encoding"
+            ffmpeg -y -hide_banner -loglevel error -i "$f" -c copy \
+                   -metadata comment="$MARK" -movflags +faststart /tmp/si_video.mp4
+            mv /tmp/si_video.mp4 "$f"
             exit 0
           fi
 
@@ -82,7 +108,8 @@ jobs:
           ffmpeg -y -hide_banner -loglevel error -i "$f" \
                  -c:v libx264 -crf 20 -preset slow -pix_fmt yuv420p \
                  -profile:v high -level 4.0 \
-                 -an -movflags +faststart /tmp/si_video.mp4
+                 -an -metadata comment="$MARK" \
+                 -movflags +faststart /tmp/si_video.mp4
 
           after=$(stat -c%s /tmp/si_video.mp4)
           akbps=$(python3 -c "print(int($after*8/$dur/1000))")
@@ -96,28 +123,68 @@ jobs:
           f=images/si_video.mp4
           [ -f "$f" ] || exit 0
           if ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$f" | grep -q .; then
-            ffmpeg -y -hide_banner -loglevel error -i "$f" -c:v copy -an -movflags +faststart /tmp/na.mp4
+            ffmpeg -y -hide_banner -loglevel error -i "$f" -c:v copy -an \
+                   -map_metadata 0 -movflags +faststart /tmp/na.mp4
             mv /tmp/na.mp4 "$f"
             echo "audio removed"
           else
             echo "no audio track"
           fi
 
-      - name: Cut the posters from the served files
+      - name: Cut the hero poster from frame 0
         run: |
           set -euo pipefail
           # -frames:v 1 with NO -ss: the first frame, not a nearby keyframe.
-          if [ -f images/si_video.mp4 ]; then
-            ffmpeg -y -hide_banner -loglevel error -i images/si_video.mp4 \
-                   -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
-                   images/hero_poster.webp
+          # The hero autoplays, so the poster is what the <video> shows until
+          # it has buffered and must be the frame playback then starts on, or
+          # the hand-off visibly jumps.
+          [ -f images/si_video.mp4 ] || exit 0
+          ffmpeg -y -hide_banner -loglevel error -i images/si_video.mp4 \
+                 -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
+                 images/hero_poster.webp
+
+      - name: Cut the teaser poster from a frame worth looking at
+        run: |
+          set -euo pipefail
+          f=images/si_teaser.mp4
+          [ -f "$f" ] || exit 0
+
+          # NOT frame 0 here. The teaser plays on a click behind controls, so
+          # nothing has to match where playback begins — the poster is a
+          # thumbnail. And the clip fades up from black: frame 0 measured a
+          # mean luma of 0/255 and compressed to 1,308 bytes, which is a black
+          # rectangle with a play button on it.
+          #
+          # Average luma is read by scaling the frame to a single pixel and
+          # printing that byte, so the pick needs no image library on the
+          # runner. Brightest candidate wins.
+          best=-1; best_t=
+          dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f")
+          for t in 1 2 3 4 5 6 8 10 12 15; do
+            # Never sample past the end — that yields no frame at all.
+            python3 -c "import sys; sys.exit(0 if $t < $dur - 0.5 else 1)" || continue
+            # `|| true`: pipefail would otherwise make a candidate ffmpeg
+            # cannot decode abort the whole step instead of being skipped.
+            y=$(ffmpeg -v error -ss "$t" -i "$f" -frames:v 1 \
+                       -vf scale=1:1 -pix_fmt gray -f rawvideo - \
+                | od -An -tu1 | tr -d ' \n' || true)
+            case "$y" in ''|*[!0-9]*) continue ;; esac
+            echo "  t=${t}s  mean luma ${y}/255"
+            if [ "$y" -gt "$best" ]; then best=$y; best_t=$t; fi
+          done
+
+          if [ -z "$best_t" ]; then
+            echo "no candidate frame readable — falling back to frame 0"
+            best_t=0
           fi
-          if [ -f images/si_teaser.mp4 ]; then
-            ffmpeg -y -hide_banner -loglevel error -i images/si_teaser.mp4 \
-                   -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
-                   images/teaser_poster.webp
-          fi
-          ls -l images/*_poster.webp
+          echo "picked t=${best_t}s (mean luma ${best}/255)"
+
+          ffmpeg -y -hide_banner -loglevel error -ss "$best_t" -i "$f" \
+                 -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
+                 images/teaser_poster.webp
+
+      - name: Show what the posters came out as
+        run: ls -l images/*_poster.webp
 
       - name: Commit
         run: |
