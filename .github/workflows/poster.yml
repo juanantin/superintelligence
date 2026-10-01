@@ -1,19 +1,24 @@
 name: Prepare the hero clip
 
-# Two jobs in one, both of which this sandbox cannot do — its Chromium is
-# built without H.264 and it has no ffmpeg at all:
+# Everything the clips need that the sandbox cannot do — it has neither ffmpeg
+# nor an H.264 decoder:
 #
-#   1. STRIP THE AUDIO. The hero is muted and looping, so the AAC track is
-#      weight every visitor downloads and nobody can ever hear. The video
-#      stream is COPIED, not re-encoded, so the picture stays bit-identical.
+#   1. RE-ENCODE the hero clip if it is wildly over-provisioned. It arrived at
+#      736x400 and ~6.4 Mbps, roughly ten times what that resolution needs, so
+#      every visitor downloaded 7.6MB before the hero moved. For comparison the
+#      teaser is 1280x544 at 1.4 Mbps — a quarter the bitrate at nearly twice
+#      the resolution.
 #
-#   2. CUT THE POSTER from the clip's OWN FIRST FRAME. A <video> shows nothing
-#      until it has buffered — on a cold phone that is a blank hole where the
-#      wordmark should be. And it must be frame 0, not a nearby keyframe:
-#      poster and first frame have to be the same picture or the hand-off to
-#      playback visibly jumps.
+#   2. STRIP THE HERO'S AUDIO. It is muted and looping, so the track is weight
+#      nobody can ever hear. The teaser KEEPS its audio: it plays on a click
+#      and the sound is the point.
 #
-# Run by pushing to this file or to the clip.
+#   3. CUT THE POSTERS from each clip's OWN FIRST FRAME. A <video> shows
+#      nothing until it has buffered. It must be frame 0, not a nearby
+#      keyframe, or the hand-off to playback visibly jumps.
+#
+# Posters are cut AFTER the re-encode, so they are frames of the file actually
+# served rather than of a version that no longer exists.
 
 on:
   push:
@@ -33,57 +38,86 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Not on the runner image any more — it was dropped from ubuntu-latest
-      # during 2025. apt rather than a third-party action: one package.
       - name: Install ffmpeg
         run: |
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends ffmpeg
 
-      - name: What the clip actually is
+      - name: What the clips actually are
         run: |
           set -euo pipefail
-          ffprobe -hide_banner -v error \
-            -show_entries stream=index,codec_type,codec_name,width,height,r_frame_rate,bit_rate \
-            -show_entries format=duration,size,bit_rate \
-            -of default=noprint_wrappers=1 images/si_video.mp4
+          for f in images/si_video.mp4 images/si_teaser.mp4; do
+            [ -f "$f" ] || continue
+            echo "--- $f"
+            ffprobe -hide_banner -v error \
+              -show_entries stream=codec_type,codec_name,width,height,r_frame_rate,bit_rate \
+              -show_entries format=duration,size,bit_rate \
+              -of default=noprint_wrappers=1 "$f"
+          done
 
-      - name: First frame -> images/hero_poster.webp
+      - name: Re-encode the hero clip if it is over-provisioned
+        run: |
+          set -euo pipefail
+          f=images/si_video.mp4
+          [ -f "$f" ] || { echo "no hero clip"; exit 0; }
+
+          bytes=$(stat -c%s "$f")
+          dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f")
+          kbps=$(python3 -c "print(int($bytes*8/$dur/1000))")
+          echo "current: $bytes bytes, ${dur}s, ${kbps} kbps"
+
+          # GUARD: only re-encode when it is genuinely bloated. Without this the
+          # job would re-encode its own output on every later push, and each
+          # pass through a lossy codec costs a little more picture.
+          if [ "$kbps" -lt 2500 ]; then
+            echo "already at a sane bitrate — leaving it alone"
+            exit 0
+          fi
+
+          # CRF 20 is conservative: visually transparent at this resolution,
+          # where the usual web default of 23 would also have been fine. -an
+          # drops the audio in the same pass. +faststart puts the moov atom
+          # first so playback can begin before the file has arrived.
+          ffmpeg -y -hide_banner -loglevel error -i "$f" \
+                 -c:v libx264 -crf 20 -preset slow -pix_fmt yuv420p \
+                 -profile:v high -level 4.0 \
+                 -an -movflags +faststart /tmp/si_video.mp4
+
+          after=$(stat -c%s /tmp/si_video.mp4)
+          akbps=$(python3 -c "print(int($after*8/$dur/1000))")
+          echo "re-encoded: $after bytes, ${akbps} kbps"
+          python3 -c "print('saved %.1f%% — %.2f MB down to %.2f MB' % ((1-$after/$bytes)*100, $bytes/1048576, $after/1048576))"
+          mv /tmp/si_video.mp4 "$f"
+
+      - name: Strip the hero's audio if any survived
+        run: |
+          set -euo pipefail
+          f=images/si_video.mp4
+          [ -f "$f" ] || exit 0
+          if ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$f" | grep -q .; then
+            ffmpeg -y -hide_banner -loglevel error -i "$f" -c:v copy -an -movflags +faststart /tmp/na.mp4
+            mv /tmp/na.mp4 "$f"
+            echo "audio removed"
+          else
+            echo "no audio track"
+          fi
+
+      - name: Cut the posters from the served files
         run: |
           set -euo pipefail
           # -frames:v 1 with NO -ss: the first frame, not a nearby keyframe.
-          ffmpeg -y -hide_banner -loglevel error -i images/si_video.mp4 \
-                 -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
-                 images/hero_poster.webp
-          ls -l images/hero_poster.webp
-
-      # The teaser gets a poster too, but KEEPS its audio: it is 29 seconds of
-      # content played on a click, not muted wallpaper, so the sound is the
-      # point rather than dead weight.
-      - name: Teaser first frame -> images/teaser_poster.webp
-        run: |
-          set -euo pipefail
+          if [ -f images/si_video.mp4 ]; then
+            ffmpeg -y -hide_banner -loglevel error -i images/si_video.mp4 \
+                   -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
+                   images/hero_poster.webp
+          fi
           if [ -f images/si_teaser.mp4 ]; then
             ffmpeg -y -hide_banner -loglevel error -i images/si_teaser.mp4 \
                    -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
                    images/teaser_poster.webp
-            ls -l images/teaser_poster.webp
-          else
-            echo "no teaser present"
           fi
-
-      - name: Drop the audio track
-        run: |
-          set -euo pipefail
-          before=$(stat -c%s images/si_video.mp4)
-          # -c:v copy: the picture is not re-encoded. +faststart puts the moov
-          # atom first so a browser can begin before the file has arrived.
-          ffmpeg -y -hide_banner -loglevel error -i images/si_video.mp4 \
-                 -c:v copy -an -movflags +faststart /tmp/si_video.mp4
-          after=$(stat -c%s /tmp/si_video.mp4)
-          echo "before $before bytes, after $after bytes, saved $(( (before-after)/1024 )) KB"
-          mv /tmp/si_video.mp4 images/si_video.mp4
+          ls -l images/*_poster.webp
 
       - name: Commit
         run: |
@@ -92,7 +126,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A images/
           if git diff --cached --quiet -- images/; then echo "no change"; exit 0; fi
-          git commit -m "chore: cut the hero poster and strip the clip's audio [skip ci]"
+          git commit -m "chore: re-encode the hero clip, cut both posters [skip ci]"
           for attempt in 1 2 3; do
             if git push origin HEAD:"$GITHUB_REF_NAME"; then echo "pushed"; exit 0; fi
             git pull --rebase origin "$GITHUB_REF_NAME" || true
