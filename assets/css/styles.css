@@ -267,6 +267,34 @@ h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; }
 }
 
 /* ==========================================================================
+   TEASER
+   ========================================================================== */
+
+.teaser {
+  background: var(--page-2);
+  border-block: 1px solid var(--line);
+  padding-block: clamp(26px, 3.4vw, 46px);
+}
+.teaser__kicker {
+  margin: 0 0 14px;
+  font-size: 11px; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink-2);
+  text-align: center;
+}
+/* The clip is 2.353:1, so the frame takes that exact ratio — a box that
+   disagreed would letterbox inside a letterbox, black bars of our own
+   making on top of the ones already in the footage. */
+.teaser__frame {
+  position: relative;
+  max-width: 1000px; margin-inline: auto;
+  aspect-ratio: 1280 / 544;
+  border: 1px solid var(--line);
+  background: #000;
+  overflow: hidden;
+}
+.teaser__video { width: 100%; height: 100%; display: block; object-fit: contain; }
+
+/* ==========================================================================
    A GLOBAL MOMENT + QUOTE WALL
    ========================================================================== */
 

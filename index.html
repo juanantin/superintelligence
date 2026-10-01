@@ -49,10 +49,10 @@
 
      The ?v= is what makes a browser let go of the icon it has cached;
      node scripts/stamp.mjs moves all of them together. -->
-<link rel="icon" href="favicon.ico?v=36" sizes="any">
-<link rel="icon" type="image/png" href="images/favicon.png?v=36">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=36">
-<link rel="manifest" href="site.webmanifest?v=36">
+<link rel="icon" href="favicon.ico?v=37" sizes="any">
+<link rel="icon" type="image/png" href="images/favicon.png?v=37">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=37">
+<link rel="manifest" href="site.webmanifest?v=37">
 
 <!-- One face — Inter — across five weights. 800 is not decoration: the
      headings and the wordmark are set in it, and asking for a weight the file
@@ -70,7 +70,7 @@
       media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
-<link rel="stylesheet" href="assets/css/styles.css?v=36">
+<link rel="stylesheet" href="assets/css/styles.css?v=37">
 </head>
 <body>
 
@@ -79,7 +79,7 @@
   <div class="topbar__in">
 
     <a class="lockup" href="#top">
-      <img class="lockup__mark" src="images/si_icon.png?v=36" alt=""
+      <img class="lockup__mark" src="images/si_icon.png?v=37" alt=""
            width="545" height="545" decoding="async">
       <span class="lockup__name">Super Intelligence Base</span>
     </a>
@@ -155,8 +155,8 @@
        began. -->
   <video
     class="hero__bg" id="hero-video"
-    poster="images/hero_poster.webp?v=36"
-    data-src="images/si_video.mp4?v=36"
+    poster="images/hero_poster.webp?v=37"
+    data-src="images/si_video.mp4?v=37"
     width="736" height="400"
     autoplay muted loop playsinline preload="none"
     aria-hidden="true" tabindex="-1"></video>
@@ -315,6 +315,33 @@
   </div>
 </section>
 
+<!-- ===================== TEASER ===================== -->
+<!-- Placed between the dashboard and the editorial section: the visitor has
+     just read the numbers, and this is the story behind them before the news
+     wall. It is also the page's only natural pause — everything either side
+     is dense.
+
+     It behaves NOTHING like the hero clip, and deliberately:
+       · 28.8s with an audio track is CONTENT, not wallpaper, so it carries
+         controls and plays on a click rather than on arrival.
+       · preload="none" — the hero already costs every visitor 7.6MB; adding
+         4.9MB they did not ask for would be worse. Nothing downloads until
+         the play button is pressed.
+       · no loop and no autoplay: a teaser has an ending. -->
+<section class="teaser" aria-labelledby="teaser-h">
+  <div class="wrap">
+    <h2 class="teaser__kicker" id="teaser-h">Watch the teaser</h2>
+    <div class="teaser__frame">
+      <video class="teaser__video"
+             src="images/si_teaser.mp4?v=37"
+             poster="images/teaser_poster.webp?v=37"
+             width="1280" height="544"
+             controls preload="none" playsinline
+             aria-label="Super Intelligence Base teaser"></video>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== A GLOBAL MOMENT ===================== -->
 <section class="moment">
 
@@ -322,7 +349,7 @@
        above it. As a separate divider it was 360px of picture with nothing on
        it, and the section under it sat on flat black — two lots of empty
        space where one piece of artwork with the type over it does both jobs. -->
-  <img class="moment__bg" src="images/mid_band.webp?v=36" alt=""
+  <img class="moment__bg" src="images/mid_band.webp?v=37" alt=""
        width="2000" height="1126" loading="lazy" decoding="async">
 
   <div class="wrap moment__in">
@@ -370,7 +397,7 @@
        The band is no longer aria-hidden, because it now holds real content —
        only the <img> inside it is decorative. -->
   <div class="foot__band">
-    <img class="foot__bandimg" src="images/footer_band.webp?v=36" alt=""
+    <img class="foot__bandimg" src="images/footer_band.webp?v=37" alt=""
          width="2000" height="1126" loading="lazy" decoding="async">
 
     <div class="foot__overlay">
@@ -381,13 +408,13 @@
             <!-- The light variant: the supplied lockup sets "STONKS." in
                  near-black, invisible on this ground. images/src/README.md
                  carries the derivation. -->
-            <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=36" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
+            <img class="eco__logo eco__logo--stonks" src="images/stonkex_button_light.png?v=37" alt="Stonks Exchange" width="550" height="112" loading="lazy" decoding="async">
             <span class="eco__sub">1B supply launches · creator fee integration</span>
           </a>
 
           <a class="eco__half" id="link-rewards" href="https://www.stockify.finance/" target="_blank" rel="noopener noreferrer">
             <span class="eco__kicker">Holder rewards powered by</span>
-            <img class="eco__logo" src="images/stockify_logo.png?v=36" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
+            <img class="eco__logo" src="images/stockify_logo.png?v=37" alt="Stockify" width="800" height="261" loading="lazy" decoding="async">
             <span class="eco__sub">tokenized equities · automated holder distributions</span>
           </a>
 
@@ -469,9 +496,9 @@
 <!-- ?v= is the cache buster: run `node scripts/stamp.mjs` on every deploy,
      which moves every ?v= here and `version` in config.js together. Skip it
      and a CDN keeps serving the previous config.js and app.js. -->
-<script src="config.js?v=36"></script>
-<script src="assets/js/quotes.js?v=36"></script>
-<script src="assets/js/app.js?v=36"></script>
-<script src="assets/js/page.js?v=36"></script>
+<script src="config.js?v=37"></script>
+<script src="assets/js/quotes.js?v=37"></script>
+<script src="assets/js/app.js?v=37"></script>
+<script src="assets/js/page.js?v=37"></script>
 </body>
 </html>

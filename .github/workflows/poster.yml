@@ -20,6 +20,7 @@ on:
     branches: [main]
     paths:
       - images/si_video.mp4
+      - images/si_teaser.mp4
       - .github/workflows/poster.yml
   workflow_dispatch:
 
@@ -56,6 +57,21 @@ jobs:
                  -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
                  images/hero_poster.webp
           ls -l images/hero_poster.webp
+
+      # The teaser gets a poster too, but KEEPS its audio: it is 29 seconds of
+      # content played on a click, not muted wallpaper, so the sound is the
+      # point rather than dead weight.
+      - name: Teaser first frame -> images/teaser_poster.webp
+        run: |
+          set -euo pipefail
+          if [ -f images/si_teaser.mp4 ]; then
+            ffmpeg -y -hide_banner -loglevel error -i images/si_teaser.mp4 \
+                   -frames:v 1 -c:v libwebp -quality 88 -compression_level 6 \
+                   images/teaser_poster.webp
+            ls -l images/teaser_poster.webp
+          else
+            echo "no teaser present"
+          fi
 
       - name: Drop the audio track
         run: |
