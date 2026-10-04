@@ -10,12 +10,12 @@
     "public RPC, and what would make it so."
   ],
   "source": "https://www.stockify.finance/indices/0x4e2e072c38735bd0b9374f429cf0ae1c07412450",
-  "readAt": "2026-10-04T12:49:59.836Z",
+  "readAt": "2026-10-04T17:32:46.629Z",
   "paidToHoldersUsd": 884,
   "feesCollectedUsd": 973,
   "feesCollectedToken": "0.3605 ETH",
-  "roundsPaid": 66,
-  "walletPayments": 5339,
+  "roundsPaid": 72,
+  "walletPayments": 5656,
   "holderSharePct": 90,
   "whatItHolds": "6 names, fixed at creation.",
   "holdings": [
@@ -31,7 +31,7 @@
     },
     {
       "ticker": "AAPLc",
-      "tokens": 0.3954,
+      "tokens": 0.3955,
       "weightPct": 17,
       "name": "Apple",
       "address": null,
@@ -61,7 +61,7 @@
     },
     {
       "ticker": "SPCXc",
-      "tokens": 0.9655,
+      "tokens": 0.9656,
       "weightPct": 17,
       "name": "SpaceX",
       "address": null,
@@ -80,5 +80,5 @@
       "verified": false
     }
   ],
-  "verifiedAt": "2026-10-04T12:50:23.948Z"
+  "verifiedAt": "2026-10-04T17:33:01.930Z"
 }
