@@ -10,18 +10,18 @@
     "public RPC, and what would make it so."
   ],
   "source": "https://www.stockify.finance/indices/0x4e2e072c38735bd0b9374f429cf0ae1c07412450",
-  "readAt": "2026-10-04T06:17:48.659Z",
-  "paidToHoldersUsd": 881,
-  "feesCollectedUsd": 966,
-  "feesCollectedToken": "0.3594 ETH",
-  "roundsPaid": 42,
-  "walletPayments": 3699,
+  "readAt": "2026-10-04T12:49:59.836Z",
+  "paidToHoldersUsd": 884,
+  "feesCollectedUsd": 973,
+  "feesCollectedToken": "0.3605 ETH",
+  "roundsPaid": 66,
+  "walletPayments": 5339,
   "holderSharePct": 90,
   "whatItHolds": "6 names, fixed at creation.",
   "holdings": [
     {
       "ticker": "NVDAc",
-      "tokens": 0.6762,
+      "tokens": 0.6782,
       "weightPct": 17,
       "name": "NVIDIA",
       "address": null,
@@ -31,7 +31,7 @@
     },
     {
       "ticker": "AAPLc",
-      "tokens": 0.3941,
+      "tokens": 0.3954,
       "weightPct": 17,
       "name": "Apple",
       "address": null,
@@ -41,7 +41,7 @@
     },
     {
       "ticker": "GOOGLc",
-      "tokens": 0.4162,
+      "tokens": 0.4175,
       "weightPct": 17,
       "name": "Alphabet",
       "address": null,
@@ -51,7 +51,7 @@
     },
     {
       "ticker": "AMZNc",
-      "tokens": 0.5729,
+      "tokens": 0.5747,
       "weightPct": 17,
       "name": "Amazon",
       "address": null,
@@ -61,7 +61,7 @@
     },
     {
       "ticker": "SPCXc",
-      "tokens": 0.9627,
+      "tokens": 0.9655,
       "weightPct": 17,
       "name": "SpaceX",
       "address": null,
@@ -71,7 +71,7 @@
     },
     {
       "ticker": "TSLAc",
-      "tokens": 0.4093,
+      "tokens": 0.4105,
       "weightPct": 17,
       "name": "Tesla",
       "address": null,
@@ -80,5 +80,5 @@
       "verified": false
     }
   ],
-  "verifiedAt": "2026-10-04T06:18:03.588Z"
+  "verifiedAt": "2026-10-04T12:50:23.948Z"
 }
