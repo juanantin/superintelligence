@@ -20,18 +20,18 @@
     "scan Base from genesis. It gets committed, seeded with cursor =",
     "START_BLOCK, in the same change that fills in the config."
   ],
-  "totalDistributed": 0.31463804604480977,
-  "totalDistributedUsd": 845.8005562362763,
-  "totalFeesCollected": 961.1440365045423,
-  "totalFeesTokens": 0.35754585331453825,
+  "totalDistributed": 0.32340731359076264,
+  "totalDistributedUsd": 872.9798297218174,
+  "totalFeesCollected": 970.0375734686861,
+  "totalFeesTokens": 0.35936368176751404,
   "holders": 135,
-  "marketCap": 11578,
-  "liquidity": 9976.03,
-  "volume24h": 2029.11,
-  "updatedAt": "2026-10-04T02:44:48.599Z",
+  "marketCap": 11605,
+  "liquidity": 9987.71,
+  "volume24h": 214.65,
+  "updatedAt": "2026-10-04T08:51:35.705Z",
   "meta": {
     "synced": true,
     "blocksBehind": 0,
-    "kexPriceUsd": 2688.17
+    "kexPriceUsd": 2699.32
   }
 }
