@@ -28,10 +28,10 @@
   "marketCap": 7700,
   "liquidity": 7168.81,
   "volume24h": 49.65,
-  "updatedAt": "2026-10-20T10:24:24.059Z",
+  "updatedAt": "2026-10-20T15:22:25.661Z",
   "meta": {
     "synced": false,
-    "blocksBehind": 518312,
-    "kexPriceUsd": 2381.79
+    "blocksBehind": 527253,
+    "kexPriceUsd": 2435.81
   }
 }
