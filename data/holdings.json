@@ -10,9 +10,9 @@
     "public RPC, and what would make it so."
   ],
   "source": "https://www.stockify.finance/indices/0x4e2e072c38735bd0b9374f429cf0ae1c07412450",
-  "readAt": "2026-11-19T17:22:35.143Z",
-  "paidToHoldersUsd": 798,
-  "feesCollectedUsd": 634,
+  "readAt": "2026-11-19T23:46:57.717Z",
+  "paidToHoldersUsd": 788,
+  "feesCollectedUsd": 633,
   "feesCollectedToken": "0.3612 ETH",
   "roundsPaid": 78,
   "walletPayments": 6028,
@@ -80,5 +80,5 @@
       "verified": false
     }
   ],
-  "verifiedAt": "2026-11-19T17:22:39.672Z"
+  "verifiedAt": "2026-11-19T23:47:02.324Z"
 }
